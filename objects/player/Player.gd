@@ -1,7 +1,8 @@
+tool
 extends KinematicBody2D
 
 const PIXELS_PER_UNIT = 16
-const UNITS_PER_SECOND = 50
+const UNITS_PER_SECOND = 4
 
 
 enum ACTION {DOWN=0, UP=1, LEFT=2, RIGHT=3}
@@ -41,8 +42,13 @@ func _set_facing(f : int, force : bool = false):
 
 
 func _ready():
+	$AnimationTree.active = true # This is just in case I accidently disable it.
 	ready = true
 	_set_facing(facing, true)
+
+func set_anim_param(param, val):
+	if ready:
+		$AnimationTree.set(param, val)
 
 func set_action(id : int, e : bool):
 	if id >= 0 and id < action_state.size():
@@ -79,6 +85,7 @@ func move(delta, dx, dy):
 			dy = 1
 		velocity.y = dy
 	
+	#print("PPS: ", PIXELS_PER_UNIT * UNITS_PER_SECOND, " | Adj Delta: ", PIXELS_PER_UNIT * UNITS_PER_SECOND * delta)
 	velocity = velocity.normalized() * (PIXELS_PER_UNIT * UNITS_PER_SECOND * delta)
 	update_facing() # Not sure if I'll keep this here
 

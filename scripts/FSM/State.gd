@@ -9,7 +9,6 @@ var paused = false
 
 func enter(host : Node):
 	self.host = host
-	print("Name: ", self.name, " | VAR: ", self.host)
 
 func resume(host : Node = null):
 	if host != null: # Only change the host if given an actual Node.

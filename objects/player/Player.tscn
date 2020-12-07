@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://assets/graphics/player/body/PlayerChar_Down.png" type="Texture" id=1]
 [ext_resource path="res://objects/player/Player.gd" type="Script" id=2]
@@ -8,8 +8,9 @@
 [ext_resource path="res://assets/graphics/player/body/PlayerChar_Right.png" type="Texture" id=6]
 [ext_resource path="res://assets/graphics/player/body/PlayerChar_Up.png" type="Texture" id=7]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 4.0
+[sub_resource type="CapsuleShape2D" id=22]
+radius = 1.0
+height = 6.0
 
 [sub_resource type="Animation" id=2]
 resource_name = "breath"
@@ -84,9 +85,10 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=8]
 resource_name = "jump"
-length = 0.3
+length = 0.1
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:frame")
 tracks/0/interp = 1
@@ -94,14 +96,31 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 7, 8, 9 ]
+"values": [ 9 ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "land"
+length = 0.1
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 10 ]
 }
 
 [sub_resource type="Animation" id=6]
-resource_name = "land"
+resource_name = "landing"
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:frame")
@@ -114,6 +133,22 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ 10, 11, 12 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "launch"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 7, 8, 9 ]
 }
 
 [sub_resource type="Animation" id=7]
@@ -146,6 +181,89 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -1 ), Vector2( 0, -1 ) ]
 }
 
+[sub_resource type="AnimationNodeAnimation" id=10]
+animation = "breath"
+
+[sub_resource type="AnimationNodeAnimation" id=11]
+animation = "run"
+
+[sub_resource type="AnimationNodeAnimation" id=16]
+animation = "launch"
+
+[sub_resource type="AnimationNodeAnimation" id=17]
+animation = "jump"
+
+[sub_resource type="AnimationNodeAnimation" id=18]
+animation = "land"
+
+[sub_resource type="AnimationNodeAnimation" id=19]
+animation = "landing"
+
+[sub_resource type="AnimationNodeAnimation" id=12]
+animation = "idle"
+
+[sub_resource type="AnimationNodeTransition" id=20]
+input_count = 4
+input_0/name = "launching"
+input_0/auto_advance = false
+input_1/name = "jump"
+input_1/auto_advance = false
+input_2/name = "land"
+input_2/auto_advance = false
+input_3/name = "landing"
+input_3/auto_advance = false
+
+[sub_resource type="AnimationNodeTransition" id=13]
+input_count = 2
+input_0/name = "stand"
+input_0/auto_advance = false
+input_1/name = "breath"
+input_1/auto_advance = true
+
+[sub_resource type="AnimationNodeTransition" id=14]
+input_count = 2
+input_0/name = "yes"
+input_0/auto_advance = false
+input_1/name = "no"
+input_1/auto_advance = false
+
+[sub_resource type="AnimationNodeTimeScale" id=23]
+
+[sub_resource type="AnimationNodeTransition" id=21]
+input_count = 2
+input_0/name = "ground"
+input_0/auto_advance = false
+input_1/name = "air"
+input_1/auto_advance = false
+
+[sub_resource type="AnimationNodeBlendTree" id=15]
+graph_offset = Vector2( -1037, -94.25 )
+nodes/Animation/node = SubResource( 12 )
+nodes/Animation/position = Vector2( -607, 39 )
+"nodes/Animation 2/node" = SubResource( 10 )
+"nodes/Animation 2/position" = Vector2( -620, 180 )
+"nodes/Animation 3/node" = SubResource( 11 )
+"nodes/Animation 3/position" = Vector2( -600, -140 )
+"nodes/Animation 4/node" = SubResource( 16 )
+"nodes/Animation 4/position" = Vector2( -620, 320 )
+"nodes/Animation 5/node" = SubResource( 17 )
+"nodes/Animation 5/position" = Vector2( -620, 440 )
+"nodes/Animation 6/node" = SubResource( 18 )
+"nodes/Animation 6/position" = Vector2( -620, 560 )
+"nodes/Animation 7/node" = SubResource( 19 )
+"nodes/Animation 7/position" = Vector2( -620, 680 )
+nodes/air/node = SubResource( 20 )
+nodes/air/position = Vector2( -200, 300 )
+nodes/idle/node = SubResource( 13 )
+nodes/idle/position = Vector2( -400, 140 )
+nodes/moving/node = SubResource( 14 )
+nodes/moving/position = Vector2( -200, 120 )
+nodes/run_mult/node = SubResource( 23 )
+nodes/run_mult/position = Vector2( -400, -120 )
+nodes/state/node = SubResource( 21 )
+nodes/state/position = Vector2( 60, 160 )
+node_connections = [ "idle", 0, "Animation", "idle", 1, "Animation 2", "output", 0, "state", "state", 0, "moving", "state", 1, "air", "run_mult", 0, "Animation 3", "air", 0, "Animation 4", "air", 1, "Animation 5", "air", 2, "Animation 6", "air", 3, "Animation 7", "moving", 0, "run_mult", "moving", 1, "idle" ]
+
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 2 )
 up_texture = ExtResource( 7 )
@@ -163,7 +281,9 @@ script = ExtResource( 4 )
 script = ExtResource( 5 )
 
 [node name="WalkCollider" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+position = Vector2( 0, -1 )
+rotation = 1.5708
+shape = SubResource( 22 )
 
 [node name="Body" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -175,6 +295,18 @@ hframes = 4
 anims/breath = SubResource( 2 )
 anims/death_fall = SubResource( 3 )
 anims/idle = SubResource( 4 )
-anims/jump = SubResource( 5 )
-anims/land = SubResource( 6 )
+anims/jump = SubResource( 8 )
+anims/land = SubResource( 9 )
+anims/landing = SubResource( 6 )
+anims/launch = SubResource( 5 )
 anims/run = SubResource( 7 )
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 15 )
+anim_player = NodePath("../Anims")
+active = true
+parameters/air/current = 0
+parameters/idle/current = 0
+parameters/moving/current = 1
+parameters/run_mult/scale = 1.0
+parameters/state/current = 0

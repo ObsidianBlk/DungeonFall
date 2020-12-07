@@ -9,6 +9,7 @@ var await_anim = false
 
 func enter(host : Node):
 	.enter(host)
+	self.host.set_anim_param("parameters/moving/current", 1)
 
 func resume(host : Node = null):
 	.resume(host)

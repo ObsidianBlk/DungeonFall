@@ -3,6 +3,7 @@ extends "res://scripts/FSM/State.gd"
 
 func enter(host : Node):
 	.enter(host)
+	self.host.set_anim_param("parameters/moving/current", 0)
 
 func resume(host : Node = null):
 	.resume(host)
@@ -46,6 +47,6 @@ func move(delta):
 	
 	host.move(delta, dx, dy)
 	if host.velocity.length() > 0:
-		host.velocity = host.move_and_slide(host.velocity)
+		host.move_and_collide(host.velocity)
 
 
