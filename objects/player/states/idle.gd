@@ -23,6 +23,9 @@ func pause():
 	.pause()
 
 func handle_physics(delta):
+	if host.is_over_pit():
+		emit_signal("finished", "death")
+		return
 	move(delta)
 	if host.velocity.length() > 0:
 		emit_signal("finished", "move")
@@ -34,7 +37,7 @@ func handle_physics(delta):
 		# TODO: Call breath animation
 		await_anim = true
 
-func on_animation_finished(anim_name):
+func handle_animation_finished(anim_name):
 	if anim_name == "breath":
 		await_anim = false
 		var dv = BREATH_DELAY * BREATH_DELAY_VARIANCE

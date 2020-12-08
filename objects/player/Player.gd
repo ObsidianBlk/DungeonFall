@@ -11,12 +11,26 @@ enum ACTION {DOWN=0, UP=1, LEFT=2, RIGHT=3}
 export var up_texture : Resource = null
 export var down_texture : Resource = null
 export var right_texture : Resource = null
+export var map_node_path : NodePath = "" setget _set_map_node_path
+export(float, 0.0, 200.0) var max_hp = 100.0
 export(ACTION) var facing = ACTION.DOWN setget _set_facing
 
 
+var map_node = null
 var velocity = Vector2.ZERO
 var action_state = [false, false, false, false]
 var ready = false
+
+func _set_map_node_path(mnp : NodePath, force : bool = false):
+	if mnp != map_node_path or force:
+		if ready:
+			var mn = get_node(mnp)
+			if mn != null:
+				map_node = mn
+				map_node_path = mnp
+		else:
+			map_node_path = mnp
+
 
 func _set_facing(f : int, force : bool = false):
 	if f != facing or force:
@@ -44,6 +58,7 @@ func _set_facing(f : int, force : bool = false):
 func _ready():
 	$AnimationTree.active = true # This is just in case I accidently disable it.
 	ready = true
+	_set_map_node_path(map_node_path, true)
 	_set_facing(facing, true)
 
 func set_anim_param(param, val):
@@ -65,6 +80,11 @@ func is_moving_v():
 func is_moving_h():
 	return action_state[ACTION.LEFT] != action_state[ACTION.RIGHT]
 
+
+func is_over_pit():
+	if map_node != null and map_node.has_method("is_over_pit"):
+		return map_node.is_over_pit(global_position)
+	return false
 
 func move(delta, dx, dy):
 	if dx == 0:

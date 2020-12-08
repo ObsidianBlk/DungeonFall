@@ -25,6 +25,13 @@ config/description="Can you escape the dungeon before it falls out from beneith 
 run/main_scene="res://World.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/width=480
+window/size/height=270
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+
 [input]
 
 move_up={

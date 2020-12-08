@@ -26,6 +26,9 @@ func handle_input(event):
 
 
 func handle_physics(delta):
+	if host.is_over_pit():
+		emit_signal("finished", "death")
+		return
 	if host.velocity.length() == 0.0:
 		emit_signal("finished", "idle")
 		return

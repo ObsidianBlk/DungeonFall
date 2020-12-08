@@ -1,14 +1,16 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://assets/graphics/player/body/PlayerChar_Down.png" type="Texture" id=1]
 [ext_resource path="res://objects/player/Player.gd" type="Script" id=2]
-[ext_resource path="res://scripts/FSM/FSM.gd" type="Script" id=3]
+[ext_resource path="res://objects/player/PlayerFSM.gd" type="Script" id=3]
 [ext_resource path="res://objects/player/states/idle.gd" type="Script" id=4]
 [ext_resource path="res://objects/player/states/move.gd" type="Script" id=5]
 [ext_resource path="res://assets/graphics/player/body/PlayerChar_Right.png" type="Texture" id=6]
 [ext_resource path="res://assets/graphics/player/body/PlayerChar_Up.png" type="Texture" id=7]
+[ext_resource path="res://assets/graphics/player/shadow.png" type="Texture" id=8]
+[ext_resource path="res://objects/player/death.gd" type="Script" id=9]
 
-[sub_resource type="CapsuleShape2D" id=22]
+[sub_resource type="CapsuleShape2D" id=1]
 radius = 1.0
 height = 6.0
 
@@ -68,6 +70,32 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("FSM")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 1.2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "\"death_fall\"" ],
+"method": "_on_animation_finished"
+} ]
+}
 
 [sub_resource type="Animation" id=4]
 resource_name = "idle"
@@ -84,8 +112,80 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 0 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Body:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Body:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Body:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Body:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Body:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=5]
 resource_name = "jump"
 length = 0.1
 loop = true
@@ -102,7 +202,7 @@ tracks/0/keys = {
 "values": [ 9 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=6]
 resource_name = "land"
 length = 0.1
 loop = true
@@ -119,8 +219,7 @@ tracks/0/keys = {
 "values": [ 10 ]
 }
 
-[sub_resource type="Animation" id=6]
-resource_name = "landing"
+[sub_resource type="Animation" id=7]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:frame")
@@ -135,8 +234,7 @@ tracks/0/keys = {
 "values": [ 10, 11, 12 ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "launch"
+[sub_resource type="Animation" id=8]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:frame")
@@ -151,8 +249,7 @@ tracks/0/keys = {
 "values": [ 7, 8, 9 ]
 }
 
-[sub_resource type="Animation" id=7]
-resource_name = "run"
+[sub_resource type="Animation" id=9]
 length = 0.4
 loop = true
 step = 0.0166667
@@ -187,22 +284,27 @@ animation = "breath"
 [sub_resource type="AnimationNodeAnimation" id=11]
 animation = "run"
 
-[sub_resource type="AnimationNodeAnimation" id=16]
+[sub_resource type="AnimationNodeAnimation" id=12]
 animation = "launch"
 
-[sub_resource type="AnimationNodeAnimation" id=17]
+[sub_resource type="AnimationNodeAnimation" id=13]
 animation = "jump"
 
-[sub_resource type="AnimationNodeAnimation" id=18]
+[sub_resource type="AnimationNodeAnimation" id=14]
 animation = "land"
 
-[sub_resource type="AnimationNodeAnimation" id=19]
+[sub_resource type="AnimationNodeAnimation" id=15]
 animation = "landing"
 
-[sub_resource type="AnimationNodeAnimation" id=12]
+[sub_resource type="AnimationNodeAnimation" id=23]
+animation = "death_fall"
+
+[sub_resource type="AnimationNodeAnimation" id=16]
 animation = "idle"
 
-[sub_resource type="AnimationNodeTransition" id=20]
+[sub_resource type="AnimationNodeOneShot" id=24]
+
+[sub_resource type="AnimationNodeTransition" id=17]
 input_count = 4
 input_0/name = "launching"
 input_0/auto_advance = false
@@ -213,56 +315,63 @@ input_2/auto_advance = false
 input_3/name = "landing"
 input_3/auto_advance = false
 
-[sub_resource type="AnimationNodeTransition" id=13]
+[sub_resource type="AnimationNodeTransition" id=18]
 input_count = 2
 input_0/name = "stand"
 input_0/auto_advance = false
 input_1/name = "breath"
 input_1/auto_advance = true
 
-[sub_resource type="AnimationNodeTransition" id=14]
+[sub_resource type="AnimationNodeTransition" id=19]
 input_count = 2
 input_0/name = "yes"
 input_0/auto_advance = false
 input_1/name = "no"
 input_1/auto_advance = false
 
-[sub_resource type="AnimationNodeTimeScale" id=23]
+[sub_resource type="AnimationNodeTimeScale" id=20]
 
 [sub_resource type="AnimationNodeTransition" id=21]
-input_count = 2
+input_count = 3
 input_0/name = "ground"
 input_0/auto_advance = false
 input_1/name = "air"
 input_1/auto_advance = false
+input_2/name = "dead"
+input_2/auto_advance = false
 
-[sub_resource type="AnimationNodeBlendTree" id=15]
-graph_offset = Vector2( -1037, -94.25 )
-nodes/Animation/node = SubResource( 12 )
+[sub_resource type="AnimationNodeBlendTree" id=22]
+graph_offset = Vector2( -665, 34.5 )
+nodes/Animation/node = SubResource( 16 )
 nodes/Animation/position = Vector2( -607, 39 )
 "nodes/Animation 2/node" = SubResource( 10 )
 "nodes/Animation 2/position" = Vector2( -620, 180 )
 "nodes/Animation 3/node" = SubResource( 11 )
 "nodes/Animation 3/position" = Vector2( -600, -140 )
-"nodes/Animation 4/node" = SubResource( 16 )
+"nodes/Animation 4/node" = SubResource( 12 )
 "nodes/Animation 4/position" = Vector2( -620, 320 )
-"nodes/Animation 5/node" = SubResource( 17 )
+"nodes/Animation 5/node" = SubResource( 13 )
 "nodes/Animation 5/position" = Vector2( -620, 440 )
-"nodes/Animation 6/node" = SubResource( 18 )
+"nodes/Animation 6/node" = SubResource( 14 )
 "nodes/Animation 6/position" = Vector2( -620, 560 )
-"nodes/Animation 7/node" = SubResource( 19 )
+"nodes/Animation 7/node" = SubResource( 15 )
 "nodes/Animation 7/position" = Vector2( -620, 680 )
-nodes/air/node = SubResource( 20 )
+"nodes/Animation 8/node" = SubResource( 23 )
+"nodes/Animation 8/position" = Vector2( -320, 580 )
+nodes/OneShot/node = SubResource( 24 )
+nodes/OneShot/position = Vector2( -140, 540 )
+nodes/air/node = SubResource( 17 )
 nodes/air/position = Vector2( -200, 300 )
-nodes/idle/node = SubResource( 13 )
+nodes/idle/node = SubResource( 18 )
 nodes/idle/position = Vector2( -400, 140 )
-nodes/moving/node = SubResource( 14 )
+nodes/moving/node = SubResource( 19 )
 nodes/moving/position = Vector2( -200, 120 )
-nodes/run_mult/node = SubResource( 23 )
+nodes/output/position = Vector2( 340, 160 )
+nodes/run_mult/node = SubResource( 20 )
 nodes/run_mult/position = Vector2( -400, -120 )
 nodes/state/node = SubResource( 21 )
-nodes/state/position = Vector2( 60, 160 )
-node_connections = [ "idle", 0, "Animation", "idle", 1, "Animation 2", "output", 0, "state", "state", 0, "moving", "state", 1, "air", "run_mult", 0, "Animation 3", "air", 0, "Animation 4", "air", 1, "Animation 5", "air", 2, "Animation 6", "air", 3, "Animation 7", "moving", 0, "run_mult", "moving", 1, "idle" ]
+nodes/state/position = Vector2( 120, 160 )
+node_connections = [ "idle", 0, "Animation", "idle", 1, "Animation 2", "output", 0, "state", "state", 0, "moving", "state", 1, "air", "state", 2, "OneShot", "OneShot", 0, "Animation 8", "air", 0, "Animation 4", "air", 1, "Animation 5", "air", 2, "Animation 6", "air", 3, "Animation 7", "moving", 0, "run_mult", "moving", 1, "idle", "run_mult", 0, "Animation 3" ]
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 2 )
@@ -272,7 +381,6 @@ right_texture = ExtResource( 6 )
 
 [node name="FSM" type="Node" parent="."]
 script = ExtResource( 3 )
-initial_state = "idle"
 
 [node name="idle" type="Node" parent="FSM"]
 script = ExtResource( 4 )
@@ -280,10 +388,16 @@ script = ExtResource( 4 )
 [node name="move" type="Node" parent="FSM"]
 script = ExtResource( 5 )
 
+[node name="death" type="Node" parent="FSM"]
+script = ExtResource( 9 )
+
 [node name="WalkCollider" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -1 )
 rotation = 1.5708
-shape = SubResource( 22 )
+shape = SubResource( 1 )
+
+[node name="Shadow" type="Sprite" parent="."]
+texture = ExtResource( 8 )
 
 [node name="Body" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -295,18 +409,20 @@ hframes = 4
 anims/breath = SubResource( 2 )
 anims/death_fall = SubResource( 3 )
 anims/idle = SubResource( 4 )
-anims/jump = SubResource( 8 )
-anims/land = SubResource( 9 )
-anims/landing = SubResource( 6 )
-anims/launch = SubResource( 5 )
-anims/run = SubResource( 7 )
+anims/jump = SubResource( 5 )
+anims/land = SubResource( 6 )
+anims/landing = SubResource( 7 )
+anims/launch = SubResource( 8 )
+anims/run = SubResource( 9 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 15 )
+tree_root = SubResource( 22 )
 anim_player = NodePath("../Anims")
 active = true
+parameters/OneShot/active = false
 parameters/air/current = 0
 parameters/idle/current = 0
 parameters/moving/current = 1
 parameters/run_mult/scale = 1.0
 parameters/state/current = 0
+[connection signal="animation_finished" from="Anims" to="FSM" method="_on_animation_finished"]
