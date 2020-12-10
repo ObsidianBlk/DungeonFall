@@ -296,15 +296,15 @@ animation = "land"
 [sub_resource type="AnimationNodeAnimation" id=15]
 animation = "landing"
 
-[sub_resource type="AnimationNodeAnimation" id=23]
+[sub_resource type="AnimationNodeAnimation" id=16]
 animation = "death_fall"
 
-[sub_resource type="AnimationNodeAnimation" id=16]
+[sub_resource type="AnimationNodeAnimation" id=17]
 animation = "idle"
 
-[sub_resource type="AnimationNodeOneShot" id=24]
+[sub_resource type="AnimationNodeOneShot" id=18]
 
-[sub_resource type="AnimationNodeTransition" id=17]
+[sub_resource type="AnimationNodeTransition" id=19]
 input_count = 4
 input_0/name = "launching"
 input_0/auto_advance = false
@@ -315,23 +315,23 @@ input_2/auto_advance = false
 input_3/name = "landing"
 input_3/auto_advance = false
 
-[sub_resource type="AnimationNodeTransition" id=18]
+[sub_resource type="AnimationNodeTransition" id=20]
 input_count = 2
 input_0/name = "stand"
 input_0/auto_advance = false
 input_1/name = "breath"
 input_1/auto_advance = true
 
-[sub_resource type="AnimationNodeTransition" id=19]
+[sub_resource type="AnimationNodeTransition" id=21]
 input_count = 2
 input_0/name = "yes"
 input_0/auto_advance = false
 input_1/name = "no"
 input_1/auto_advance = false
 
-[sub_resource type="AnimationNodeTimeScale" id=20]
+[sub_resource type="AnimationNodeTimeScale" id=22]
 
-[sub_resource type="AnimationNodeTransition" id=21]
+[sub_resource type="AnimationNodeTransition" id=23]
 input_count = 3
 input_0/name = "ground"
 input_0/auto_advance = false
@@ -340,9 +340,9 @@ input_1/auto_advance = false
 input_2/name = "dead"
 input_2/auto_advance = false
 
-[sub_resource type="AnimationNodeBlendTree" id=22]
-graph_offset = Vector2( -665, 34.5 )
-nodes/Animation/node = SubResource( 16 )
+[sub_resource type="AnimationNodeBlendTree" id=24]
+graph_offset = Vector2( -601, 145 )
+nodes/Animation/node = SubResource( 17 )
 nodes/Animation/position = Vector2( -607, 39 )
 "nodes/Animation 2/node" = SubResource( 10 )
 "nodes/Animation 2/position" = Vector2( -620, 180 )
@@ -356,20 +356,20 @@ nodes/Animation/position = Vector2( -607, 39 )
 "nodes/Animation 6/position" = Vector2( -620, 560 )
 "nodes/Animation 7/node" = SubResource( 15 )
 "nodes/Animation 7/position" = Vector2( -620, 680 )
-"nodes/Animation 8/node" = SubResource( 23 )
+"nodes/Animation 8/node" = SubResource( 16 )
 "nodes/Animation 8/position" = Vector2( -320, 580 )
-nodes/OneShot/node = SubResource( 24 )
+nodes/OneShot/node = SubResource( 18 )
 nodes/OneShot/position = Vector2( -140, 540 )
-nodes/air/node = SubResource( 17 )
+nodes/air/node = SubResource( 19 )
 nodes/air/position = Vector2( -200, 300 )
-nodes/idle/node = SubResource( 18 )
+nodes/idle/node = SubResource( 20 )
 nodes/idle/position = Vector2( -400, 140 )
-nodes/moving/node = SubResource( 19 )
+nodes/moving/node = SubResource( 21 )
 nodes/moving/position = Vector2( -200, 120 )
 nodes/output/position = Vector2( 340, 160 )
-nodes/run_mult/node = SubResource( 20 )
+nodes/run_mult/node = SubResource( 22 )
 nodes/run_mult/position = Vector2( -400, -120 )
-nodes/state/node = SubResource( 21 )
+nodes/state/node = SubResource( 23 )
 nodes/state/position = Vector2( 120, 160 )
 node_connections = [ "idle", 0, "Animation", "idle", 1, "Animation 2", "output", 0, "state", "state", 0, "moving", "state", 1, "air", "state", 2, "OneShot", "OneShot", 0, "Animation 8", "air", 0, "Animation 4", "air", 1, "Animation 5", "air", 2, "Animation 6", "air", 3, "Animation 7", "moving", 0, "run_mult", "moving", 1, "idle", "run_mult", 0, "Animation 3" ]
 
@@ -397,6 +397,7 @@ rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Shadow" type="Sprite" parent="."]
+visible = false
 texture = ExtResource( 8 )
 
 [node name="Body" type="Sprite" parent="."]
@@ -404,6 +405,7 @@ texture = ExtResource( 1 )
 offset = Vector2( 0, -12 )
 vframes = 4
 hframes = 4
+frame = 13
 
 [node name="Anims" type="AnimationPlayer" parent="."]
 anims/breath = SubResource( 2 )
@@ -416,7 +418,7 @@ anims/launch = SubResource( 8 )
 anims/run = SubResource( 9 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 22 )
+tree_root = SubResource( 24 )
 anim_player = NodePath("../Anims")
 active = true
 parameters/OneShot/active = false

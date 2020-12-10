@@ -12,7 +12,11 @@ var collapsing_tiles = {}
 
 var player = null
 func _ready():
-	player = get_tree().root.get_node("World/Player")
+	pass
+
+func set_player(p : Node2D):
+	player = p
+
 
 func _set_collapsing_tile(tile_pos):
 	var key = String(tile_pos.x) + "x" + String(tile_pos.y)

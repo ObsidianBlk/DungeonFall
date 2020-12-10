@@ -1,6 +1,9 @@
 tool
 extends KinematicBody2D
 
+
+signal dead
+
 const PIXELS_PER_UNIT = 16
 const UNITS_PER_SECOND = 4
 
@@ -16,20 +19,24 @@ export(float, 0.0, 200.0) var max_hp = 100.0
 export(ACTION) var facing = ACTION.DOWN setget _set_facing
 
 
+var alive = false
+var hp = 0
 var map_node = null
 var velocity = Vector2.ZERO
 var action_state = [false, false, false, false]
 var ready = false
 
+
 func _set_map_node_path(mnp : NodePath, force : bool = false):
 	if mnp != map_node_path or force:
-		if ready:
+		if ready and mnp != "":
 			var mn = get_node(mnp)
 			if mn != null:
 				map_node = mn
 				map_node_path = mnp
 		else:
 			map_node_path = mnp
+			map_node = null
 
 
 func _set_facing(f : int, force : bool = false):
@@ -58,12 +65,27 @@ func _set_facing(f : int, force : bool = false):
 func _ready():
 	$AnimationTree.active = true # This is just in case I accidently disable it.
 	ready = true
-	_set_map_node_path(map_node_path, true)
+	if map_node_path != "":
+		_set_map_node_path(map_node_path, true)
 	_set_facing(facing, true)
+	revive()
+
+func die():
+	alive = false
+	emit_signal("dead")
+
+func revive():
+	alive = true
+	hp = max_hp
 
 func set_anim_param(param, val):
 	if ready:
 		$AnimationTree.set(param, val)
+
+func get_anim_param(param):
+	if ready:
+		return $AnimationTree.get(param)
+	return null
 
 func set_action(id : int, e : bool):
 	if id >= 0 and id < action_state.size():
@@ -105,7 +127,6 @@ func move(delta, dx, dy):
 			dy = 1
 		velocity.y = dy
 	
-	#print("PPS: ", PIXELS_PER_UNIT * UNITS_PER_SECOND, " | Adj Delta: ", PIXELS_PER_UNIT * UNITS_PER_SECOND * delta)
 	velocity = velocity.normalized() * (PIXELS_PER_UNIT * UNITS_PER_SECOND * delta)
 	update_facing() # Not sure if I'll keep this here
 

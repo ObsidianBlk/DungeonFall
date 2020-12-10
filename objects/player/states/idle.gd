@@ -7,8 +7,11 @@ const BREATH_DELAY_VARIANCE = 0.5 # in percentage (0.0 - 1.0)
 var cur_breath_delay = 0.0
 var await_anim = false
 
+
 func enter(host : Node):
 	.enter(host)
+	if self.host.get_anim_param("parameters/state/current") == 2:
+		self.host.set_anim_param("parameters/state/current", 0)
 	self.host.set_anim_param("parameters/moving/current", 1)
 
 func resume(host : Node = null):

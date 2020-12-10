@@ -9,12 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "DFWorld",
+"language": "GDScript",
+"path": "res://scripts/World.gd"
+}, {
 "base": "Node",
 "class": "State",
 "language": "GDScript",
 "path": "res://scripts/FSM/State.gd"
 } ]
 _global_script_class_icons={
+"DFWorld": "",
 "State": ""
 }
 

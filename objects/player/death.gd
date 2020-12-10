@@ -1,6 +1,6 @@
 extends "res://scripts/FSM/State.gd"
 
-# TODO: Handle "Falling to your death" and "Slain by monster"
+var check_for_revive = false
 
 
 func enter(host : Node):
@@ -20,10 +20,15 @@ func pause():
 	.pause()
 
 func handle_physics(delta):
-	pass
+	if check_for_revive and host.alive:
+		check_for_revive = false
+		emit_signal("finished", "idle")
+		return # Might be unneeded, but incase I need to add more, I don't want to forget to put this in.
 
-func handle_animation_finished(anim_name):
-	#print("Anim name: ", anim_name, " | Handling: ", anim_name == "death_fall")
-	# TODO: Why this fail??!!!!!!!!!!!!!
-	if anim_name == "death_fall":
-		print ("We done died damnit!")
+func handle_animation_finished(anim_name : String):
+	if not host.alive:
+		return
+	
+	if anim_name == "\"death_fall\"":
+		host.die()
+		check_for_revive = true
