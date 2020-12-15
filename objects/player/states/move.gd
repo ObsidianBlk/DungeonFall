@@ -1,6 +1,8 @@
 extends "res://scripts/FSM/State.gd"
 
 
+var jumping = false
+
 func enter(host : Node):
 	.enter(host)
 	self.host.set_anim_param("parameters/moving/current", 0)
@@ -23,10 +25,19 @@ func handle_input(event):
 		host.set_action(host.ACTION.LEFT, not event.is_action_released("move_left"))
 	if event.is_action("move_right"):
 		host.set_action(host.ACTION.RIGHT, not event.is_action_released("move_right"))
+	if event.is_action_released("jump"):
+		jumping = false
+	if host.can_jump():
+		if not jumping and event.is_action("jump"):
+			jumping = true
+			host.jump()
+			emit_signal("finished", "air")
+			return
 
 
 func handle_physics(delta):
-	if host.is_over_pit():
+	host.update_inair(delta)
+	if host.is_over_pit() and not host.can_jump():
 		emit_signal("finished", "death")
 		return
 	if host.velocity.length() == 0.0:

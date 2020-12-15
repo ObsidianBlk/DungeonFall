@@ -12,6 +12,8 @@ visible = false
 
 [node name="Player" parent="Perma_Objects" instance=ExtResource( 2 )]
 position = Vector2( 71.7173, 75.7264 )
+jump_coyote_time = 0.1
+jump_scale_delta = 0.25
 
 [node name="Camera" parent="Perma_Objects" instance=ExtResource( 3 )]
 [connection signal="dead" from="Perma_Objects/Player" to="." method="_on_player_death"]

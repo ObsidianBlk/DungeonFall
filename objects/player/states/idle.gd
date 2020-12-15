@@ -10,7 +10,8 @@ var await_anim = false
 
 func enter(host : Node):
 	.enter(host)
-	if self.host.get_anim_param("parameters/state/current") == 2:
+	var curstate = self.host.get_anim_param("parameters/state/current")
+	if curstate != 0:
 		self.host.set_anim_param("parameters/state/current", 0)
 	self.host.set_anim_param("parameters/moving/current", 1)
 
@@ -26,7 +27,8 @@ func pause():
 	.pause()
 
 func handle_physics(delta):
-	if host.is_over_pit():
+	host.update_inair(delta)
+	if host.is_over_pit() and not host.can_jump():
 		emit_signal("finished", "death")
 		return
 	move(delta)

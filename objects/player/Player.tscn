@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://assets/graphics/player/body/PlayerChar_Down.png" type="Texture" id=1]
 [ext_resource path="res://objects/player/Player.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://assets/graphics/player/body/PlayerChar_Up.png" type="Texture" id=7]
 [ext_resource path="res://assets/graphics/player/shadow.png" type="Texture" id=8]
 [ext_resource path="res://objects/player/death.gd" type="Script" id=9]
+[ext_resource path="res://objects/player/states/air.gd" type="Script" id=10]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 1.0
@@ -233,6 +234,20 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 10, 11, 12 ]
 }
+tracks/1/type = "method"
+tracks/1/path = NodePath("FSM")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.3 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "\"landing\"" ],
+"method": "_on_animation_finished"
+} ]
+}
 
 [sub_resource type="Animation" id=8]
 length = 0.3
@@ -247,6 +262,20 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ 7, 8, 9 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("FSM")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.3 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "\"launch\"" ],
+"method": "_on_animation_finished"
+} ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -341,7 +370,7 @@ input_2/name = "dead"
 input_2/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=24]
-graph_offset = Vector2( -601, 145 )
+graph_offset = Vector2( -720, 68.5 )
 nodes/Animation/node = SubResource( 17 )
 nodes/Animation/position = Vector2( -607, 39 )
 "nodes/Animation 2/node" = SubResource( 10 )
@@ -371,13 +400,15 @@ nodes/run_mult/node = SubResource( 22 )
 nodes/run_mult/position = Vector2( -400, -120 )
 nodes/state/node = SubResource( 23 )
 nodes/state/position = Vector2( 120, 160 )
-node_connections = [ "idle", 0, "Animation", "idle", 1, "Animation 2", "output", 0, "state", "state", 0, "moving", "state", 1, "air", "state", 2, "OneShot", "OneShot", 0, "Animation 8", "air", 0, "Animation 4", "air", 1, "Animation 5", "air", 2, "Animation 6", "air", 3, "Animation 7", "moving", 0, "run_mult", "moving", 1, "idle", "run_mult", 0, "Animation 3" ]
+node_connections = [ "idle", 0, "Animation", "idle", 1, "Animation 2", "output", 0, "state", "state", 0, "moving", "state", 1, "air", "state", 2, "OneShot", "OneShot", 0, "Animation 8", "moving", 0, "run_mult", "moving", 1, "idle", "run_mult", 0, "Animation 3", "air", 0, "Animation 4", "air", 1, "Animation 5", "air", 2, "Animation 6", "air", 3, "Animation 7" ]
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 2 )
 up_texture = ExtResource( 7 )
 down_texture = ExtResource( 1 )
 right_texture = ExtResource( 6 )
+jump_coyote_time = 0.1
+jump_scale_delta = 0.25
 
 [node name="FSM" type="Node" parent="."]
 script = ExtResource( 3 )
@@ -391,13 +422,15 @@ script = ExtResource( 5 )
 [node name="death" type="Node" parent="FSM"]
 script = ExtResource( 9 )
 
+[node name="air" type="Node" parent="FSM"]
+script = ExtResource( 10 )
+
 [node name="WalkCollider" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -1 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Shadow" type="Sprite" parent="."]
-visible = false
 texture = ExtResource( 8 )
 
 [node name="Body" type="Sprite" parent="."]
@@ -405,7 +438,6 @@ texture = ExtResource( 1 )
 offset = Vector2( 0, -12 )
 vframes = 4
 hframes = 4
-frame = 13
 
 [node name="Anims" type="AnimationPlayer" parent="."]
 anims/breath = SubResource( 2 )
@@ -427,4 +459,3 @@ parameters/idle/current = 0
 parameters/moving/current = 1
 parameters/run_mult/scale = 1.0
 parameters/state/current = 0
-[connection signal="animation_finished" from="Anims" to="FSM" method="_on_animation_finished"]

@@ -46,7 +46,7 @@ func _update_collapsing_tiles(delta):
 
 
 func _process(delta):
-	if player != null:
+	if player != null and not player.inair:
 		var mpos = world_to_map(player.position)
 		var taindex = get_cell_autotile_coord(mpos.x, mpos.y)
 		if taindex == Vector2(1,1):

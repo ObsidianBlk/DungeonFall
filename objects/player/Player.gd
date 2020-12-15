@@ -16,6 +16,10 @@ export var down_texture : Resource = null
 export var right_texture : Resource = null
 export var map_node_path : NodePath = "" setget _set_map_node_path
 export(float, 0.0, 200.0) var max_hp = 100.0
+export(float, 0.1) var jump_height_time = 0.5 # in seconds
+export(float, 0.0) var jump_coyote_time = 0.25 # in seconds
+export(float, 0.1) var jump_scale_delta = 0.1 # The change in scale from baseline to max jump height.
+export(float, 0.0) var jump_position_delta = 6.0 # The change in position in pixels from baseline to max jump height.
 export(ACTION) var facing = ACTION.DOWN setget _set_facing
 
 
@@ -23,6 +27,9 @@ var alive = false
 var hp = 0
 var map_node = null
 var velocity = Vector2.ZERO
+var jump_time = 0.0
+var coyote_time = 0.0
+var inair = false
 var action_state = [false, false, false, false]
 var ready = false
 
@@ -77,6 +84,35 @@ func die():
 func revive():
 	alive = true
 	hp = max_hp
+	action_state = [false, false, false, false]
+
+func jump():
+	if not inair:
+		coyote_time = 0.0
+		jump_time = jump_height_time
+		inair = true
+
+func update_inair(delta : float):
+	if inair:
+		jump_time -= delta
+		if jump_time <= -jump_height_time:
+			inair = false
+			jump_time = 0.0
+			set_sprite_jump_scale(0.0)
+	elif is_over_pit():
+		if coyote_time < jump_coyote_time:
+			coyote_time += delta
+
+func can_jump():
+	return not inair and (not is_over_pit() or coyote_time < jump_coyote_time)
+
+# delta_height - 0 to 1 of the scale factor
+# delta_pos - Vector2 change in position from baseline
+# delta_scale - The change in scale from baseline
+func set_sprite_jump_scale(delta_height : float):
+	var scale = 1.0 + (jump_scale_delta * delta_height)
+	$Body.scale = Vector2(scale, scale)
+	$Body.position = Vector2(0.0, -jump_position_delta) * delta_height
 
 func set_anim_param(param, val):
 	if ready:
