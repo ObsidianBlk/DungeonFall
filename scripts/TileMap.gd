@@ -1,4 +1,5 @@
-extends TileMap
+#tool
+extends Node2D
 
 var ctile = preload("res://objects/FallingTile.tscn")
 
@@ -54,3 +55,7 @@ func _process(delta):
 
 func _physics_process(delta):
 	_update_collapsing_tiles(delta)
+
+
+func _on_TileMap_settings_changed():
+	print("Hi there... I done changed")

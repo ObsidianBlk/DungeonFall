@@ -72,8 +72,10 @@ func detach_camera_to(container : Node2D):
 
 
 func is_over_pit(pos : Vector2):
-	var mpos = $TileMap.world_to_map(pos)
-	var tindex = $TileMap.get_cellv(mpos)
-	return tindex < 0
+	if collapsing_floor_map != "":
+		var map = get_node(collapsing_floor_map)
+		if map != null:
+			return map._is_over_pit(pos)
+	return false
 
 	
