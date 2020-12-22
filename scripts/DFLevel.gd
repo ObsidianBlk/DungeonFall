@@ -2,10 +2,17 @@ extends Node2D
 #class_name DFLevel
 
 
+signal level_exit(next_level_info)
+
+
 export var level_name : String = "Level"
-export var collapsing_floor_map : NodePath = ""
-export var player_container_path : NodePath = ""
-export var camera_container_path : NodePath = ""
+export var next_level_path : String = ""
+export var next_level_proceedural : bool = false
+export var next_level_seed : int = 0
+export var next_level_seed_random : bool = false
+export var map_node_path : NodePath = ""
+export var player_container_node_path : NodePath = ""
+export var camera_container_node_path : NodePath = ""
 export var player_start_path : NodePath = ""
 
 
@@ -24,16 +31,21 @@ func _connect_camera_to_player():
 	if player_node != null and camera_node != null:
 		camera_node.target_node_path = player_node.get_path()
 
+
 func attach_player(player : Node2D):
 	if player_node != null:
 		return
-	if player_container_path == null or collapsing_floor_map == null or player_start_path == null:
+	if player_start_path == null:
 		return
 
-	var container = get_node(player_container_path)
-	var map = get_node(collapsing_floor_map)
+	var map = get_node(map_node_path)
+	if map == null:
+		return
+
+	var container = get_node(player_container_node_path)
 	var player_start = get_node(player_start_path)
-	if container != null and map != null and player_start != null:
+	
+	if container != null and player_start != null:
 		player_node = player
 		_swap_to_container(container, player)
 		player.global_position = player_start.global_position
@@ -55,8 +67,8 @@ func detach_player_to(container : Node2D):
 func attach_camera(camera : Node2D):
 	if camera_node != null:
 		return
-
-	var container = get_node(camera_container_path)
+	
+	var container = get_node(camera_container_node_path)
 	if container != null:
 		camera_node = camera
 		_swap_to_container(container, camera)
@@ -72,10 +84,21 @@ func detach_camera_to(container : Node2D):
 
 
 func is_over_pit(pos : Vector2):
-	if collapsing_floor_map != "":
-		var map = get_node(collapsing_floor_map)
+	if map_node_path != "":
+		var map = get_node(map_node_path)
 		if map != null:
 			return map._is_over_pit(pos)
 	return false
 
-	
+
+func exit_level():
+	var level_seed = next_level_seed
+	if next_level_proceedural and next_level_seed_random:
+		level_seed = randi()
+		
+	var info = {
+		"src": next_level_path,
+		"proceedural": next_level_proceedural,
+		"seed": level_seed
+	}
+	emit_signal("level_exit", info)
