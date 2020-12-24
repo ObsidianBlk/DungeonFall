@@ -26,15 +26,15 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Dungeon Fall"
+config/name="Dungeon Falls"
 config/description="Can you escape the dungeon before it falls out from beneith your feet?"
 run/main_scene="res://World.tscn"
 config/icon="res://icon.png"
 
 [display]
 
-window/size/width=480
-window/size/height=270
+window/size/width=1920
+window/size/height=1080
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 

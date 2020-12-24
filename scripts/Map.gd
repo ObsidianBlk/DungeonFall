@@ -2,9 +2,13 @@ tool
 extends Node2D
 
 
+signal pickup
+
+
 export var walls_tilemap_path : NodePath = "" setget _set_walls_tilemap_path
 export var floors_tilemap_path : NodePath = "" setget _set_floors_tilemap_path
 export var doors_tilemap_path : NodePath = "" setget _set_doors_tilemap_path
+export var gold_container_path : NodePath = "" setget _set_gold_container_path
 export (int, 1) var cell_size = 16 setget _set_cell_size
 export (float, 0.1, 10.0) var time_to_collapse = 0.65
 export (int, 0) var auto_tile_index = 0
@@ -21,6 +25,8 @@ var floors_map = null
 var walls_map = null
 var doors_map = null
 
+var gold_container = null
+
 var player = null
 
 
@@ -30,7 +36,7 @@ func _set_walls_tilemap_path(wtp : NodePath, force : bool = false):
 			if wtp == "":
 				walls_map = null
 			else:
-				var nwm = get_node(walls_tilemap_path)
+				var nwm = get_node(wtp)
 				if nwm != null:
 					walls_map = nwm
 				else:
@@ -43,7 +49,7 @@ func _set_floors_tilemap_path(ftp : NodePath, force : bool = false):
 			if ftp == "":
 				floors_map = null
 			else:
-				var nfm = get_node(floors_tilemap_path)
+				var nfm = get_node(ftp)
 				if nfm != null:
 					floors_map = nfm
 				else:
@@ -56,12 +62,27 @@ func _set_doors_tilemap_path(dtp : NodePath, force : bool = false):
 			if dtp == "":
 				doors_map = null
 			else:
-				var ndm = get_node(doors_tilemap_path)
+				var ndm = get_node(dtp)
 				if ndm != null:
 					doors_map = ndm
 				else:
 					dtp = doors_tilemap_path
 		doors_tilemap_path = dtp
+
+
+func _set_gold_container_path(gcp : NodePath, force : bool = false):
+	if gcp != gold_container_path or force:
+		if ready:
+			if gcp == "":
+				gold_container = null
+			else:
+				var ngc = get_node(gcp)
+				if ngc != null:
+					gold_container = ngc
+				else:
+					gcp = gold_container_path
+		gold_container_path = gcp
+
 
 func _set_cell_size(cs):
 	if cs != cell_size:
@@ -77,6 +98,10 @@ func _ready():
 	_set_walls_tilemap_path(walls_tilemap_path, true)
 	_set_floors_tilemap_path(floors_tilemap_path, true)
 	_set_doors_tilemap_path(doors_tilemap_path, true)
+	_set_gold_container_path(gold_container_path, true)
+	if gold_container != null:
+		for child in gold_container.get_children():
+			child.connect("pickup", self, "_on_gold_pickup")
 
 func set_player(p : Node2D):
 	player = p
@@ -118,12 +143,13 @@ func _update_collapsing_tiles(delta):
 		ttc += delta
 		if ttc >= time_to_collapse:
 			var ctile = _get_ctile_obj_from_map_position(tpos)
-			floors_map.set_cellv(tpos, -1)
-			var t = ctile.instance()
-			t.position = (tpos * cell_size) + Vector2(hcell_size, hcell_size)
-			# TODO: Shouldn't "Collapsing" be a NodePath export variable?
-			get_parent().get_node("Collapsing").add_child(t)
-			rkeys.append(key)
+			if ctile != null:
+				floors_map.set_cellv(tpos, -1)
+				var t = ctile.instance()
+				t.position = (tpos * cell_size) + Vector2(hcell_size, hcell_size)
+				# TODO: Shouldn't "Collapsing" be a NodePath export variable?
+				get_parent().get_node("Collapsing").add_child(t)
+				rkeys.append(key)
 		else:
 			collapsing_tiles[key].ttc = ttc
 	
@@ -149,7 +175,16 @@ func _set_collapsing_tile(mpos : Vector2):
 		collapsing_tiles[key] = {
 			"pos": mpos,
 			"ttc": 0
-		} 
+		}
+
+
+func _collapse_level():
+	# floors_map
+	print("Collapsing the level!!")
+	var floors = floors_map.get_used_cells()
+	for f in floors:
+		_set_collapsing_tile(f)
+
 
 func _is_over_pit(pos : Vector2):
 	if floors_map == null:
@@ -158,6 +193,10 @@ func _is_over_pit(pos : Vector2):
 	var mpos = floors_map.world_to_map(pos)
 	var tindex = floors_map.get_cellv(mpos)
 	return tindex < 1
+
+
+func _on_gold_pickup():
+	emit_signal("pickup")
 
 
 

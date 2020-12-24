@@ -3,9 +3,13 @@ extends Node2D
 
 
 signal level_exit(next_level_info)
+signal play_timer_changed(tim_val)
+signal level_timer_changed(time_val)
+signal point_update(point_val)
 
 
 export var level_name : String = "Level"
+export var level_max_timer : float = 0.0
 export var next_level_path : String = ""
 export var next_level_proceedural : bool = false
 export var next_level_seed : int = 0
@@ -19,8 +23,39 @@ export var player_start_path : NodePath = ""
 var player_node : Node2D = null
 var camera_node : Node2D = null
 
+var play_timer = 0.0
+var last_play_timer = ""
+var last_level_timer = ""
+var collpased = false
+
+var points = 0
+
+
 func _ready():
-	pass # Replace with function body.
+	var map = get_node(map_node_path)
+	if map != null:
+		map.connect("pickup", self, "_on_pickup")
+
+func _physics_process(delta):
+	play_timer += delta
+	var new_play_timer = str(play_timer).pad_decimals(2)
+	if new_play_timer != last_play_timer:
+		last_play_timer = new_play_timer
+		emit_signal("play_timer_changed", play_timer)
+	if level_max_timer > 0.0 and not collpased:
+		if level_max_timer - play_timer <= 0.0:
+			collpased = true
+			emit_signal("level_timer_changed", 0.0)
+			print("Collapse the floors!")
+			var map = get_node(map_node_path)
+			if map != null:
+				map._collapse_level()
+		else:
+			var new_level_timer = str(level_max_timer - play_timer).pad_decimals(2)
+			if new_level_timer != last_level_timer:
+				last_level_timer = new_level_timer
+				emit_signal("level_timer_changed", level_max_timer - play_timer)
+
 
 func _swap_to_container(container : Node2D, obj : Node2D):
 	var parent = obj.get_parent()
@@ -102,3 +137,8 @@ func exit_level():
 		"seed": level_seed
 	}
 	emit_signal("level_exit", info)
+	set_physics_process(false)
+	
+func _on_pickup():
+	points += 1
+	emit_signal("point_update", points)
