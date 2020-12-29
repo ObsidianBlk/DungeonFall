@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/graphics/tilesets/tilesetA/Floor_Tile_A.png" type="Texture" id=1]
+[ext_resource path="res://scripts/CollapsingTile.gd" type="Script" id=2]
 
 [sub_resource type="Animation" id=1]
 resource_name = "collapsing"
@@ -192,15 +193,19 @@ tracks/15/loop_wrap = true
 tracks/15/imported = false
 tracks/15/enabled = true
 tracks/15/keys = {
-"times": PoolRealArray( 1.5 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0.4, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
 "values": [ {
+"args": [  ],
+"method": "_unsafe"
+}, {
 "args": [  ],
 "method": "queue_free"
 } ]
 }
 
 [node name="TileA" type="Node2D"]
+script = ExtResource( 2 )
 
 [node name="A" type="Sprite" parent="."]
 visible = false
@@ -209,32 +214,32 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 16, 16 )
 
 [node name="Fallables" type="Node2D" parent="."]
-modulate = Color( 1, 1, 1, 0.0392157 )
+modulate = Color( 1, 1, 1, 0.862745 )
 
 [node name="S1" type="Sprite" parent="Fallables"]
-rotation = -1.91637
-scale = Vector2( 0.1, 0.1 )
+rotation = -0.638791
+scale = Vector2( 0.7, 0.7 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 16, 0, 16, 16 )
 
 [node name="S2" type="Sprite" parent="Fallables"]
-rotation = -1.17112
-scale = Vector2( 0.1, 0.1 )
+rotation = -0.390372
+scale = Vector2( 0.590909, 0.590909 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 32, 0, 16, 16 )
 
 [node name="S3" type="Sprite" parent="Fallables"]
-rotation = 0.745256
-scale = Vector2( 0.1, 0.1 )
+rotation = 0.106465
+scale = Vector2( 0.871429, 0.871429 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 48, 0, 16, 16 )
 
 [node name="S4" type="Sprite" parent="Fallables"]
-rotation = 3.94095
-scale = Vector2( 0.05, 0.05 )
+rotation = 0.825541
+scale = Vector2( 0.7625, 0.7625 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 64, 0, 16, 16 )

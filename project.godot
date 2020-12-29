@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node2D",
+"class": "CollapsingTile",
+"language": "GDScript",
+"path": "res://scripts/CollapsingTile.gd"
+}, {
+"base": "Node2D",
 "class": "DFWorld",
 "language": "GDScript",
 "path": "res://scripts/World.gd"
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://scripts/FSM/State.gd"
 } ]
 _global_script_class_icons={
+"CollapsingTile": "",
 "DFWorld": "",
 "State": ""
 }

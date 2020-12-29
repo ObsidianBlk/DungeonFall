@@ -31,7 +31,9 @@ func handle_physics(delta):
 		if host.is_over_pit():
 			emit_signal("finished", "death")
 			return
-		host.set_anim_param("parameters/air/current", 3)
+		emit_signal("finished", "idle")
+		return
+		#host.set_anim_param("parameters/air/current", 3)
 	else:
 		move(delta)
 		if host.jump_time >= 0.0: # Jumping

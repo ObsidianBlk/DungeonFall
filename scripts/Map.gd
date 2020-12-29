@@ -113,15 +113,27 @@ func _process(delta):
 			_redraw_floors()
 	else:
 		if floors_map != null and player != null and not player.inair:
-			var mpos = floors_map.world_to_map(player.position)
-			var tindex = floors_map.get_cellv(mpos)
-			if tindex >= 1 and tindex <= floor_tile_count:
-				_set_collapsing_tile(mpos)
+			if player.footprint > 0:
+				var px = player.position.x
+				var py = player.position.y
+				var fp = player.footprint
+				_check_for_collapsable_tile(Vector2(px + fp, py))
+				_check_for_collapsable_tile(Vector2(px - fp, py))
+				_check_for_collapsable_tile(Vector2(px, py + fp))
+				_check_for_collapsable_tile(Vector2(px, py - fp))
+			else:
+				_check_for_collapsable_tile(player.position)
 
 
 func _physics_process(delta):
 	if not Engine.editor_hint:
 		_update_collapsing_tiles(delta)
+
+func _check_for_collapsable_tile(pos : Vector2):
+	var mpos = floors_map.world_to_map(pos)
+	var tindex = floors_map.get_cellv(mpos)
+	if tindex >= 1 and tindex <= floor_tile_count:
+		_set_collapsing_tile(mpos)
 
 func _get_ctile_obj_from_map_position(mpos : Vector2):
 	if floors_map != null:
@@ -146,6 +158,7 @@ func _update_collapsing_tiles(delta):
 			if ctile != null:
 				floors_map.set_cellv(tpos, -1)
 				var t = ctile.instance()
+				t.name = "CT_" + key
 				t.position = (tpos * cell_size) + Vector2(hcell_size, hcell_size)
 				# TODO: Shouldn't "Collapsing" be a NodePath export variable?
 				get_parent().get_node("Collapsing").add_child(t)
@@ -155,6 +168,7 @@ func _update_collapsing_tiles(delta):
 	
 	for key in rkeys:
 		collapsing_tiles.erase(key)
+
 
 # NOTE: Should only ever be used in the editor!
 # I've been warned
@@ -186,13 +200,33 @@ func _collapse_level():
 		_set_collapsing_tile(f)
 
 
-func _is_over_pit(pos : Vector2):
+func _is_over_pit(pos : Vector2, footprint : int = 0):
 	if floors_map == null:
 		return false
-
-	var mpos = floors_map.world_to_map(pos)
-	var tindex = floors_map.get_cellv(mpos)
-	return tindex < 1
+	
+	var result = false
+	if footprint > 0:
+		result = true
+		for i in range(0, footprint):
+			var npos1 = Vector2(pos.x + footprint, pos.y)
+			var npos2 = Vector2(pos.x - footprint, pos.y)
+			var npos3 = Vector2(pos.x, pos.y + footprint)
+			var npos4 = Vector2(pos.x, pos.y - footprint)
+			result = _is_over_pit(npos1) and _is_over_pit(npos2) and _is_over_pit(npos3) and _is_over_pit(npos4)
+			if not result:
+				return false
+		result = _is_over_pit(pos)
+	else:
+		var mpos = floors_map.world_to_map(pos)
+		var tindex = floors_map.get_cellv(mpos)
+		if tindex < 1:
+			result = true
+			var key = String(mpos.x) + "x" + String(mpos.y)
+			# TODO: Shouldn't "Collapsing" be a NodePath export variable?
+			var ctn = get_parent().get_node("Collapsing/CT_" + key)
+			if ctn != null:
+				result = not ctn.is_safe()
+	return result
 
 
 func _on_gold_pickup():

@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
-[ext_resource path="res://scripts/UI/Timer.gd" type="Script" id=1]
+[ext_resource path="res://scripts/UI/ValTracker.gd" type="Script" id=1]
 [ext_resource path="res://objects/player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://objects/camera/Camera.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scripts/World.gd" type="Script" id=4]
 [ext_resource path="res://scripts/UI/TimersCTRL.gd" type="Script" id=5]
+[ext_resource path="res://scripts/UI/SimpleUI.gd" type="Script" id=6]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://assets/fonts/SATAM___.TTF"
@@ -59,6 +60,7 @@ visible = false
 
 [node name="Player" parent="Perma_Objects" instance=ExtResource( 2 )]
 position = Vector2( 71.7173, 75.7264 )
+units_per_second = 6
 
 [node name="Camera" parent="Perma_Objects" instance=ExtResource( 3 )]
 
@@ -103,26 +105,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Top Bar" type="HBoxContainer" parent="CanvasLayer/UI/Game"]
-anchor_right = 1.0
+[node name="Timers" type="VBoxContainer" parent="CanvasLayer/UI/Game"]
+margin_right = 308.0
 margin_bottom = 172.0
+script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Timers" type="VBoxContainer" parent="CanvasLayer/UI/Game/Top Bar"]
-margin_right = 308.0
-margin_bottom = 172.0
-script = ExtResource( 5 )
-
-[node name="Play Time" type="HBoxContainer" parent="CanvasLayer/UI/Game/Top Bar/Timers"]
+[node name="Play Time" type="HBoxContainer" parent="CanvasLayer/UI/Game/Timers"]
 margin_right = 308.0
 margin_bottom = 55.0
 custom_constants/separation = 24
 script = ExtResource( 1 )
 signal_name = "play_time_changed"
+value_label_node_path = NodePath("Time")
 
-[node name="Label" type="Label" parent="CanvasLayer/UI/Game/Top Bar/Timers/Play Time"]
+[node name="Label" type="Label" parent="CanvasLayer/UI/Game/Timers/Play Time"]
 margin_top = 9.0
 margin_right = 200.0
 margin_bottom = 46.0
@@ -133,7 +132,7 @@ custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
 text = "Play Time:"
 
-[node name="Time" type="Label" parent="CanvasLayer/UI/Game/Top Bar/Timers/Play Time"]
+[node name="Time" type="Label" parent="CanvasLayer/UI/Game/Timers/Play Time"]
 margin_left = 224.0
 margin_right = 308.0
 margin_bottom = 55.0
@@ -141,15 +140,16 @@ custom_fonts/font = SubResource( 4 )
 custom_colors/font_color = Color( 0.67451, 0.67451, 0.67451, 1 )
 text = "0.00"
 
-[node name="Level Time" type="HBoxContainer" parent="CanvasLayer/UI/Game/Top Bar/Timers"]
+[node name="Level Time" type="HBoxContainer" parent="CanvasLayer/UI/Game/Timers"]
 margin_top = 59.0
 margin_right = 308.0
 margin_bottom = 114.0
 custom_constants/separation = 36
 script = ExtResource( 1 )
 signal_name = "level_time_changed"
+value_label_node_path = NodePath("Time")
 
-[node name="Label" type="Label" parent="CanvasLayer/UI/Game/Top Bar/Timers/Level Time"]
+[node name="Label" type="Label" parent="CanvasLayer/UI/Game/Timers/Level Time"]
 margin_top = 9.0
 margin_right = 188.0
 margin_bottom = 46.0
@@ -160,7 +160,7 @@ custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
 text = "Time Left:"
 
-[node name="Time" type="Label" parent="CanvasLayer/UI/Game/Top Bar/Timers/Level Time"]
+[node name="Time" type="Label" parent="CanvasLayer/UI/Game/Timers/Level Time"]
 margin_left = 224.0
 margin_right = 308.0
 margin_bottom = 55.0
@@ -168,10 +168,46 @@ custom_fonts/font = SubResource( 4 )
 custom_colors/font_color = Color( 0.913725, 0.329412, 0.14902, 1 )
 text = "0.00"
 
+[node name="Points" type="HBoxContainer" parent="CanvasLayer/UI/Game"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 0.052
+margin_left = -413.0
+margin_right = -2.0
+margin_bottom = -2.16
+alignment = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+signal_name = "points_value_changed"
+value_label_node_path = NodePath("Value")
+
+[node name="Label" type="Label" parent="CanvasLayer/UI/Game/Points"]
+margin_left = 247.0
+margin_top = 9.0
+margin_right = 383.0
+margin_bottom = 46.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.764706, 0.611765, 0.415686, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+text = "Points:"
+
+[node name="Value" type="Label" parent="CanvasLayer/UI/Game/Points"]
+margin_left = 387.0
+margin_right = 411.0
+margin_bottom = 55.0
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0.67451, 0.67451, 0.67451, 1 )
+text = "0"
+
 [node name="Level Transition" type="Control" parent="CanvasLayer/UI"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -199,9 +235,9 @@ __meta__ = {
 
 [node name="Info" type="VBoxContainer" parent="CanvasLayer/UI/Level Transition/CenterContainer"]
 margin_left = 469.0
-margin_top = 452.0
+margin_top = 423.0
 margin_right = 1451.0
-margin_bottom = 627.0
+margin_bottom = 657.0
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info"]
 margin_right = 982.0
@@ -216,6 +252,7 @@ margin_right = 982.0
 margin_bottom = 132.0
 script = ExtResource( 1 )
 signal_name = "play_time_changed"
+value_label_node_path = NodePath("Time")
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info/CompTime"]
 margin_top = 8.0
@@ -232,10 +269,33 @@ margin_bottom = 55.0
 custom_fonts/font = SubResource( 10 )
 text = "0.00"
 
-[node name="BTN_NextLevel" type="Button" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info"]
+[node name="CompPoints" type="HBoxContainer" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info"]
 margin_top = 136.0
 margin_right = 982.0
-margin_bottom = 175.0
+margin_bottom = 191.0
+script = ExtResource( 1 )
+signal_name = "points_value_changed"
+value_label_node_path = NodePath("Points")
+
+[node name="Label" type="Label" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info/CompPoints"]
+margin_top = 8.0
+margin_right = 273.0
+margin_bottom = 47.0
+custom_fonts/font = SubResource( 8 )
+custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
+text = "Total Points:"
+
+[node name="Points" type="Label" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info/CompPoints"]
+margin_left = 277.0
+margin_right = 301.0
+margin_bottom = 55.0
+custom_fonts/font = SubResource( 10 )
+text = "0"
+
+[node name="BTN_NextLevel" type="Button" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info"]
+margin_top = 195.0
+margin_right = 982.0
+margin_bottom = 234.0
 custom_fonts/font = SubResource( 12 )
 text = "Continue to Next Level"
 
@@ -245,3 +305,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 [connection signal="dead" from="Perma_Objects/Player" to="." method="_on_player_death"]
 [connection signal="pressed" from="CanvasLayer/UI/Level Transition/CenterContainer/Info/BTN_NextLevel" to="." method="_on_continue_to_level"]
+[connection signal="pressed" from="CanvasLayer/UI/Level Transition/CenterContainer/Info/BTN_NextLevel" to="CanvasLayer/UI/Level Transition" method="_on_change_visible" binds= [ false ]]

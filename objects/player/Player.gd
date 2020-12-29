@@ -5,7 +5,6 @@ extends KinematicBody2D
 signal dead
 
 const PIXELS_PER_UNIT = 16
-const UNITS_PER_SECOND = 4
 
 
 enum ACTION {DOWN=0, UP=1, LEFT=2, RIGHT=3}
@@ -15,7 +14,9 @@ export var up_texture : Resource = null
 export var down_texture : Resource = null
 export var right_texture : Resource = null
 export var map_node_path : NodePath = "" setget _set_map_node_path
+export(int, 1, 1000) var units_per_second = 4
 export(float, 0.0, 200.0) var max_hp = 100.0
+export(int, 0, 16) var footprint = 2 # In pixels
 export(float, 0.1) var jump_height_time = 0.5 # in seconds
 export(float, 0.0) var jump_coyote_time = 0.25 # in seconds
 export(float, 0.1) var jump_scale_delta = 0.1 # The change in scale from baseline to max jump height.
@@ -141,7 +142,7 @@ func is_moving_h():
 
 func is_over_pit():
 	if map_node != null and map_node.has_method("is_over_pit"):
-		return map_node.is_over_pit(global_position)
+		return map_node.is_over_pit(global_position, footprint)
 	return false
 
 func move(delta, dx, dy):
@@ -163,7 +164,8 @@ func move(delta, dx, dy):
 			dy = 1
 		velocity.y = dy
 	
-	velocity = velocity.normalized() * (PIXELS_PER_UNIT * UNITS_PER_SECOND * delta)
+	velocity = velocity.normalized() * (PIXELS_PER_UNIT * units_per_second * delta)
+	#print("Velocity: ", velocity)
 	update_facing() # Not sure if I'll keep this here
 
 

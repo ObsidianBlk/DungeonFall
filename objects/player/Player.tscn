@@ -101,6 +101,7 @@ tracks/4/keys = {
 [sub_resource type="Animation" id=4]
 resource_name = "idle"
 length = 0.1
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body:frame")
 tracks/0/interp = 1
@@ -370,7 +371,7 @@ input_2/name = "dead"
 input_2/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=24]
-graph_offset = Vector2( -720, 68.5 )
+graph_offset = Vector2( -770.182, -36.5 )
 nodes/Animation/node = SubResource( 17 )
 nodes/Animation/position = Vector2( -607, 39 )
 "nodes/Animation 2/node" = SubResource( 10 )
@@ -400,7 +401,7 @@ nodes/run_mult/node = SubResource( 22 )
 nodes/run_mult/position = Vector2( -400, -120 )
 nodes/state/node = SubResource( 23 )
 nodes/state/position = Vector2( 120, 160 )
-node_connections = [ "idle", 0, "Animation", "idle", 1, "Animation 2", "output", 0, "state", "state", 0, "moving", "state", 1, "air", "state", 2, "OneShot", "OneShot", 0, "Animation 8", "moving", 0, "run_mult", "moving", 1, "idle", "run_mult", 0, "Animation 3", "air", 0, "Animation 4", "air", 1, "Animation 5", "air", 2, "Animation 6", "air", 3, "Animation 7" ]
+node_connections = [ "idle", 0, "Animation", "idle", 1, "Animation 2", "output", 0, "state", "state", 0, "moving", "state", 1, "air", "state", 2, "OneShot", "OneShot", 0, "Animation 8", "air", 0, "Animation 4", "air", 1, "Animation 5", "air", 2, "Animation 6", "air", 3, "Animation 7", "moving", 0, "run_mult", "moving", 1, "idle", "run_mult", 0, "Animation 3" ]
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 256
