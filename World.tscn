@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://scripts/UI/ValTracker.gd" type="Script" id=1]
 [ext_resource path="res://objects/player/Player.tscn" type="PackedScene" id=2]
@@ -51,11 +51,28 @@ font_path = "res://assets/fonts/SATAM___.TTF"
 size = 32
 font_data = SubResource( 11 )
 
+[sub_resource type="DynamicFontData" id=13]
+font_path = "res://assets/fonts/SATAM___.TTF"
+
+[sub_resource type="DynamicFont" id=14]
+size = 96
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 13 )
+
+[sub_resource type="DynamicFontData" id=15]
+font_path = "res://assets/fonts/SATAM___.TTF"
+
+[sub_resource type="DynamicFont" id=16]
+size = 48
+font_data = SubResource( 15 )
+
 [node name="World" type="Node2D"]
 pause_mode = 2
 script = ExtResource( 4 )
 
 [node name="Perma_Objects" type="Node2D" parent="."]
+pause_mode = 1
 visible = false
 
 [node name="Player" parent="Perma_Objects" instance=ExtResource( 2 )]
@@ -99,8 +116,10 @@ __meta__ = {
 }
 
 [node name="Game" type="Control" parent="CanvasLayer/UI"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -203,7 +222,7 @@ custom_fonts/font = SubResource( 4 )
 custom_colors/font_color = Color( 0.67451, 0.67451, 0.67451, 1 )
 text = "0"
 
-[node name="Level Transition" type="Control" parent="CanvasLayer/UI"]
+[node name="LevelTransition" type="Control" parent="CanvasLayer/UI"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -212,7 +231,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/UI/Level Transition"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/UI/LevelTransition"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -224,7 +243,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/UI/Level Transition"]
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/UI/LevelTransition"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -2.24493
@@ -233,28 +252,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Info" type="VBoxContainer" parent="CanvasLayer/UI/Level Transition/CenterContainer"]
+[node name="Info" type="VBoxContainer" parent="CanvasLayer/UI/LevelTransition/CenterContainer"]
 margin_left = 469.0
 margin_top = 423.0
 margin_right = 1451.0
 margin_bottom = 657.0
 
-[node name="Label" type="Label" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info"]
+[node name="Label" type="Label" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info"]
 margin_right = 982.0
 margin_bottom = 73.0
 custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "You have found the exit!"
 
-[node name="CompTime" type="HBoxContainer" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info"]
+[node name="CompTime" type="HBoxContainer" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info"]
 margin_top = 77.0
 margin_right = 982.0
 margin_bottom = 132.0
 script = ExtResource( 1 )
 signal_name = "play_time_changed"
-value_label_node_path = NodePath("Time")
+value_label_node_path = NodePath("../../../../LevelTransition/CenterContainer/Info/CompTime/Time")
 
-[node name="Label" type="Label" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info/CompTime"]
+[node name="Label" type="Label" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info/CompTime"]
 margin_top = 8.0
 margin_right = 328.0
 margin_bottom = 47.0
@@ -262,22 +281,22 @@ custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "Completed Time:"
 
-[node name="Time" type="Label" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info/CompTime"]
+[node name="Time" type="Label" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info/CompTime"]
 margin_left = 332.0
 margin_right = 416.0
 margin_bottom = 55.0
 custom_fonts/font = SubResource( 10 )
 text = "0.00"
 
-[node name="CompPoints" type="HBoxContainer" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info"]
+[node name="CompPoints" type="HBoxContainer" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info"]
 margin_top = 136.0
 margin_right = 982.0
 margin_bottom = 191.0
 script = ExtResource( 1 )
 signal_name = "points_value_changed"
-value_label_node_path = NodePath("Points")
+value_label_node_path = NodePath("../../../../LevelTransition/CenterContainer/Info/CompPoints/Points")
 
-[node name="Label" type="Label" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info/CompPoints"]
+[node name="Label" type="Label" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info/CompPoints"]
 margin_top = 8.0
 margin_right = 273.0
 margin_bottom = 47.0
@@ -285,14 +304,14 @@ custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "Total Points:"
 
-[node name="Points" type="Label" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info/CompPoints"]
+[node name="Points" type="Label" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info/CompPoints"]
 margin_left = 277.0
 margin_right = 301.0
 margin_bottom = 55.0
 custom_fonts/font = SubResource( 10 )
 text = "0"
 
-[node name="BTN_NextLevel" type="Button" parent="CanvasLayer/UI/Level Transition/CenterContainer/Info"]
+[node name="BTN_NextLevel" type="Button" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info"]
 margin_top = 195.0
 margin_right = 982.0
 margin_bottom = 234.0
@@ -303,6 +322,145 @@ text = "Continue to Next Level"
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = -1.7818
+margin_bottom = -1.78174
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/UI/MainMenu"]
+margin_left = 480.0
+margin_top = 270.0
+margin_right = 1440.0
+margin_bottom = 810.0
+color = Color( 0, 0, 0, 0.501961 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/UI/MainMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/MainMenu/CenterContainer"]
+margin_left = 667.0
+margin_top = 340.0
+margin_right = 1253.0
+margin_bottom = 739.0
+custom_constants/separation = 72
+
+[node name="Title" type="Label" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer"]
+margin_right = 586.0
+margin_bottom = 197.0
+custom_fonts/font = SubResource( 14 )
+custom_colors/font_color = Color( 0.72549, 0.47451, 0.290196, 1 )
+text = "Dungeon
+       Falls"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MMOptions" type="VBoxContainer" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer"]
+margin_top = 269.0
+margin_right = 586.0
+margin_bottom = 399.0
+custom_constants/separation = 20
+
+[node name="BTN_Start" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
+margin_right = 586.0
+margin_bottom = 55.0
+custom_fonts/font = SubResource( 16 )
+text = "Start"
+
+[node name="BTN_Quit" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
+margin_top = 75.0
+margin_right = 586.0
+margin_bottom = 130.0
+custom_fonts/font = SubResource( 16 )
+text = "Quit"
+
+[node name="PauseMenu" type="Control" parent="CanvasLayer/UI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -1.7818
+margin_bottom = -1.78174
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/UI/PauseMenu"]
+margin_left = 480.0
+margin_top = 270.0
+margin_right = 1440.0
+margin_bottom = 810.0
+color = Color( 0, 0, 0, 0.501961 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/UI/PauseMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/PauseMenu/CenterContainer"]
+margin_left = 744.0
+margin_top = 339.0
+margin_right = 1176.0
+margin_bottom = 741.0
+custom_constants/separation = 0
+
+[node name="Title" type="Label" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer"]
+margin_right = 432.0
+margin_bottom = 197.0
+custom_fonts/font = SubResource( 14 )
+custom_colors/font_color = Color( 0.72549, 0.47451, 0.290196, 1 )
+text = "PAUSED
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MMOptions" type="VBoxContainer" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer"]
+margin_top = 197.0
+margin_right = 432.0
+margin_bottom = 402.0
+custom_constants/separation = 20
+
+[node name="BTN_Resume" type="Button" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions"]
+margin_right = 432.0
+margin_bottom = 55.0
+custom_fonts/font = SubResource( 16 )
+text = "Resume"
+
+[node name="BTN_Restart" type="Button" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions"]
+margin_top = 75.0
+margin_right = 432.0
+margin_bottom = 130.0
+custom_fonts/font = SubResource( 16 )
+text = "Restart"
+
+[node name="BTN_Quit" type="Button" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions"]
+margin_top = 150.0
+margin_right = 432.0
+margin_bottom = 205.0
+custom_fonts/font = SubResource( 16 )
+text = "Quit"
 [connection signal="dead" from="Perma_Objects/Player" to="." method="_on_player_death"]
-[connection signal="pressed" from="CanvasLayer/UI/Level Transition/CenterContainer/Info/BTN_NextLevel" to="." method="_on_continue_to_level"]
-[connection signal="pressed" from="CanvasLayer/UI/Level Transition/CenterContainer/Info/BTN_NextLevel" to="CanvasLayer/UI/Level Transition" method="_on_change_visible" binds= [ false ]]
+[connection signal="pressed" from="CanvasLayer/UI/LevelTransition/CenterContainer/Info/BTN_NextLevel" to="." method="_on_continue_to_level"]
+[connection signal="pressed" from="CanvasLayer/UI/LevelTransition/CenterContainer/Info/BTN_NextLevel" to="CanvasLayer/UI/LevelTransition" method="_on_change_visible" binds= [ false ]]
+[connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Start" to="." method="_on_start"]
+[connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Start" to="CanvasLayer/UI/MainMenu" method="_on_change_visible" binds= [ false ]]
+[connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Quit" to="." method="_on_quit"]
+[connection signal="pressed" from="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Resume" to="." method="_on_game_resume"]
+[connection signal="pressed" from="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Resume" to="CanvasLayer/UI/PauseMenu" method="_on_change_visible" binds= [ false ]]
+[connection signal="pressed" from="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Restart" to="." method="_on_start"]
+[connection signal="pressed" from="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Restart" to="CanvasLayer/UI/PauseMenu" method="_on_change_visible" binds= [ false ]]
+[connection signal="pressed" from="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Quit" to="." method="_on_quit"]

@@ -3,6 +3,7 @@ extends KinematicBody2D
 
 
 signal dead
+signal request_game_pause
 
 const PIXELS_PER_UNIT = 16
 
@@ -182,6 +183,9 @@ func update_facing():
 			else:
 				_set_facing(ACTION.UP)
 
+
+func request_game_pause():
+	emit_signal("request_game_pause")
 
 
 

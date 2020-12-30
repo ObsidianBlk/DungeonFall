@@ -1,4 +1,4 @@
-extends "res://scripts/FSM/State.gd"
+extends "res://objects/player/states/state.gd"
 
 
 var jumping = false
@@ -33,6 +33,7 @@ func handle_input(event):
 			host.jump()
 			emit_signal("finished", "air")
 			return
+	.handle_input(event)
 
 
 func handle_physics(delta):
