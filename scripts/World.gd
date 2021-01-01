@@ -4,6 +4,9 @@ class_name DFWorld
 signal request_ui_vis_change(vis, uiname)
 signal points_value_changed(val)
 signal play_time_changed(val)
+signal total_play_time(val)
+signal total_points_obtained(val)
+signal total_dungeon_runs(val)
 signal level_time_changed(val)
 signal level_time_visible(enable)
 
@@ -29,6 +32,8 @@ func _ready():
 	$Perma_Objects/Player.connect("request_game_pause", self, "_on_game_pause")
 	emit_signal("request_ui_vis_change", false, "Game")
 	emit_signal("request_ui_vis_change", false, "LevelTransition")
+	emit_signal("request_ui_vis_change", false, "LastLevelResults")
+	emit_signal("request_ui_vis_change", false, "RunCompletion")
 	emit_signal("request_ui_vis_change", false, "PauseMenu")
 	emit_signal("request_ui_vis_change", true, "MainMenu")
 	get_tree().paused = true
@@ -136,9 +141,27 @@ func _on_level_exit(next_level_info):
 	get_tree().paused = true
 
 func _on_end_of_run():
+	_store_run()
 	get_tree().paused = true
+	
+	var total_play_time = 0.0
+	var total_points = 0
+	for res in run_results:
+		print("Result set: ", res)
+		total_play_time += res.time
+		total_points += res.points
+	var total_dungeons = run_results.size()
+	
+	print ("total_play_time: ", total_play_time)
+	print ("total_points: ", total_points)
+	
+	emit_signal("total_play_time", str(total_play_time).pad_decimals(2))
+	emit_signal("total_points_obtained", str(total_points).pad_decimals(0))
+	emit_signal("total_dungeon_runs", str(total_dungeons).pad_decimals(0))
+	
 	emit_signal("request_ui_vis_change", false, "Game")
-	emit_signal("request_ui_vis_change", true, "MainMenu")
+	emit_signal("request_ui_vis_change", true, "LastLevelResults")
+	#emit_signal("request_ui_vis_change", true, "MainMenu")
 
 func _on_continue_to_level(is_new_level : bool = true):
 	if load_level(cur_level_info.src, is_new_level):
