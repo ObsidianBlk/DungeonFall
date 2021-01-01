@@ -18,10 +18,11 @@ signal total_run_points(val)
 # Setup an over-all game "state" system to determine what menu player is in or if they are actively in the game.
 var in_game_pause_state = false
 
-var TEST_LEVEL = "res://levels/test_level/Test_Level.tscn"
+#var TEST_LEVEL = "res://levels/test_level/Test_Level.tscn"
+var FIRST_LEVEL = "res://levels/Run_Set_A/Level1.tscn"
 var scene = null
 var level = null
-var cur_level_info = {"src":TEST_LEVEL}
+var cur_level_info = {"src":FIRST_LEVEL}
 
 var run_results = []
 var cur_level_stats = null
@@ -42,7 +43,6 @@ func _ready():
 func _unhandled_input(event):
 	if in_game_pause_state == true:
 		if event.is_action_pressed("ui_cancel"):
-			print("Resuming")
 			_on_game_resume()
 
 
@@ -53,7 +53,6 @@ func _store_run():
 		"points": 0,
 		"time": 0.00
 	}
-	print(run_results)
 
 func unload_level():
 	if level != null:
@@ -97,7 +96,7 @@ func load_level(res_path : String, new_level : bool = true):
 
 func _on_start():
 	cur_level_info = {
-		"src": TEST_LEVEL,
+		"src": FIRST_LEVEL,
 		"proceedural": false,
 		"seed": 0
 	}
@@ -152,8 +151,6 @@ func _on_end_of_run():
 		total_points += res.points
 	var total_dungeons = run_results.size()
 	
-	print ("total_play_time: ", total_play_time)
-	print ("total_points: ", total_points)
 	
 	emit_signal("total_play_time", str(total_play_time).pad_decimals(2))
 	emit_signal("total_points_obtained", str(total_points).pad_decimals(0))
