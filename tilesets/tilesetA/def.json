@@ -1,0 +1,31 @@
+{
+  "version":"0.1",
+  "tileset_name":"Moldy Dungeon",
+  "tileset_resource_path":"tilesetA.tres",
+  "size":16,
+  "walls":[0],
+  "floors":{
+    "breakable":[
+      {
+        "index":1,
+        "sprite_src":"TileA.tscn"
+      },
+      {
+        "index":2,
+        "sprite_src":"TileA.tscn"
+      },
+      {
+        "index":3,
+        "sprite_src":"TileA.tscn"
+      },
+      {
+        "index":4,
+        "sprite_src":"TileA.tscn"
+      }
+    ],
+    "safe":[5],
+    "exit":[10]
+  }
+}
+
+
