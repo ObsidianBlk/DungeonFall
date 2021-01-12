@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/DFLevel.gd" type="Script" id=1]
 [ext_resource path="res://scripts/Map.gd" type="Script" id=2]
 [ext_resource path="res://objects/player_start/Player_Start.tscn" type="PackedScene" id=3]
-[ext_resource path="res://tilesets/tilesetA.tres" type="TileSet" id=4]
-[ext_resource path="res://tilesets/tilesetA/TileA.tscn" type="PackedScene" id=5]
+[ext_resource path="res://tilesets/tilesetA/tilesetA.tres" type="TileSet" id=4]
 [ext_resource path="res://objects/level_exit/Level Exit.tscn" type="PackedScene" id=6]
 [ext_resource path="res://objects/gold/Gold.tscn" type="PackedScene" id=7]
 
@@ -26,8 +25,7 @@ walls_tilemap_path = NodePath("../Walls")
 floors_tilemap_path = NodePath("../Floors")
 doors_tilemap_path = NodePath("../Doors")
 gold_container_path = NodePath("../Gold_Container")
-floor_tile_count = 4
-floor_collapsing_nodes = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
+tileset_name = "Moldy Dungeon"
 
 [node name="Walls" type="TileMap" parent="."]
 tile_set = ExtResource( 4 )

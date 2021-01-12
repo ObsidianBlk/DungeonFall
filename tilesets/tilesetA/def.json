@@ -1,7 +1,7 @@
 {
   "version":"0.1",
-  "tileset_name":"Moldy Dungeon",
-  "tileset_resource_path":"tilesetA.tres",
+  "name":"Moldy Dungeon",
+  "resource_path":"tilesetA.tres",
   "size":16,
   "walls":[0],
   "floors":{

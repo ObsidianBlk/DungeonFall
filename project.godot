@@ -37,6 +37,10 @@ config/description="Can you escape the dungeon before it falls out from beneith 
 run/main_scene="res://World.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+TilesetStore="*res://scripts/Autoloads/TilesetStore.gd"
+
 [display]
 
 window/size/width=1920

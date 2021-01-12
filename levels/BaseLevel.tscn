@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/DFLevel.gd" type="Script" id=1]
 [ext_resource path="res://scripts/Map.gd" type="Script" id=2]
 [ext_resource path="res://objects/player_start/Player_Start.tscn" type="PackedScene" id=3]
-[ext_resource path="res://tilesets/tilesetA.tres" type="TileSet" id=4]
-[ext_resource path="res://tilesets/tilesetA/TileA.tscn" type="PackedScene" id=5]
+[ext_resource path="res://tilesets/tilesetA/tilesetA.tres" type="TileSet" id=4]
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 1 )
@@ -23,20 +22,19 @@ walls_tilemap_path = NodePath("../Walls")
 floors_tilemap_path = NodePath("../Floors")
 doors_tilemap_path = NodePath("../Doors")
 gold_container_path = NodePath("../Gold_Container")
-floor_tile_count = 4
-floor_collapsing_nodes = [ ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ), ExtResource( 5 ) ]
+cell_size = 16
 
 [node name="Walls" type="TileMap" parent="."]
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 16, 16 )
 format = 1
 
-[node name="Gold_Container" type="Node2D" parent="."]
-
 [node name="Floors" type="TileMap" parent="."]
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 16, 16 )
 format = 1
+
+[node name="Gold_Container" type="Node2D" parent="."]
 
 [node name="Player_Container" type="Node2D" parent="."]
 
