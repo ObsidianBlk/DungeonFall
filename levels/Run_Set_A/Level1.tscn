@@ -21,10 +21,6 @@ player_start_path = NodePath("Player_Start")
 
 [node name="Map" type="Node2D" parent="."]
 script = ExtResource( 2 )
-walls_tilemap_path = NodePath("../Walls")
-floors_tilemap_path = NodePath("../Floors")
-doors_tilemap_path = NodePath("../Doors")
-gold_container_path = NodePath("../Gold_Container")
 tileset_name = "Moldy Dungeon"
 
 [node name="Walls" type="TileMap" parent="."]

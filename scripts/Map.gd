@@ -5,17 +5,14 @@ extends Node2D
 signal pickup
 
 
-export var walls_tilemap_path : NodePath = "" setget _set_walls_tilemap_path
-export var floors_tilemap_path : NodePath = "" setget _set_floors_tilemap_path
-export var doors_tilemap_path : NodePath = "" setget _set_doors_tilemap_path
-export var gold_container_path : NodePath = "" setget _set_gold_container_path
-#export (int, 1) var cell_size = 16 setget _set_cell_size
+#export var walls_tilemap_path : NodePath = "" setget _set_walls_tilemap_path
+#export var floors_tilemap_path : NodePath = "" setget _set_floors_tilemap_path
+#export var doors_tilemap_path : NodePath = "" setget _set_doors_tilemap_path
+#export var gold_container_path : NodePath = "" setget _set_gold_container_path
 export var map_seed : int = 0
 export (float, 0.1, 10.0) var time_to_collapse = 0.65
 export var tileset_name : String = "" setget _set_tileset_name
-#export (int, 0) var auto_tile_index = 0
-#export (int, 1, 100) var floor_tile_count = 1
-#export (Array, Resource) var floor_collapsing_nodes = []
+export var clear_on_new_tileset : bool = false
 
 var ready = false
 
@@ -28,77 +25,67 @@ var last_tile_pos = null
 var tile_collapse_time = 0
 var collapsing_tiles = {}
 
-var floors_map = null
-var walls_map = null
-var doors_map = null
+onready var floors_map = get_parent().get_node("Floors")
+onready var walls_map = get_parent().get_node("Walls")
+onready var doors_map = get_parent().get_node("Doors")
 
-var gold_container = null
+onready var gold_container = get_parent().get_node("Gold_Container")
 
 var player = null
 
 
-func _set_walls_tilemap_path(wtp : NodePath, force : bool = false):
-	if wtp != walls_tilemap_path or force:
-		if ready:
-			if wtp == "":
-				walls_map = null
-			else:
-				var nwm = get_node(wtp)
-				if nwm != null:
-					walls_map = nwm
-				else:
-					wtp = walls_tilemap_path
-		walls_tilemap_path = wtp
-
-func _set_floors_tilemap_path(ftp : NodePath, force : bool = false):
-	if ftp != floors_tilemap_path or force:
-		if ready:
-			if ftp == "":
-				floors_map = null
-			else:
-				var nfm = get_node(ftp)
-				if nfm != null:
-					floors_map = nfm
-				else:
-					ftp = floors_tilemap_path
-		floors_tilemap_path = ftp
-
-func _set_doors_tilemap_path(dtp : NodePath, force : bool = false):
-	if dtp != doors_tilemap_path or force:
-		if ready:
-			if dtp == "":
-				doors_map = null
-			else:
-				var ndm = get_node(dtp)
-				if ndm != null:
-					doors_map = ndm
-				else:
-					dtp = doors_tilemap_path
-		doors_tilemap_path = dtp
-
-
-func _set_gold_container_path(gcp : NodePath, force : bool = false):
-	if gcp != gold_container_path or force:
-		if ready:
-			if gcp == "":
-				gold_container = null
-			else:
-				var ngc = get_node(gcp)
-				if ngc != null:
-					gold_container = ngc
-				else:
-					gcp = gold_container_path
-		gold_container_path = gcp
-
-
-#func _set_cell_size(cs):
-#	if cs != cell_size:
-#		cell_size = cs
+#func _set_walls_tilemap_path(wtp : NodePath, force : bool = false):
+#	if wtp != walls_tilemap_path or force:
 #		if ready:
-#			if walls_map != null:
-#				walls_map.cell_size = Vector2(cell_size, cell_size)
-#			if floors_map != null:
-#				floors_map.cell_size = Vector2(cell_size, cell_size)
+#			if wtp == "":
+#				walls_map = null
+#			else:
+#				var nwm = get_node(wtp)
+#				if nwm != null:
+#					walls_map = nwm
+#				else:
+#					wtp = walls_tilemap_path
+#		walls_tilemap_path = wtp
+
+#func _set_floors_tilemap_path(ftp : NodePath, force : bool = false):
+#	if ftp != floors_tilemap_path or force:
+#		if ready:
+#			if ftp == "":
+#				floors_map = null
+#			else:
+#				var nfm = get_node(ftp)
+#				if nfm != null:
+#					floors_map = nfm
+#				else:
+#					ftp = floors_tilemap_path
+#		floors_tilemap_path = ftp
+
+#func _set_doors_tilemap_path(dtp : NodePath, force : bool = false):
+#	if dtp != doors_tilemap_path or force:
+#		if ready:
+#			if dtp == "":
+#				doors_map = null
+#			else:
+#				var ndm = get_node(dtp)
+#				if ndm != null:
+#					doors_map = ndm
+#				else:
+#					dtp = doors_tilemap_path
+#		doors_tilemap_path = dtp
+
+
+#func _set_gold_container_path(gcp : NodePath, force : bool = false):
+#	if gcp != gold_container_path or force:
+#		if ready:
+#			if gcp == "":
+#				gold_container = null
+#			else:
+#				var ngc = get_node(gcp)
+#				if ngc != null:
+#					gold_container = ngc
+#				else:
+#					gcp = gold_container_path
+#		gold_container_path = gcp
 
 
 func _set_tileset_name(name : String):
@@ -125,33 +112,68 @@ func _set_tileset_name(name : String):
 	else:
 		tileset_def = null
 		tileset_name = ""
-		#if ready:
+		if ready and clear_on_new_tileset:
 			# TODO: Do I need to remove the .tile_set resource?
-		#	walls_map.clear()
-		#	floors_map.clear()
-		#	doors_map.clear()
+			walls_map.clear()
+			floors_map.clear()
+			doors_map.clear()
 
 
 func _ready():
 	ready = true
 	# Setting up a seeded Random Number Generator
-	RNG = RandomNumberGenerator.new()
-	RNG.seed = map_seed
+	reset_rng()
 	
 	# Connect to TilesetStore...
 	TilesetStore.connect("tile_defs_scanned", self, "_on_tile_def_scanned")
 	_set_tileset_name(tileset_name)
 	
-	_set_walls_tilemap_path(walls_tilemap_path, true)
-	_set_floors_tilemap_path(floors_tilemap_path, true)
-	_set_doors_tilemap_path(doors_tilemap_path, true)
-	_set_gold_container_path(gold_container_path, true)
+	#_set_walls_tilemap_path(walls_tilemap_path, true)
+	#_set_floors_tilemap_path(floors_tilemap_path, true)
+	#_set_doors_tilemap_path(doors_tilemap_path, true)
+	#_set_gold_container_path(gold_container_path, true)
 	if gold_container != null:
 		for child in gold_container.get_children():
 			child.connect("pickup", self, "_on_gold_pickup")
 
+func reset_rng():
+	RNG = RandomNumberGenerator.new()
+	RNG.seed = map_seed
+
 func set_player(p : Node2D):
 	player = p
+
+func set_floor_at_pos(pos : Vector2, floor_tile : int, wall_tile : int = -1):
+	pos = floors_map.world_to_map(pos)
+	return set_floor(floor(pos.x), floor(pos.y), floor_tile, wall_tile)
+
+func set_floor(x : int, y : int, floor_tile : int, wall_tile : int = -1):
+	if floor_tile >= 0 and not (_is_tile_breakable(floor_tile) or _is_tile_safe(floor_tile) or _is_tile_exit(floor_tile)):
+		return false
+	if wall_tile >= 0 and not _is_tile_wall(wall_tile):
+		return false
+	if floor_tile >= 0 and wall_tile < 0:
+		wall_tile = tileset_def.walls[0]
+	
+	if floor_tile >= 0:
+		walls_map.set_cell(x, y, wall_tile, false, false, false, Vector2(1,1))
+		floors_map.set_cell(x, y, floor_tile)
+	else:
+		walls_map.set_cell(x, y, -1)
+		floors_map.set_cell(x, y, -1)
+
+
+func get_random_breakable_tile_index():
+	if tileset_def == null:
+		return -1
+	var i = RNG.randi_range(0, tileset_def.floors.breakable.size() - 1)
+	return tileset_def.floors.breakable[i].index
+
+func get_random_safe_tile_index():
+	if tileset_def == null:
+		return -1
+	var i = RNG.randi_range(0, tileset_def.floors.safe.size() - 1)
+	return tileset_def.floors.safe[i]
 
 
 func _process(delta):
@@ -184,11 +206,20 @@ func _is_tile_breakable(tindex : int):
 				return true
 	return false
 
-func _get_random_breakable_tile_index():
-	if tileset_def == null:
-		return -1
-	var i = RNG.randi_range(0, tileset_def.floors.size())
-	return tileset_def.floors[i].index
+func _is_tile_safe(tindex : int):
+	if tileset_def != null:
+		return tileset_def.floors.safe.has(tindex)
+	return false
+
+func _is_tile_exit(tindex : int):
+	if tileset_def != null:
+		return tileset_def.floors.exit.has(tindex)
+	return false
+
+func _is_tile_wall(tindex : int):
+	if tileset_def != null:
+		return tileset_def.walls.has(tindex)
+	return false
 
 func _get_breakable_tile_resource(tindex : int):
 	if tileset_def != null:
@@ -257,7 +288,7 @@ func _redraw_floors():
 		for cell in used_cells:
 			var atv = walls_map.get_cell_autotile_coord(cell[0], cell[1])
 			if atv == Vector2(1,1):
-				var tindex = _get_random_breakable_tile_index()
+				var tindex = get_random_breakable_tile_index()
 				if tindex >= 0:
 					floors_map.set_cell(cell[0], cell[1], tindex)
 

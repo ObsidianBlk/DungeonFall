@@ -14,6 +14,8 @@ signal total_run_time(val)
 signal total_run_points(val)
 
 
+const EDITOR_WORLD_SCENE = "res://MapEditor.tscn"
+
 # TODO:
 # Setup an over-all game "state" system to determine what menu player is in or if they are actively in the game.
 var in_game_pause_state = false
@@ -168,6 +170,15 @@ func _on_continue_to_level(is_new_level : bool = true):
 
 func _on_player_death():
 	load_level(cur_level_info.src, false)
+
+func _on_open_editor():
+	var editor = load(EDITOR_WORLD_SCENE)
+	if editor:
+		var editor_node = editor.instance()
+		var p = get_parent()
+		p.remove_child(self)
+		p.add_child(editor_node)
+		queue_free()
 
 func _on_quit():
 	get_tree().quit()
