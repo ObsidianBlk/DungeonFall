@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://scripts/UI/ValTracker.gd" type="Script" id=1]
 [ext_resource path="res://objects/player/Player.tscn" type="PackedScene" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://scripts/UI/TimersCTRL.gd" type="Script" id=5]
 [ext_resource path="res://scripts/UI/SimpleUI.gd" type="Script" id=6]
 [ext_resource path="res://assets/graphics/tilesets/tilesetA/tilesetA_Floors.png" type="Texture" id=7]
+[ext_resource path="res://themes/Minion.theme" type="Theme" id=8]
+[ext_resource path="res://themes/fonts/satansminions_dfd.tres" type="DynamicFontData" id=9]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://assets/fonts/SATAM___.TTF"
@@ -52,28 +54,25 @@ font_path = "res://assets/fonts/SATAM___.TTF"
 size = 32
 font_data = SubResource( 11 )
 
-[sub_resource type="DynamicFontData" id=13]
+[sub_resource type="DynamicFont" id=13]
+size = 84
+font_data = ExtResource( 9 )
+
+[sub_resource type="DynamicFontData" id=14]
 font_path = "res://assets/fonts/SATAM___.TTF"
 
-[sub_resource type="DynamicFont" id=14]
-size = 32
-font_data = SubResource( 13 )
+[sub_resource type="DynamicFont" id=15]
+size = 48
+font_data = SubResource( 14 )
 
-[sub_resource type="DynamicFontData" id=15]
+[sub_resource type="DynamicFontData" id=16]
 font_path = "res://assets/fonts/SATAM___.TTF"
 
-[sub_resource type="DynamicFont" id=16]
+[sub_resource type="DynamicFont" id=17]
 size = 96
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 15 )
-
-[sub_resource type="DynamicFontData" id=17]
-font_path = "res://assets/fonts/SATAM___.TTF"
-
-[sub_resource type="DynamicFont" id=18]
-size = 48
-font_data = SubResource( 17 )
+font_data = SubResource( 16 )
 
 [node name="World" type="Node2D"]
 pause_mode = 2
@@ -119,6 +118,7 @@ layer = 2
 [node name="UI" type="Control" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -262,9 +262,9 @@ __meta__ = {
 
 [node name="Info" type="VBoxContainer" parent="CanvasLayer/UI/LevelTransition/CenterContainer"]
 margin_left = 469.0
-margin_top = 423.0
+margin_top = 426.0
 margin_right = 1451.0
-margin_bottom = 657.0
+margin_bottom = 654.0
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info"]
 margin_right = 982.0
@@ -322,7 +322,7 @@ text = "0"
 [node name="BTN_NextLevel" type="Button" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info"]
 margin_top = 195.0
 margin_right = 982.0
-margin_bottom = 234.0
+margin_bottom = 228.0
 custom_fonts/font = SubResource( 12 )
 text = "Continue to Next Level"
 
@@ -358,9 +358,9 @@ __meta__ = {
 
 [node name="Info" type="VBoxContainer" parent="CanvasLayer/UI/LastLevelResults/CenterContainer"]
 margin_left = 362.0
-margin_top = 423.0
+margin_top = 426.0
 margin_right = 1557.0
-margin_bottom = 657.0
+margin_bottom = 654.0
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/LastLevelResults/CenterContainer/Info"]
 margin_right = 1195.0
@@ -418,7 +418,7 @@ text = "0"
 [node name="BTN_EndRun" type="Button" parent="CanvasLayer/UI/LastLevelResults/CenterContainer/Info"]
 margin_top = 195.0
 margin_right = 1195.0
-margin_bottom = 234.0
+margin_bottom = 228.0
 custom_fonts/font = SubResource( 12 )
 text = "Contiue to results"
 
@@ -454,9 +454,9 @@ __meta__ = {
 
 [node name="Info" type="VBoxContainer" parent="CanvasLayer/UI/RunCompletion/CenterContainer"]
 margin_left = 301.0
-margin_top = 431.0
+margin_top = 434.0
 margin_right = 1619.0
-margin_bottom = 649.0
+margin_bottom = 646.0
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info"]
 margin_right = 1318.0
@@ -550,11 +550,12 @@ text = "0"
 [node name="BTN_EndRun" type="Button" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info"]
 margin_top = 179.0
 margin_right = 1318.0
-margin_bottom = 218.0
+margin_bottom = 212.0
 custom_fonts/font = SubResource( 12 )
 text = "Done With Run"
 
 [node name="MainMenu" type="Control" parent="CanvasLayer/UI"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -1.7818
@@ -586,7 +587,6 @@ __meta__ = {
 [node name="Label" type="Label" parent="CanvasLayer/UI/MainMenu/ColorRect2"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = SubResource( 14 )
 text = "Instructions...
 W,A,S,D - Move
 Space - Jump
@@ -620,16 +620,16 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/MainMenu/CenterContainer"]
-margin_left = 667.0
-margin_top = 303.0
-margin_right = 1253.0
-margin_bottom = 777.0
+margin_left = 704.0
+margin_top = 324.0
+margin_right = 1216.0
+margin_bottom = 756.0
 custom_constants/separation = 72
 
 [node name="Title" type="Label" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer"]
-margin_right = 586.0
-margin_bottom = 197.0
-custom_fonts/font = SubResource( 16 )
+margin_right = 512.0
+margin_bottom = 173.0
+custom_fonts/font = SubResource( 13 )
 custom_colors/font_color = Color( 0.72549, 0.47451, 0.290196, 1 )
 text = "Dungeon
        Falls"
@@ -638,29 +638,29 @@ __meta__ = {
 }
 
 [node name="MMOptions" type="VBoxContainer" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer"]
-margin_top = 269.0
-margin_right = 586.0
-margin_bottom = 474.0
+margin_top = 245.0
+margin_right = 512.0
+margin_bottom = 432.0
 custom_constants/separation = 20
 
 [node name="BTN_Start" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_right = 586.0
-margin_bottom = 55.0
-custom_fonts/font = SubResource( 18 )
+margin_right = 512.0
+margin_bottom = 49.0
+custom_fonts/font = SubResource( 15 )
 text = "Start"
 
 [node name="BTN_Editor" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_top = 75.0
-margin_right = 586.0
-margin_bottom = 130.0
-custom_fonts/font = SubResource( 18 )
+margin_top = 69.0
+margin_right = 512.0
+margin_bottom = 118.0
+custom_fonts/font = SubResource( 15 )
 text = "Dungeon Editor"
 
 [node name="BTN_Quit" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_top = 150.0
-margin_right = 586.0
-margin_bottom = 205.0
-custom_fonts/font = SubResource( 18 )
+margin_top = 138.0
+margin_right = 512.0
+margin_bottom = 187.0
+custom_fonts/font = SubResource( 15 )
 text = "Quit"
 
 [node name="PauseMenu" type="Control" parent="CanvasLayer/UI"]
@@ -693,15 +693,15 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/PauseMenu/CenterContainer"]
 margin_left = 744.0
-margin_top = 339.0
+margin_top = 348.0
 margin_right = 1176.0
-margin_bottom = 741.0
+margin_bottom = 732.0
 custom_constants/separation = 0
 
 [node name="Title" type="Label" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer"]
 margin_right = 432.0
 margin_bottom = 197.0
-custom_fonts/font = SubResource( 16 )
+custom_fonts/font = SubResource( 17 )
 custom_colors/font_color = Color( 0.72549, 0.47451, 0.290196, 1 )
 text = "PAUSED
 "
@@ -712,35 +712,35 @@ __meta__ = {
 [node name="MMOptions" type="VBoxContainer" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer"]
 margin_top = 197.0
 margin_right = 432.0
-margin_bottom = 402.0
+margin_bottom = 384.0
 custom_constants/separation = 20
 
 [node name="BTN_Resume" type="Button" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions"]
 margin_right = 432.0
-margin_bottom = 55.0
-custom_fonts/font = SubResource( 18 )
+margin_bottom = 49.0
+custom_fonts/font = SubResource( 15 )
 text = "Resume"
 
 [node name="BTN_Restart" type="Button" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_top = 75.0
+margin_top = 69.0
 margin_right = 432.0
-margin_bottom = 130.0
-custom_fonts/font = SubResource( 18 )
+margin_bottom = 118.0
+custom_fonts/font = SubResource( 15 )
 text = "Restart"
 
 [node name="BTN_Quit" type="Button" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_top = 150.0
+margin_top = 138.0
 margin_right = 432.0
-margin_bottom = 205.0
-custom_fonts/font = SubResource( 18 )
+margin_bottom = 187.0
+custom_fonts/font = SubResource( 15 )
 text = "Quit"
 [connection signal="dead" from="Perma_Objects/Player" to="." method="_on_player_death"]
 [connection signal="pressed" from="CanvasLayer/UI/LevelTransition/CenterContainer/Info/BTN_NextLevel" to="." method="_on_continue_to_level"]
 [connection signal="pressed" from="CanvasLayer/UI/LevelTransition/CenterContainer/Info/BTN_NextLevel" to="CanvasLayer/UI/LevelTransition" method="_on_change_visible" binds= [ false ]]
-[connection signal="pressed" from="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/LastLevelResults" method="_on_change_visible" binds= [ false ]]
 [connection signal="pressed" from="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/RunCompletion" method="_on_change_visible" binds= [ true ]]
-[connection signal="pressed" from="CanvasLayer/UI/RunCompletion/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/MainMenu" method="_on_change_visible" binds= [ true ]]
+[connection signal="pressed" from="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/LastLevelResults" method="_on_change_visible" binds= [ false ]]
 [connection signal="pressed" from="CanvasLayer/UI/RunCompletion/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/RunCompletion" method="_on_change_visible" binds= [ false ]]
+[connection signal="pressed" from="CanvasLayer/UI/RunCompletion/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/MainMenu" method="_on_change_visible" binds= [ true ]]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Start" to="." method="_on_start"]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Start" to="CanvasLayer/UI/MainMenu" method="_on_change_visible" binds= [ false ]]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Editor" to="." method="_on_open_editor"]
