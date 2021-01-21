@@ -35,5 +35,9 @@ cell_size = Vector2( 16, 16 )
 format = 1
 
 [node name="Player_Start" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, 8 )
+map_editor_mode = true
 
 [node name="Triggers" type="Node2D" parent="."]
+
+[node name="Tracker" type="Position2D" parent="."]

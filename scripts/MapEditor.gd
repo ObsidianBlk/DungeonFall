@@ -3,20 +3,43 @@ extends Node2D
 const MAIN_WORLD_SCENE = "res://World.tscn"
 const EDITORLEVEL_SCENE = "res://levels/EditorLevel.tscn"
 
+var tileset_def = null
+var tileset_resource = null
+
 var editorlevel_node = null
+var tile_selector_inst = null
+
+onready var camera = $Perma_Objects/Camera
+onready var floor_tile_list = $CanvasLayer/UI/FloorList/Margins/Scroll/Tiles
 
 func _ready():
+	get_tree().paused = false
 	var EditorLevel = load(EDITORLEVEL_SCENE)
 	if EditorLevel:
 		editorlevel_node = EditorLevel.instance()
 		$MapView/Port.add_child(editorlevel_node)
-		editorlevel_node.attach_camera($Perma_Objects/Camera)
+		editorlevel_node.attach_camera(camera)
+
+		tileset_def = TilesetStore.TILESETS["Moldy Dungeon"]
+		tileset_resource = load(tileset_def.base_path + tileset_def.resource_path)
+		tile_selector_inst = load("res://objects/Editor/tileselector/TileSelector.tscn")
+		for bindex in range(0, tileset_def.floors.breakable.size()):
+			var fdef = tileset_def.floors.breakable[bindex]
+			var selector = tile_selector_inst.instance()
+			floor_tile_list.add_child(selector)
+			selector.set_tile(fdef.index, tileset_resource)
+			selector.connect("tile_pressed", self, "_on_tile_pressed")
+		
+
+
+func _on_tile_pressed(id : int):
+	print("Tile ID ", id, " selected!")
 
 
 func _on_editor_quit():
-	print("YOLO!")
 	var world = load(MAIN_WORLD_SCENE)
 	if world:
+		get_tree().paused = true
 		var world_node = world.instance()
 		var p = get_parent()
 		p.remove_child(self)

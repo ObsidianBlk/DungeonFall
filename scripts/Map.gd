@@ -136,6 +136,9 @@ func _ready():
 		for child in gold_container.get_children():
 			child.connect("pickup", self, "_on_gold_pickup")
 
+func is_valid():
+	return tileset_def != null and tileset_def.name == tileset_name
+
 func reset_rng():
 	RNG = RandomNumberGenerator.new()
 	RNG.seed = map_seed
@@ -148,6 +151,8 @@ func set_floor_at_pos(pos : Vector2, floor_tile : int, wall_tile : int = -1):
 	return set_floor(floor(pos.x), floor(pos.y), floor_tile, wall_tile)
 
 func set_floor(x : int, y : int, floor_tile : int, wall_tile : int = -1):
+	if not is_valid():
+		return false
 	if floor_tile >= 0 and not (_is_tile_breakable(floor_tile) or _is_tile_safe(floor_tile) or _is_tile_exit(floor_tile)):
 		return false
 	if wall_tile >= 0 and not _is_tile_wall(wall_tile):
@@ -200,29 +205,29 @@ func _physics_process(delta):
 
 
 func _is_tile_breakable(tindex : int):
-	if tileset_def != null:
+	if is_valid():
 		for i in range(0, tileset_def.floors.breakable.size()):
 			if tileset_def.floors.breakable[i].index == tindex:
 				return true
 	return false
 
 func _is_tile_safe(tindex : int):
-	if tileset_def != null:
+	if is_valid():
 		return tileset_def.floors.safe.has(tindex)
 	return false
 
 func _is_tile_exit(tindex : int):
-	if tileset_def != null:
+	if is_valid():
 		return tileset_def.floors.exit.has(tindex)
 	return false
 
 func _is_tile_wall(tindex : int):
-	if tileset_def != null:
+	if is_valid():
 		return tileset_def.walls.has(tindex)
 	return false
 
 func _get_breakable_tile_resource(tindex : int):
-	if tileset_def != null:
+	if is_valid():
 		for i in range(0, tileset_def.floors.breakable.size()):
 			if tileset_def.floors.breakable[i].index == tindex:
 				var res_path = tileset_def.floors.breakable[i].sprite_src
@@ -249,7 +254,7 @@ func _get_breakable_tile_from_map_position(mpos : Vector2):
 	return null
 
 func _update_collapsing_tiles(delta):
-	if tileset_def == null or floors_map == null:
+	if not is_valid() or floors_map == null:
 		return
 	
 	var cell_size = tileset_def.size
@@ -280,7 +285,7 @@ func _update_collapsing_tiles(delta):
 # NOTE: Should only ever be used in the editor!
 # I've been warned
 func _redraw_floors():
-	if tileset_def == null or floors_map == null or walls_map == null:
+	if not is_valid() or floors_map == null or walls_map == null:
 		return
 	
 	for i in range(0, tileset_def.walls.size()):
@@ -340,7 +345,7 @@ func _is_over_pit(pos : Vector2, footprint : int = 0):
 
 
 func _on_tile_def_scanned():
-	if tileset_def == null and tileset_name != "":
+	if not is_valid() and tileset_name != "":
 		_set_tileset_name(tileset_name)
 
 func _on_gold_pickup():
