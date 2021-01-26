@@ -10,7 +10,9 @@ var editorlevel_node = null
 var tile_selector_inst = null
 
 onready var camera = $Perma_Objects/Camera
-onready var floor_tile_list = $CanvasLayer/UI/FloorList/Margins/Scroll/Tiles
+onready var floor_tile_list = $CanvasLayer/EditorUI/FloorList/Margins/Scroll/Tiles
+
+onready var generalUI = $CanvasLayer/GeneralUI
 
 func _ready():
 	get_tree().paused = false
@@ -19,6 +21,7 @@ func _ready():
 		editorlevel_node = EditorLevel.instance()
 		$MapView/Port.add_child(editorlevel_node)
 		editorlevel_node.attach_camera(camera)
+		editorlevel_node.set_tileset_name("Moldy Dungeon")
 
 		tileset_def = TilesetStore.TILESETS["Moldy Dungeon"]
 		tileset_resource = load(tileset_def.base_path + tileset_def.resource_path)
@@ -29,7 +32,15 @@ func _ready():
 			floor_tile_list.add_child(selector)
 			selector.set_tile(fdef.index, tileset_resource)
 			selector.connect("tile_pressed", self, "_on_tile_pressed")
-		
+
+
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		generalUI.visible = not generalUI.visible
+		get_tree().paused = generalUI.visible
+	if event.is_action_pressed("ui_select"):
+		if editorlevel_node != null:
+			editorlevel_node.set_rand_breakable_floor_at_tracker()
 
 
 func _on_tile_pressed(id : int):

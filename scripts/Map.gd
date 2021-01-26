@@ -88,9 +88,9 @@ var player = null
 #		gold_container_path = gcp
 
 
-func _set_tileset_name(name : String):
+func _set_tileset_name(name : String, force : bool = false):
 	if name != "":
-		if tileset_def == null or tileset_def.name != name:
+		if tileset_def == null or tileset_def.name != name or force:
 			if TilesetStore.TILESETS.has(name):
 				tileset_name = name
 				tileset_def = TilesetStore.TILESETS[name]
@@ -126,7 +126,7 @@ func _ready():
 	
 	# Connect to TilesetStore...
 	TilesetStore.connect("tile_defs_scanned", self, "_on_tile_def_scanned")
-	_set_tileset_name(tileset_name)
+	_set_tileset_name(tileset_name, true)
 	
 	#_set_walls_tilemap_path(walls_tilemap_path, true)
 	#_set_floors_tilemap_path(floors_tilemap_path, true)
@@ -161,8 +161,13 @@ func set_floor(x : int, y : int, floor_tile : int, wall_tile : int = -1):
 		wall_tile = tileset_def.walls[0]
 	
 	if floor_tile >= 0:
-		walls_map.set_cell(x, y, wall_tile, false, false, false, Vector2(1,1))
+		for wx in range(x-1, x+2):
+			for wy in range(y-1, y+2):
+				walls_map.set_cell(wx, wy, wall_tile)
+		walls_map.update_bitmask_region()
+		#walls_map.set_cell(x, y, wall_tile, false, false, false, Vector2(1,1))
 		floors_map.set_cell(x, y, floor_tile)
+		_fill_in_floors()
 	else:
 		walls_map.set_cell(x, y, -1)
 		floors_map.set_cell(x, y, -1)
@@ -280,6 +285,22 @@ func _update_collapsing_tiles(delta):
 	
 	for key in rkeys:
 		collapsing_tiles.erase(key)
+
+
+func _fill_in_floors():
+	if not is_valid():
+		return
+		
+	for i in range(0, tileset_def.walls.size()):
+		var used_cells = walls_map.get_used_cells_by_id(tileset_def.walls[i])
+		for cell in used_cells:
+			var atv = walls_map.get_cell_autotile_coord(cell[0], cell[1])
+			if atv == Vector2(1,1):
+				var findex = floors_map.get_cell(cell[0], cell[1])
+				if findex < 0:
+					var tindex = get_random_breakable_tile_index()
+					if tindex >= 0:
+						floors_map.set_cell(cell[0], cell[1], tindex)
 
 
 # NOTE: Should only ever be used in the editor!
