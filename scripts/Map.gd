@@ -5,10 +5,6 @@ extends Node2D
 signal pickup
 
 
-#export var walls_tilemap_path : NodePath = "" setget _set_walls_tilemap_path
-#export var floors_tilemap_path : NodePath = "" setget _set_floors_tilemap_path
-#export var doors_tilemap_path : NodePath = "" setget _set_doors_tilemap_path
-#export var gold_container_path : NodePath = "" setget _set_gold_container_path
 export var map_seed : int = 0
 export (float, 0.1, 10.0) var time_to_collapse = 0.65
 export var tileset_name : String = "" setget _set_tileset_name
@@ -32,60 +28,6 @@ onready var doors_map = get_parent().get_node("Doors")
 onready var gold_container = get_parent().get_node("Gold_Container")
 
 var player = null
-
-
-#func _set_walls_tilemap_path(wtp : NodePath, force : bool = false):
-#	if wtp != walls_tilemap_path or force:
-#		if ready:
-#			if wtp == "":
-#				walls_map = null
-#			else:
-#				var nwm = get_node(wtp)
-#				if nwm != null:
-#					walls_map = nwm
-#				else:
-#					wtp = walls_tilemap_path
-#		walls_tilemap_path = wtp
-
-#func _set_floors_tilemap_path(ftp : NodePath, force : bool = false):
-#	if ftp != floors_tilemap_path or force:
-#		if ready:
-#			if ftp == "":
-#				floors_map = null
-#			else:
-#				var nfm = get_node(ftp)
-#				if nfm != null:
-#					floors_map = nfm
-#				else:
-#					ftp = floors_tilemap_path
-#		floors_tilemap_path = ftp
-
-#func _set_doors_tilemap_path(dtp : NodePath, force : bool = false):
-#	if dtp != doors_tilemap_path or force:
-#		if ready:
-#			if dtp == "":
-#				doors_map = null
-#			else:
-#				var ndm = get_node(dtp)
-#				if ndm != null:
-#					doors_map = ndm
-#				else:
-#					dtp = doors_tilemap_path
-#		doors_tilemap_path = dtp
-
-
-#func _set_gold_container_path(gcp : NodePath, force : bool = false):
-#	if gcp != gold_container_path or force:
-#		if ready:
-#			if gcp == "":
-#				gold_container = null
-#			else:
-#				var ngc = get_node(gcp)
-#				if ngc != null:
-#					gold_container = ngc
-#				else:
-#					gcp = gold_container_path
-#		gold_container_path = gcp
 
 
 func _set_tileset_name(name : String, force : bool = false):

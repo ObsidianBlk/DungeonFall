@@ -2,8 +2,10 @@ tool
 extends Node
 
 signal tile_defs_scanned
+signal tileset_activated(def)
 
 var TILESETS = {}
+var active_tileset = null
 
 func rescan(scan_res : bool = true, scan_user : bool = true):
 	if scan_res:
@@ -12,11 +14,32 @@ func rescan(scan_res : bool = true, scan_user : bool = true):
 		_find_tilesets("user://tilesets/", true)
 	if scan_res or scan_user:
 		emit_signal("tile_defs_scanned")
+		if active_tileset == null or not TILESETS.has(active_tileset):
+			var keys = TILESETS.keys()
+			if keys.size() > 0:
+				activate_tileset(keys[0])
 
-func get_definition(name : String):
+func has_tileset(name : String):
+	return TILESETS.has(name)
+
+func get_active_tileset_name():
+	if active_tileset != null:
+		return active_tileset
+	return ""
+
+func get_definition(name : String = ""):
+	if name == "" and active_tileset != null:
+		name = active_tileset
+		
 	if TILESETS.has(name):
 		return TILESETS[name]
 	return null
+
+
+func activate_tileset(name : String):
+	if TILESETS.has(name):
+		emit_signal("tileset_activated", TILESETS[name])
+
 
 func _ready():
 	rescan()

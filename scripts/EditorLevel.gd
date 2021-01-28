@@ -8,7 +8,7 @@ onready var cam_container_node = $Camera_Container
 onready var tracker = $Tracker
 
 func _ready():
-	pass #print("I'm the editor level!!")
+	TilesetStore.connect("tileset_activated", self, "_on_tileset_activated")
 
 func _input(event):
 	if event.is_action_pressed("move_left"):
@@ -19,6 +19,10 @@ func _input(event):
 		tracker.position.y -= cell.y
 	if event.is_action_pressed("move_down"):
 		tracker.position.y += cell.y
+
+
+func _on_tileset_activated(def):
+	set_tileset_name(def.name)
 
 
 func set_tileset_name(name : String):
