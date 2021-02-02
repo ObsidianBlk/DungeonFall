@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/MapEditor.gd" type="Script" id=1]
 [ext_resource path="res://objects/camera/Camera.tscn" type="PackedScene" id=2]
 [ext_resource path="res://themes/Minion.theme" type="Theme" id=3]
 [ext_resource path="res://scripts/UI/MapEditor/TilesetSelection.gd" type="Script" id=4]
 [ext_resource path="res://scripts/UI/MapEditor/FloorTools.gd" type="Script" id=5]
+[ext_resource path="res://scripts/UI/MapEditor/FloorList.gd" type="Script" id=6]
 
 [node name="MapEditor" type="Node2D"]
 pause_mode = 2
@@ -161,6 +162,7 @@ margin_right = 193.0
 margin_bottom = 1057.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -264,7 +266,12 @@ margin_top = 132.0
 margin_right = 219.0
 margin_bottom = 165.0
 text = "Exit Editor"
+[connection signal="active_floor_type" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" to="." method="_on_active_floor_type"]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/Top/RandBox/Check" to="." method="_on_random_floor"]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "B" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "B" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "S" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "S" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "E" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "E" ]]
 [connection signal="pressed" from="CanvasLayer/GeneralUI/PopMenu/PanelContainer/VBoxContainer/Buttons/BTN_Exit" to="." method="_on_editor_quit"]

@@ -2,6 +2,7 @@ extends Node2D
 
 var camera_node = null
 var cell = Vector2(16.0, 16.0)
+
 onready var map_node = $Map
 onready var walls_node = $Walls
 onready var cam_container_node = $Camera_Container
@@ -9,6 +10,7 @@ onready var tracker = $Tracker
 
 func _ready():
 	TilesetStore.connect("tileset_activated", self, "_on_tileset_activated")
+	set_tileset_name(TilesetStore.get_active_tileset_name())
 
 func _input(event):
 	if event.is_action_pressed("move_left"):
@@ -50,7 +52,10 @@ func detach_camera_to_container(container : Node2D):
 		camera_node = null
 
 func clear_floor_at_tracker():
-	return map_node.set_floor_at_position(tracker.position, -1)
+	return map_node.set_floor_at_pos(tracker.position, -1)
+
+func set_floor_at_tracker(floor_tile : int, wall_tile : int = -1):
+	map_node.set_floor_at_pos(tracker.position, floor_tile, wall_tile)
 
 func set_rand_breakable_floor_at_tracker(wall_tile : int = -1):
 	return set_rand_breakable_floor_at_pos(tracker.position, wall_tile)
@@ -58,18 +63,29 @@ func set_rand_breakable_floor_at_tracker(wall_tile : int = -1):
 func set_rand_safe_floor_at_tracker(wall_tile: int = -1):
 	return set_rand_safe_floor_at_pos(tracker.position, wall_tile)
 
+func set_rand_exit_floor_at_tracker(wall_tile : int = -1):
+	return set_rand_exit_floor_at_pos(tracker.position, wall_tile)
+
 func clear_floor_at_pos(pos : Vector2):
 	return map_node.set_floor_at_pos(pos, -1)
+
+func set_floor_at_pos(pos : Vector2, floor_tile : int, wall_tile : int = -1):
+	return map_node.set_floor_at_pos(pos, floor_tile, wall_tile)
 
 func set_rand_breakable_floor_at_pos(pos : Vector2, wall_tile : int = -1):
 	var floor_tile = map_node.get_random_breakable_tile_index()
 	if floor_tile >= 0:
-		print("Rand Breakable at: ", pos)
 		return map_node.set_floor_at_pos(pos, floor_tile, wall_tile)
 	return false
 
 func set_rand_safe_floor_at_pos(pos : Vector2, wall_tile : int = -1):
 	var floor_tile = map_node.get_random_safe_tile_index()
+	if floor_tile >= 0:
+		return map_node.set_floor_at_pos(pos, floor_tile, wall_tile)
+	return false
+
+func set_rand_exit_floor_at_pos(pos : Vector2, wall_tile : int = -1):
+	var floor_tile = map_node.get_random_exit_tile_index()
 	if floor_tile >= 0:
 		return map_node.set_floor_at_pos(pos, floor_tile, wall_tile)
 	return false

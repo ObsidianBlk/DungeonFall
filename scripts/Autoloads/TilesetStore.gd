@@ -38,6 +38,7 @@ func get_definition(name : String = ""):
 
 func activate_tileset(name : String):
 	if TILESETS.has(name):
+		active_tileset = name
 		emit_signal("tileset_activated", TILESETS[name])
 
 

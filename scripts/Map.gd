@@ -97,22 +97,15 @@ func set_floor(x : int, y : int, floor_tile : int, wall_tile : int = -1):
 		return false
 	if floor_tile >= 0 and not (_is_tile_breakable(floor_tile) or _is_tile_safe(floor_tile) or _is_tile_exit(floor_tile)):
 		return false
+	elif floor_tile < 0:
+		floor_tile = -1
 	if wall_tile >= 0 and not _is_tile_wall(wall_tile):
 		return false
-	if floor_tile >= 0 and wall_tile < 0:
+	elif wall_tile < 0:
 		wall_tile = tileset_def.walls[0]
 	
-	if floor_tile >= 0:
-		for wx in range(x-1, x+2):
-			for wy in range(y-1, y+2):
-				walls_map.set_cell(wx, wy, wall_tile)
-		walls_map.update_bitmask_region()
-		#walls_map.set_cell(x, y, wall_tile, false, false, false, Vector2(1,1))
-		floors_map.set_cell(x, y, floor_tile)
-		_fill_in_floors()
-	else:
-		walls_map.set_cell(x, y, -1)
-		floors_map.set_cell(x, y, -1)
+	floors_map.set_cell(x, y, floor_tile)
+	_recalculate_walls(wall_tile)
 
 
 func get_random_breakable_tile_index():
@@ -127,6 +120,11 @@ func get_random_safe_tile_index():
 	var i = RNG.randi_range(0, tileset_def.floors.safe.size() - 1)
 	return tileset_def.floors.safe[i]
 
+func get_random_exit_tile_index():
+	if tileset_def == null:
+		return -1
+	var i = RNG.randi_range(0, tileset_def.floors.exit.size() - 1)
+	return tileset_def.floors.exit[i]
 
 func _process(delta):
 	if Engine.editor_hint:
@@ -160,12 +158,12 @@ func _is_tile_breakable(tindex : int):
 
 func _is_tile_safe(tindex : int):
 	if is_valid():
-		return tileset_def.floors.safe.has(tindex)
+		return tileset_def.floors.safe.has(float(tindex))
 	return false
 
 func _is_tile_exit(tindex : int):
 	if is_valid():
-		return tileset_def.floors.exit.has(tindex)
+		return tileset_def.floors.exit.has(float(tindex))
 	return false
 
 func _is_tile_wall(tindex : int):
@@ -244,6 +242,19 @@ func _fill_in_floors():
 					if tindex >= 0:
 						floors_map.set_cell(cell[0], cell[1], tindex)
 
+
+func _recalculate_walls(wall_tile : int):
+	if not is_valid():
+		return
+	
+	walls_map.clear()
+	var used_cells = floors_map.get_used_cells()
+	for cell in used_cells:
+		for wx in range(cell[0] - 1, cell[0] + 2):
+			for wy in range(cell[1] - 1, cell[1] + 2):
+				walls_map.set_cell(wx, wy, wall_tile)
+	walls_map.update_bitmask_region()
+	
 
 # NOTE: Should only ever be used in the editor!
 # I've been warned
