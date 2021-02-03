@@ -17,7 +17,6 @@ export var next_level_path : String = ""
 export var next_level_proceedural : bool = false
 export var next_level_seed : int = 0
 export var next_level_seed_random : bool = false
-export var map_node_path : NodePath = ""
 export var player_container_node_path : NodePath = ""
 export var camera_container_node_path : NodePath = ""
 export var player_start_path : NodePath = ""
@@ -35,11 +34,10 @@ var collpased = false
 
 var points = 0
 
+onready var mapCTRL = $MapCTRL
 
 func _ready():
-	var map = get_node(map_node_path)
-	if map != null:
-		map.connect("pickup", self, "_on_pickup")
+	mapCTRL.connect("pickup", self, "_on_pickup")
 	emit_signal("point_update", points)
 	emit_signal("play_timer_changed", play_timer)
 	if level_max_timer > 0.0:
@@ -59,10 +57,8 @@ func _physics_process(delta):
 			if level_max_timer - play_timer <= 0.0:
 				collpased = true
 				emit_signal("level_timer_changed", 0.0)
-				print("Collapse the floors!")
-				var map = get_node(map_node_path)
-				if map != null:
-					map._collapse_level()
+				#print("Collapse the floors!")
+				mapCTRL._collapse_level()
 			else:
 				var new_level_timer = str(level_max_timer - play_timer).pad_decimals(2)
 				if new_level_timer != last_level_timer:
@@ -89,10 +85,6 @@ func attach_player(player : Node2D):
 	if player_start_path == null:
 		return
 
-	var map = get_node(map_node_path)
-	if map == null:
-		return
-
 	var container = get_node(player_container_node_path)
 	var player_start = get_node(player_start_path)
 	
@@ -102,7 +94,7 @@ func attach_player(player : Node2D):
 		_swap_to_container(container, player)
 		player.global_position = start_pos
 		player.map_node_path = self.get_path()
-		map.set_player(player)
+		mapCTRL.set_player(player)
 		_connect_camera_to_player()
 
 func detach_player_to(container : Node2D):
@@ -136,11 +128,7 @@ func detach_camera_to(container : Node2D):
 
 
 func is_over_pit(pos : Vector2, footprint : int = 0):
-	if map_node_path != "":
-		var map = get_node(map_node_path)
-		if map != null:
-			return map._is_over_pit(pos, footprint)
-	return false
+	return mapCTRL._is_over_pit(pos, footprint)
 
 
 func exit_level():
