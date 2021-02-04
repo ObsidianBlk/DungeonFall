@@ -16,4 +16,4 @@ __meta__ = {
 scale = Vector2( 4, 4 )
 cell_size = Vector2( 16, 16 )
 format = 1
-[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="toggled" from="." to="." method="_on_toggled"]

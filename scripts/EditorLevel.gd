@@ -3,8 +3,6 @@ extends Node2D
 var camera_node = null
 var cell = Vector2(16.0, 16.0)
 
-#onready var map_node = $Map
-onready var mapCTRL_node = $MapCTRL
 onready var mapBT_node = $MapBuildTools
 onready var walls_node = $Walls
 onready var cam_container_node = $Camera_Container
@@ -25,17 +23,6 @@ func _input(event):
 	if event.is_action_pressed("move_down"):
 		tracker.position.y += cell.y
 
-
-#func _on_tileset_activated(def):
-#	set_tileset_name(def.name)
-
-
-#func set_tileset_name(name : String):
-#	map_node.tileset_name = name
-#	if map_node.is_valid():
-#		cell = walls_node.cell_size
-#		return true
-#	return false
 
 func attach_camera(camera : Node2D):
 	if camera_node != null:

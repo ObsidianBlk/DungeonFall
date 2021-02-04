@@ -274,4 +274,5 @@ text = "Exit Editor"
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "S" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "E" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "E" ]]
+[connection signal="tile_selected" from="CanvasLayer/EditorUI/FloorList" to="." method="_on_tile_selected"]
 [connection signal="pressed" from="CanvasLayer/GeneralUI/PopMenu/PanelContainer/VBoxContainer/Buttons/BTN_Exit" to="." method="_on_editor_quit"]

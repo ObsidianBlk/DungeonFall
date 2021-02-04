@@ -1,6 +1,6 @@
 extends Button
 
-signal tile_pressed(id)
+signal tile_selected(id)
 
 func set_tile(id : int, tileset : Resource):
 	if id >= 0:
@@ -11,9 +11,7 @@ func set_tile(id : int, tileset : Resource):
 		$TileMap.tile_set = null
 
 
-func _on_pressed():
-	if pressed:
+func _on_toggled(button_pressed):
+	if button_pressed:
 		if $TileMap.tile_set != null:
-			emit_signal("tile_pressed", $TileMap.get_cell(0, 0))
-		else:
-			pressed = false
+			emit_signal("tile_selected", $TileMap.get_cell(0, 0))

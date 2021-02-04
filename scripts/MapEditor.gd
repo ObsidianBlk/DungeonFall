@@ -15,7 +15,7 @@ var floor_tile_id = -1
 var rand_floor = false
 
 onready var camera = $Perma_Objects/Camera
-onready var floor_tile_list = $CanvasLayer/EditorUI/FloorList/Margins/Scroll/Tiles
+onready var floorList_node = $CanvasLayer/EditorUI/FloorList
 
 onready var generalUI = $CanvasLayer/GeneralUI
 
@@ -29,15 +29,6 @@ func _ready():
 
 		tileset_def = TilesetStore.get_definition()
 		TilesetStore.connect("tileset_activated", self, "_on_tileset_activated")
-		
-		#tileset_resource = load(tileset_def.base_path + tileset_def.resource_path)
-		#tile_selector_inst = load("res://objects/Editor/tileselector/TileSelector.tscn")
-		#for bindex in range(0, tileset_def.floors.breakable.size()):
-		#	var fdef = tileset_def.floors.breakable[bindex]
-		#	var selector = tile_selector_inst.instance()
-		#	floor_tile_list.add_child(selector)
-		#	selector.set_tile(fdef.index, tileset_resource)
-		#	selector.connect("tile_pressed", self, "_on_tile_pressed")
 
 
 func _input(event):
@@ -61,9 +52,6 @@ func _input(event):
 			editorlevel_node.clear_floor_at_tracker()
 
 
-#func _on_tile_pressed(id : int):
-#	print("Tile ID ", id, " selected!")
-
 func _on_tileset_activated(def):
 	tileset_def = def
 
@@ -83,5 +71,10 @@ func _on_editor_quit():
 		p.add_child(world_node)
 		queue_free()
 
+
+func _on_tile_selected(id : int):
+	floor_tile_id = id
+
 func _on_random_floor(button_pressed):
 	rand_floor = button_pressed
+	floorList_node.visible = not rand_floor
