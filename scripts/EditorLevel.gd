@@ -13,30 +13,55 @@ func _ready():
 	#TilesetStore.connect("tileset_activated", self, "_on_tileset_activated")
 	#set_tileset_name(TilesetStore.get_active_tileset_name())
 
-func _input(event):
-	if event.is_action_pressed("move_left"):
-		tracker.position.x -= cell.x
-	if event.is_action_pressed("move_right"):
-		tracker.position.x += cell.x
-	if event.is_action_pressed("move_up"):
-		tracker.position.y -= cell.y
-	if event.is_action_pressed("move_down"):
-		tracker.position.y += cell.y
+
+func move_tracker(x, y):
+	if abs(x) > 0:
+		tracker.position.x += cell.x * floor(x)
+	if abs(y) > 0:
+		tracker.position.y += cell.y * floor(y)
+
+func position_tracker(x, y):
+	tracker.position.x = cell.x * floor(x)
+	tracker.position.y = cell.y * floor(y)
+
+func position_tracker_to(pos : Vector2):
+	pos = walls_node.world_to_map(pos)
+	position_tracker(pos.x, pos.y)
+
+func get_tracker_position():
+	return tracker.position
 
 
-func attach_camera(camera : Node2D):
+func get_camera_position():
+	if camera_node == null:
+		return Vector2.ZERO
+	return camera_node.position
+
+func move_camera(relative : Vector2):
+	if camera_node != null:
+		camera_node.relative_move(relative)
+
+func enable_camera_tracking(enable : bool = true):
+	if camera_node == null:
+		return
+	camera_node.ignore_target = not enable
+
+
+func attach_camera(camera : Node2D, autoTrack : bool = true):
 	if camera_node != null:
 		return
 	camera_node = camera
 	var parent = camera.get_parent()
 	parent.remove_child(camera)
 	cam_container_node.add_child(camera)
-	camera.target_node_path = camera.get_path_to(tracker)
+	if autoTrack:
+		camera.target_node_path = camera.get_path_to(tracker)
 	camera.current = true
 
 func detach_camera_to_container(container : Node2D):
 	if camera_node != null:
 		camera_node.current = false
+		camera_node.target_node_path = ""
 		cam_container_node.remove_child(camera_node)
 		container.add_child(camera_node)
 		camera_node = null
