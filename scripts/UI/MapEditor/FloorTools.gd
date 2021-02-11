@@ -14,6 +14,5 @@ func _ready():
 
 
 func _on_floor_btn_toggle(pressed : bool, btn : String):
-	print ("Pressed: ", pressed, " | BTN: ", btn)
 	if pressed:
 		emit_signal("active_floor_type", btn)

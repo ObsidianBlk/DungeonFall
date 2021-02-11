@@ -46,7 +46,7 @@ func _mousepos_to_vp(pos : Vector2, campos : Vector2):
 	var offset = campos - (vp_port.size * 0.5)
 	return (pos * scale) + offset
 
-func _input(event):
+func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		editorlevel_node.enable_camera_tracking(false)
 		var campos = editorlevel_node.get_camera_position()

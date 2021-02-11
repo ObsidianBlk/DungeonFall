@@ -27,6 +27,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 1920.0
 margin_bottom = 1080.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 stretch = true
@@ -50,12 +51,11 @@ layer = 2
 
 [node name="EditorUI" type="Control" parent="CanvasLayer"]
 pause_mode = 1
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_right = -1920.0
+margin_bottom = -1080.0
 mouse_filter = 1
 theme = ExtResource( 3 )
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -64,15 +64,17 @@ margin_left = 10.0
 margin_top = 10.0
 margin_right = 1910.0
 margin_bottom = 106.0
+mouse_filter = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Control" type="Control" parent="CanvasLayer/EditorUI/Toolbar"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1893.0
-margin_bottom = 89.0
+margin_left = 7.94217
+margin_top = 8.91073
+margin_right = 1891.09
+margin_bottom = 88.0578
+mouse_filter = 1
 
 [node name="TilesetSelection" type="MenuButton" parent="CanvasLayer/EditorUI/Toolbar/Control"]
 margin_right = 457.0
@@ -160,6 +162,7 @@ margin_left = 13.0
 margin_top = 246.0
 margin_right = 193.0
 margin_bottom = 1057.0
+mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 6 )
@@ -168,10 +171,11 @@ __meta__ = {
 }
 
 [node name="Margins" type="MarginContainer" parent="CanvasLayer/EditorUI/FloorList"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 173.0
-margin_bottom = 804.0
+margin_left = 7.94217
+margin_top = 8.91073
+margin_right = 171.089
+margin_bottom = 803.058
+mouse_filter = 1
 custom_constants/margin_right = 8
 custom_constants/margin_top = 8
 custom_constants/margin_left = 8
@@ -180,8 +184,9 @@ custom_constants/margin_bottom = 8
 [node name="Scroll" type="ScrollContainer" parent="CanvasLayer/EditorUI/FloorList/Margins"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 158.0
-margin_bottom = 789.0
+margin_right = 155.0
+margin_bottom = 786.0
+mouse_filter = 1
 
 [node name="Tiles" type="VBoxContainer" parent="CanvasLayer/EditorUI/FloorList/Margins/Scroll"]
 custom_constants/separation = 24
@@ -189,42 +194,33 @@ custom_constants/separation = 24
 [node name="GeneralUI" type="Control" parent="CanvasLayer"]
 pause_mode = 2
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PopMenu" type="CenterContainer" parent="CanvasLayer/GeneralUI"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -955.51
-margin_top = -537.755
-margin_right = 964.49
-margin_bottom = 542.245
+[node name="PopupMenu" type="PanelContainer" parent="CanvasLayer/GeneralUI"]
+margin_left = 847.49
+margin_top = 426.245
+margin_right = 1080.49
+margin_bottom = 658.245
+mouse_filter = 2
 theme = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/GeneralUI/PopMenu"]
-margin_left = 953.0
-margin_top = 533.0
-margin_right = 967.0
-margin_bottom = 547.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GeneralUI/PopMenu/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GeneralUI/PopupMenu"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 226.0
 margin_bottom = 225.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="CanvasLayer/GeneralUI/PopMenu/PanelContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer"]
 margin_right = 219.0
 margin_bottom = 33.0
 text = "Editor Menu"
@@ -232,47 +228,53 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HSeparator" type="HSeparator" parent="CanvasLayer/GeneralUI/PopMenu/PanelContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer"]
 margin_top = 37.0
 margin_right = 219.0
 margin_bottom = 49.0
+mouse_filter = 2
 custom_constants/separation = 12
 
-[node name="Buttons" type="VBoxContainer" parent="CanvasLayer/GeneralUI/PopMenu/PanelContainer/VBoxContainer"]
+[node name="Buttons" type="VBoxContainer" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer"]
 margin_top = 53.0
 margin_right = 219.0
 margin_bottom = 218.0
+mouse_filter = 2
 custom_constants/separation = 11
 
-[node name="BTN_New" type="Button" parent="CanvasLayer/GeneralUI/PopMenu/PanelContainer/VBoxContainer/Buttons"]
+[node name="BTN_New" type="Button" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons"]
 margin_right = 219.0
 margin_bottom = 33.0
+mouse_filter = 1
 text = "New"
 
-[node name="BTN_Save" type="Button" parent="CanvasLayer/GeneralUI/PopMenu/PanelContainer/VBoxContainer/Buttons"]
+[node name="BTN_Save" type="Button" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons"]
 margin_top = 44.0
 margin_right = 219.0
 margin_bottom = 77.0
+mouse_filter = 1
 text = "Save"
 
-[node name="BTN_Load" type="Button" parent="CanvasLayer/GeneralUI/PopMenu/PanelContainer/VBoxContainer/Buttons"]
+[node name="BTN_Load" type="Button" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons"]
 margin_top = 88.0
 margin_right = 219.0
 margin_bottom = 121.0
+mouse_filter = 1
 text = "Load"
 
-[node name="BTN_Exit" type="Button" parent="CanvasLayer/GeneralUI/PopMenu/PanelContainer/VBoxContainer/Buttons"]
+[node name="BTN_Exit" type="Button" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons"]
 margin_top = 132.0
 margin_right = 219.0
 margin_bottom = 165.0
+mouse_filter = 1
 text = "Exit Editor"
 [connection signal="active_floor_type" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" to="." method="_on_active_floor_type"]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/Top/RandBox/Check" to="." method="_on_random_floor"]
-[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "B" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "B" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "S" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "B" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "S" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "E" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "S" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "E" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "E" ]]
 [connection signal="tile_selected" from="CanvasLayer/EditorUI/FloorList" to="." method="_on_tile_selected"]
-[connection signal="pressed" from="CanvasLayer/GeneralUI/PopMenu/PanelContainer/VBoxContainer/Buttons/BTN_Exit" to="." method="_on_editor_quit"]
+[connection signal="pressed" from="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons/BTN_Exit" to="." method="_on_editor_quit"]
