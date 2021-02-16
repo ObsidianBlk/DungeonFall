@@ -63,17 +63,17 @@ __meta__ = {
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 1910.0
-margin_bottom = 106.0
+margin_bottom = 141.0
 mouse_filter = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Control" type="Control" parent="CanvasLayer/EditorUI/Toolbar"]
-margin_left = 7.94217
-margin_top = 8.91073
-margin_right = 1891.09
-margin_bottom = 88.0578
+margin_left = 15.1389
+margin_top = 15.2078
+margin_right = 1892.5
+margin_bottom = 123.572
 mouse_filter = 1
 
 [node name="TilesetSelection" type="MenuButton" parent="CanvasLayer/EditorUI/Toolbar/Control"]
@@ -96,43 +96,45 @@ __meta__ = {
 }
 
 [node name="FloorTools" type="VBoxContainer" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools"]
-margin_right = 322.0
-margin_bottom = 82.0
+margin_right = 340.0
+margin_bottom = 104.0
 script = ExtResource( 5 )
 
 [node name="Top" type="HBoxContainer" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools"]
-margin_right = 322.0
-margin_bottom = 33.0
+margin_right = 340.0
+margin_bottom = 50.0
 
 [node name="Label" type="Label" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/Top"]
+margin_top = 8.0
 margin_right = 120.0
-margin_bottom = 33.0
+margin_bottom = 41.0
 text = "Floors:"
 
 [node name="RandBox" type="HBoxContainer" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/Top"]
 margin_left = 124.0
-margin_right = 322.0
-margin_bottom = 33.0
+margin_right = 340.0
+margin_bottom = 50.0
 
 [node name="Check" type="CheckBox" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/Top/RandBox"]
-margin_right = 16.0
-margin_bottom = 33.0
+margin_right = 34.2469
+margin_bottom = 50.2954
 flat = true
 
 [node name="Label" type="Label" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/Top/RandBox"]
-margin_left = 20.0
-margin_right = 198.0
-margin_bottom = 33.0
+margin_left = 38.0
+margin_top = 8.0
+margin_right = 216.0
+margin_bottom = 41.0
 text = "( Random )"
 
 [node name="CTRLs" type="HBoxContainer" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools"]
-margin_top = 37.0
-margin_right = 322.0
-margin_bottom = 70.0
+margin_top = 54.0
+margin_right = 340.0
+margin_bottom = 104.0
 
 [node name="BTN_Breakable" type="Button" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs"]
-margin_right = 58.0
-margin_bottom = 33.0
+margin_right = 76.2469
+margin_bottom = 50.2954
 focus_mode = 0
 toggle_mode = true
 pressed = true
@@ -140,18 +142,18 @@ enabled_focus_mode = 0
 text = "::B::"
 
 [node name="BTN_Safe" type="Button" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs"]
-margin_left = 62.0
-margin_right = 109.0
-margin_bottom = 33.0
+margin_left = 80.0
+margin_right = 145.247
+margin_bottom = 50.2954
 focus_mode = 0
 toggle_mode = true
 enabled_focus_mode = 0
 text = "::S::"
 
 [node name="BTN_Ends" type="Button" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs"]
-margin_left = 113.0
-margin_right = 162.0
-margin_bottom = 33.0
+margin_left = 149.0
+margin_right = 216.247
+margin_bottom = 50.2954
 focus_mode = 0
 toggle_mode = true
 enabled_focus_mode = 0
@@ -171,10 +173,10 @@ __meta__ = {
 }
 
 [node name="Margins" type="MarginContainer" parent="CanvasLayer/EditorUI/FloorList"]
-margin_left = 7.94217
-margin_top = 8.91073
-margin_right = 171.089
-margin_bottom = 803.058
+margin_left = 15.1389
+margin_top = 15.2078
+margin_right = 172.503
+margin_bottom = 803.572
 mouse_filter = 1
 custom_constants/margin_right = 8
 custom_constants/margin_top = 8
@@ -184,8 +186,8 @@ custom_constants/margin_bottom = 8
 [node name="Scroll" type="ScrollContainer" parent="CanvasLayer/EditorUI/FloorList/Margins"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 155.0
-margin_bottom = 786.0
+margin_right = 149.0
+margin_bottom = 780.0
 mouse_filter = 1
 
 [node name="Tiles" type="VBoxContainer" parent="CanvasLayer/EditorUI/FloorList/Margins/Scroll"]

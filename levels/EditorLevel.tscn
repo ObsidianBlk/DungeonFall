@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/EditorLevel.gd" type="Script" id=1]
+[ext_resource path="res://assets/graphics/ui/backgrounds/SingleColorBG_1080.jpg" type="Texture" id=2]
 [ext_resource path="res://objects/player_start/Player_Start.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tilesets/tilesetA/tilesetA.tres" type="TileSet" id=4]
 [ext_resource path="res://scripts/UI/MapEditor/TrackerView.gd" type="Script" id=5]
@@ -46,3 +47,16 @@ position = Vector2( 8, 8 )
 
 [node name="TrackerView" type="Node2D" parent="."]
 script = ExtResource( 5 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="CanvasLayer"]
+follow_viewport_enable = true
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="CanvasLayer/ParallaxBackground"]
+motion_mirroring = Vector2( 1920, 1080 )
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer/ParallaxBackground/ParallaxLayer"]
+self_modulate = Color( 0, 0, 0, 1 )
+texture = ExtResource( 2 )
+centered = false
