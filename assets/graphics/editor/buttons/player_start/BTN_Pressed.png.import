@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/BTN_Pressed.png-e0703e65e336329f8906a2d9d067dcbd.image"
+
+[deps]
+
+source_file="res://assets/graphics/editor/buttons/player_start/BTN_Pressed.png"
+dest_files=[ "res://.import/BTN_Pressed.png-e0703e65e336329f8906a2d9d067dcbd.image" ]
+
+[params]
+

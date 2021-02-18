@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/BTN_Hover.png-b81a18d98626c6a5af8f4971a9c68d89.image"
+
+[deps]
+
+source_file="res://assets/graphics/editor/buttons/exit_tiles/BTN_Hover.png"
+dest_files=[ "res://.import/BTN_Hover.png-b81a18d98626c6a5af8f4971a9c68d89.image" ]
+
+[params]
+

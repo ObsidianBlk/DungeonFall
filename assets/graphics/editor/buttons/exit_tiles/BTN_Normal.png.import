@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/BTN_Normal.png-7ab284539d083235cdce7dbd76fc9807.image"
+
+[deps]
+
+source_file="res://assets/graphics/editor/buttons/exit_tiles/BTN_Normal.png"
+dest_files=[ "res://.import/BTN_Normal.png-7ab284539d083235cdce7dbd76fc9807.image" ]
+
+[params]
+

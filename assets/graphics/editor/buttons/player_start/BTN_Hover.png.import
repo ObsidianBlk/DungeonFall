@@ -1,0 +1,13 @@
+[remap]
+
+importer="image"
+type="Image"
+path="res://.import/BTN_Hover.png-81682e3e92039581a353ac63e02bddca.image"
+
+[deps]
+
+source_file="res://assets/graphics/editor/buttons/player_start/BTN_Hover.png"
+dest_files=[ "res://.import/BTN_Hover.png-81682e3e92039581a353ac63e02bddca.image" ]
+
+[params]
+
