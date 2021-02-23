@@ -42,6 +42,26 @@ func activate_tileset(name : String):
 		emit_signal("tileset_activated", TILESETS[name])
 
 
+func meta_tile_exists(def, meta_name):
+	if def.has("meta"):
+		return def.meta.has(meta_name)
+
+func get_meta_icon(def, meta_name):
+	if meta_tile_exists(def, meta_name):
+		return def.meta[meta_name].icon
+	return -1
+
+func get_meta_size(def, meta_name):
+	if meta_tile_exists(def, meta_name):
+		return Vector2(def.meta[meta_name].size[0], def.meta[meta_name].size[1])
+	return Vector2.ZERO
+
+func get_meta_tiles(def, meta_name):
+	if meta_tile_exists(def, meta_name):
+		return def.meta[meta_name].tiles
+	return []
+
+
 func _ready():
 	rescan()
 
@@ -80,6 +100,22 @@ func _file_exists(path):
 	return (File.new()).file_exists(path)
 
 
+func _validate_meta_tile(def, meta_name):
+	var meta = def.meta[meta_name]
+	if not meta.has("size"):
+		return false
+	if typeof(meta.size) != TYPE_ARRAY and meta.size.size() != 2:
+		return false
+	if not meta.has("tiles"):
+		return false
+	if typeof(meta.tiles) != TYPE_ARRAY && meta.tiles.size() != meta.size[0] * meta.size[1]:
+		return false
+	if not meta.has("icon"):
+		return false
+	if typeof(meta.icon) != TYPE_INT and meta.icon >= 0:
+		return false
+	return true
+
 func _process_tileset_definition(def : Dictionary):
 	# TODO: Return an error object instead of true/false
 	if not def.has("version"):
@@ -111,6 +147,13 @@ func _process_tileset_definition(def : Dictionary):
 	if def.size <= 0:
 		return false
 	
+	if def.has("meta"):
+		for key in def.meta.keys():
+			if not _validate_meta_tile(def, key):
+				# TODO: Send to a error/warning manager?
+				print("WARNING: Failed to parse meta tile [", key, "].")
+				def.meta.erase(key)
+		# NOTE: When validating floors, check if meta tile exists.
 	
 	# TODO: Validate the .walls attribute is all integers
 	# TODO: Validate the .floors sub-attribute

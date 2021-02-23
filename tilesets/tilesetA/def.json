@@ -4,6 +4,13 @@
   "resource_path":"tilesetA.tres",
   "size":16,
   "walls":[0],
+  "metas":{
+    "dungeon_exit":{
+      "icon":10,
+      "size":[2, 2],
+      "tiles":[10,11,12,13]
+    }
+  },
   "floors":{
     "breakable":[
       {
@@ -24,7 +31,7 @@
       }
     ],
     "safe":[5],
-    "exit":[10]
+    "exit":[10, "dungeon_exit"]
   }
 }
 
