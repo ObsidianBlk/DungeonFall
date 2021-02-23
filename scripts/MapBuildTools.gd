@@ -100,6 +100,7 @@ func is_tile_wall(tindex : int):
 		return tileset_def.walls.has(tindex)
 	return false
 
+
 func get_breakable_tile_resource(tindex : int):
 	if is_valid():
 		for i in range(0, tileset_def.floors.breakable.size()):
@@ -161,6 +162,15 @@ func set_floor(x : int, y : int, floor_tile : int, wall_tile : int = -1):
 	
 	floors_map.set_cell(x, y, floor_tile)
 	_recalculate_walls(wall_tile)
+
+func get_floor_at_pos(pos : Vector2):
+	pos = floors_map.world_to_map(pos)
+	return get_floor(floor(pos.x), floor(pos.y))
+
+func get_floor(x : int, y : int):
+	if not is_valid():
+		return -1
+	return floors_map.get_cell(x, y)
 
 
 

@@ -7,12 +7,25 @@ onready var mapBT_node = $MapBuildTools
 onready var walls_node = $Walls
 onready var cam_container_node = $Camera_Container
 onready var tracker = $Tracker
+onready var player_start = $Player_Start
 
 func _ready():
 	pass
 	#TilesetStore.connect("tileset_activated", self, "_on_tileset_activated")
 	#set_tileset_name(TilesetStore.get_active_tileset_name())
 
+
+func player_start_to_tracker():
+	player_start.position = tracker.position + (cell * 0.5)
+	
+	var tindex = mapBT_node.get_floor_at_pos(player_start.position)
+	if tindex >= 0:
+		if mapBT_node.is_tile_breakable(tindex):
+			return {"status":"warning", "msg":"Player starting on breakable tile"}
+	else:
+		return {"status":"error", "msg":"Player outside map bounds"}
+	
+	return {"status":"success"}
 
 func move_tracker(x, y):
 	if abs(x) > 0:
@@ -23,6 +36,7 @@ func move_tracker(x, y):
 func position_tracker(x, y):
 	tracker.position.x = cell.x * floor(x)
 	tracker.position.y = cell.y * floor(y)
+	
 
 func position_tracker_to(pos : Vector2):
 	pos = walls_node.world_to_map(pos)
@@ -119,3 +133,6 @@ func set_rand_safe_floor(x : int, y : int, wall_tile : int = -1):
 
 func clear_floor(x : int, y : int):
 	return mapBT_node.set_floor(x, y, -1)
+
+
+
