@@ -83,8 +83,8 @@ func detach_camera_to_container(container : Node2D):
 func clear_floor_at_tracker():
 	return mapBT_node.set_floor_at_pos(tracker.position, -1)
 
-func set_floor_at_tracker(floor_tile : int, wall_tile : int = -1):
-	mapBT_node.set_floor_at_pos(tracker.position, floor_tile, wall_tile)
+func set_floor_at_tracker(floor_tile, wall_tile : int = -1):
+	return mapBT_node.set_floor_at_pos(tracker.position, floor_tile, wall_tile)
 
 func set_rand_breakable_floor_at_tracker(wall_tile : int = -1):
 	return set_rand_breakable_floor_at_pos(tracker.position, wall_tile)
@@ -98,36 +98,36 @@ func set_rand_exit_floor_at_tracker(wall_tile : int = -1):
 func clear_floor_at_pos(pos : Vector2):
 	return mapBT_node.set_floor_at_pos(pos, -1)
 
-func set_floor_at_pos(pos : Vector2, floor_tile : int, wall_tile : int = -1):
+func set_floor_at_pos(pos : Vector2, floor_tile, wall_tile : int = -1):
 	return mapBT_node.set_floor_at_pos(pos, floor_tile, wall_tile)
 
 func set_rand_breakable_floor_at_pos(pos : Vector2, wall_tile : int = -1):
 	var floor_tile = mapBT_node.get_random_breakable_tile_index()
-	if floor_tile >= 0:
+	if mapBT_node.is_tile_placeable(floor_tile):
 		return mapBT_node.set_floor_at_pos(pos, floor_tile, wall_tile)
 	return false
 
 func set_rand_safe_floor_at_pos(pos : Vector2, wall_tile : int = -1):
 	var floor_tile = mapBT_node.get_random_safe_tile_index()
-	if floor_tile >= 0:
+	if mapBT_node.is_tile_placeable(floor_tile):
 		return mapBT_node.set_floor_at_pos(pos, floor_tile, wall_tile)
 	return false
 
 func set_rand_exit_floor_at_pos(pos : Vector2, wall_tile : int = -1):
 	var floor_tile = mapBT_node.get_random_exit_tile_index()
-	if floor_tile >= 0:
+	if mapBT_node.is_tile_placeable(floor_tile):
 		return mapBT_node.set_floor_at_pos(pos, floor_tile, wall_tile)
 	return false
 
 func set_rand_breakable_floor(x : int, y : int, wall_tile : int = -1):
 	var floor_tile = mapBT_node.get_random_breakable_tile_index()
-	if floor_tile >= 0:
+	if mapBT_node.is_tile_placeable(floor_tile):
 		return mapBT_node.set_floor(x, y, floor_tile, wall_tile)
 	return false
 
 func set_rand_safe_floor(x : int, y : int, wall_tile : int = -1):
 	var floor_tile = mapBT_node.get_random_safe_tile_index()
-	if floor_tile >= 0:
+	if mapBT_node.is_tile_placeable(floor_tile):
 		return mapBT_node.set_floor(x, y, floor_tile, wall_tile)
 	return false
 
@@ -135,4 +135,41 @@ func clear_floor(x : int, y : int):
 	return mapBT_node.set_floor(x, y, -1)
 
 
+func set_ghost_rand_breakable_at_pos(pos: Vector2):
+	var tile_id = mapBT_node.get_random_breakable_tile_index()
+	return set_ghost_tile_at_pos(pos, tile_id)
 
+func set_ghost_rand_breakable_at_tracker():
+	return set_ghost_rand_breakable_at_pos(tracker.position)
+
+func set_ghost_rand_safe_at_pos(pos: Vector2):
+	var tile_id = mapBT_node.get_random_safe_tile_index()
+	return set_ghost_tile_at_pos(pos, tile_id)
+
+func set_ghost_rand_safe_at_tracker():
+	return set_ghost_rand_safe_at_pos(tracker.position)
+
+func set_ghost_rand_exit_at_pos(pos: Vector2):
+	var tile_id = mapBT_node.get_random_exit_tile_index()
+	return set_ghost_tile_at_pos(pos, tile_id)
+
+func set_ghost_rand_exit_at_tracker():
+	return set_ghost_rand_exit_at_pos(tracker.position)
+
+func set_ghost_tile_at_pos(pos: Vector2, tile_id):
+	if mapBT_node.is_tile_placeable(tile_id):
+		return mapBT_node.set_ghost_tile_at_pos(pos, tile_id)
+	return false
+
+func set_ghost_tile_at_tracker(tile_id):
+	if mapBT_node.is_tile_placeable(tile_id):
+		return mapBT_node.set_ghost_tile_at_pos(tracker.position, tile_id)
+	return false
+
+func set_ghost_tile(x: int, y: int, tile_id):
+	if mapBT_node.is_tile_placeable(tile_id):
+		return mapBT_node.set_ghost_tile(x, y, tile_id)
+	return false
+
+func clear_ghost_tiles():
+	mapBT_node.clear_ghost_tiles()

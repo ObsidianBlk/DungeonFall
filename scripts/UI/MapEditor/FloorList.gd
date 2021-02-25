@@ -23,10 +23,11 @@ func _clear_tile_list():
 	for child in tile_list_node.get_children():
 		tile_list_node.remove_child(child)
 
-func _add_selector(tile_index, btngrp : ButtonGroup, select : bool = false):
+func _add_selector(tile_id, btngrp : ButtonGroup, select : bool = false):
 	if not tile_selector_inst:
 		return
-	if typeof(tile_index) == TYPE_STRING:
+	var tile_index = tile_id
+	if typeof(tile_id) == TYPE_STRING:
 		tile_index = TilesetStore.get_meta_icon(tileset_def, tile_index)
 		if tile_index < 0:
 			return
@@ -34,7 +35,7 @@ func _add_selector(tile_index, btngrp : ButtonGroup, select : bool = false):
 	var selector = tile_selector_inst.instance()
 	tile_list_node.add_child(selector)
 	selector.group = btngrp
-	selector.set_tile(tile_index, tileset_resource)
+	selector.set_tile(tile_index, tile_id, tileset_resource)
 	selector.connect("tile_selected", self, "_on_tile_selected")
 	selector.pressed = true
 
@@ -67,6 +68,6 @@ func _on_tileset_activated(def):
 		_clear_tile_list()
 		_fill_tile_list()
 
-func _on_tile_selected(tile_index : int):
-	emit_signal("tile_selected", tile_index)
+func _on_tile_selected(tile_id):
+	emit_signal("tile_selected", tile_id)
 

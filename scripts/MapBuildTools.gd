@@ -13,6 +13,7 @@ var breakable_tile_resources = {}
 onready var floors_map = get_parent().get_node("Floors")
 onready var walls_map = get_parent().get_node("Walls")
 onready var doors_map = get_parent().get_node("Doors")
+onready var ghost_map = get_parent().get_node("Ghost")
 
 
 func _ready():
@@ -40,6 +41,11 @@ func _set_tilemaps_tileset(res : Resource):
 		if clear_on_new_tileset:
 			doors_map.clear()
 		doors_map.tile_set = res
+	
+	if ghost_map.tile_set != res:
+		if clear_on_new_tileset:
+			ghost_map.clear()
+		ghost_map.tile_set = res
 
 
 func _recalculate_walls(wall_tile : int):
@@ -77,23 +83,35 @@ func set_tileset_definition(def):
 			tileset_def = def
 			_set_tilemaps_tileset(res)
 
-
-func is_tile_breakable(tindex : int):
+func is_tile_breakable(tile_id):
 	if is_valid():
 		for i in range(0, tileset_def.floors.breakable.size()):
-			if tileset_def.floors.breakable[i].index == tindex:
-				return true
+			var fi = tileset_def.floors.breakable[i].index
+			if typeof(fi) == typeof(tile_id):
+				if fi == tile_id:
+					return true
 	return false
 
-func is_tile_safe(tindex : int):
+func is_tile_safe(tile_id):
 	if is_valid():
-		return tileset_def.floors.safe.has(float(tindex))
+		for i in range(0, tileset_def.floors.safe.size()):
+			var si = tileset_def.floors.safe[i]
+			if typeof(si) == typeof(tile_id):
+				if si == tile_id:
+					return true
 	return false
 
-func is_tile_exit(tindex : int):
+func is_tile_exit(tile_id):
 	if is_valid():
-		return tileset_def.floors.exit.has(float(tindex))
+		for i in range(0, tileset_def.floors.exit.size()):
+			var ei = tileset_def.floors.exit[i]
+			if typeof(ei) == typeof(tile_id):
+				if ei == tile_id:
+					return true
 	return false
+
+func is_tile_placeable(tile_id):
+	return is_tile_breakable(tile_id) or is_tile_safe(tile_id) or is_tile_exit(tile_id)
 
 func is_tile_wall(tindex : int):
 	if is_valid():
@@ -144,24 +162,48 @@ func clearTileMaps():
 	doors_map.clear()
 
 
-func set_floor_at_pos(pos : Vector2, floor_tile : int, wall_tile : int = -1):
+func set_floor_at_pos(pos : Vector2, floor_tile, wall_tile : int = -1):
 	pos = floors_map.world_to_map(pos)
 	return set_floor(floor(pos.x), floor(pos.y), floor_tile, wall_tile)
 
-func set_floor(x : int, y : int, floor_tile : int, wall_tile : int = -1):
+func set_floor(x : int, y : int, floor_tile, wall_tile : int = -1):
 	if not is_valid():
 		return false
-	if floor_tile >= 0 and not (is_tile_breakable(floor_tile) or is_tile_safe(floor_tile) or is_tile_exit(floor_tile)):
-		return false
-	elif floor_tile < 0:
-		floor_tile = -1
+		
+	if typeof(floor_tile) == TYPE_STRING:
+		if floor_tile != "" and not (is_tile_breakable(floor_tile) or is_tile_safe(floor_tile) or is_tile_exit(floor_tile)):
+			return false
+		elif floor_tile == "":
+			floor_tile = -1
+	else:
+		if floor_tile >= 0 and not (is_tile_breakable(floor_tile) or is_tile_safe(floor_tile) or is_tile_exit(floor_tile)):
+			return false
+		elif floor_tile < 0:
+			floor_tile = -1
+		
 	if wall_tile >= 0 and not is_tile_wall(wall_tile):
 		return false
 	elif wall_tile < 0:
 		wall_tile = tileset_def.walls[0]
 	
-	floors_map.set_cell(x, y, floor_tile)
+	if typeof(floor_tile) == TYPE_STRING:
+		var size = TilesetStore.get_meta_size(tileset_def, floor_tile)
+		var tiles = TilesetStore.get_meta_tiles(tileset_def, floor_tile)
+		if tiles.size() > 0 and tiles.size() == (floor(size.x) * floor(size.y)):
+			for ty in range(0, floor(size.y)):
+				for tx in range(0, floor(size.x)):
+					var tileid = tiles[(ty*floor(size.x))+tx];
+					if tileid >= 0:
+						floors_map.set_cell(x + tx, y + ty, tileid)
+					else:
+						floors_map.set_cell(x + tx, y + ty, -1)
+		else:
+			print("ERROR: Failed to set meta tile '", floor_tile, "'. Size does not match given tiles.")
+	else:
+		floors_map.set_cell(x, y, floor_tile)
+	
 	_recalculate_walls(wall_tile)
+	return true
 
 func get_floor_at_pos(pos : Vector2):
 	pos = floors_map.world_to_map(pos)
@@ -171,6 +213,42 @@ func get_floor(x : int, y : int):
 	if not is_valid():
 		return -1
 	return floors_map.get_cell(x, y)
+
+
+func set_ghost_tile_at_pos(pos: Vector2, tile_id):
+	pos = ghost_map.world_to_map(pos)
+	return set_ghost_tile(floor(pos.x), floor(pos.y), tile_id)
+
+func set_ghost_tile(x: int, y: int, tile_id):
+	if not is_valid():
+		return false
+	
+	if typeof(tile_id) == TYPE_STRING:
+		if tile_id == "":
+			tile_id = -1
+	else:
+		if tile_id < 0:
+			tile_id = -1
+	
+	ghost_map.clear()
+	if typeof(tile_id) == TYPE_STRING:
+		var size = TilesetStore.get_meta_size(tileset_def, tile_id)
+		var tiles = TilesetStore.get_meta_tiles(tileset_def, tile_id)
+		if tiles.size() > 0 and tiles.size() == (floor(size.x) * floor(size.y)):
+			for ty in range(0, floor(size.y)):
+				for tx in range(0, floor(size.x)):
+					var tileid = tiles[(ty*floor(size.x))+tx];
+					if tileid >= 0:
+						ghost_map.set_cell(x + tx, y + ty, tileid)
+		else:
+			print("ERROR: Failed to set meta tile '", tile_id, "'. Size does not match given tiles.")
+	else:
+		ghost_map.set_cell(x, y, tile_id)
+	
+	return true
+
+func clear_ghost_tiles():
+	ghost_map.clear()
 
 
 

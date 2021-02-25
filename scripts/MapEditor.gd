@@ -147,7 +147,7 @@ func _on_editor_quit():
 		queue_free()
 
 
-func _on_tile_selected(id : int):
+func _on_tile_selected(id):
 	if flooreditor_node == null:
 		return
 	flooreditor_node.set_active_tile_id(id)
@@ -162,4 +162,5 @@ func _on_random_floor(button_pressed):
 func _on_player_start(button_pressed):
 	if button_pressed:
 		editor_mode = EDITOR_MODE.PLAYER_START
+		editorlevel_node.clear_ghost_tiles()
 

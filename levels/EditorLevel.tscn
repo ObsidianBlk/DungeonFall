@@ -36,6 +36,12 @@ tile_set = ExtResource( 4 )
 cell_size = Vector2( 16, 16 )
 format = 1
 
+[node name="Ghost" type="TileMap" parent="."]
+self_modulate = Color( 1, 0.45098, 0.45098, 0.501961 )
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 16, 16 )
+format = 1
+
 [node name="Player_Start" parent="." instance=ExtResource( 3 )]
 position = Vector2( 0, 8 )
 map_editor_mode = true
