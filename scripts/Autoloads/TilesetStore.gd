@@ -61,6 +61,24 @@ func get_meta_tiles(def, meta_name):
 		return def.metas[meta_name].tiles
 	return []
 
+func get_meta_exit_info(def, meta_name, x=0, y=0):
+	if meta_tile_exists(def, meta_name):
+		if def.metas[meta_name].has("exit"):
+			var mte = def.metas[meta_name].exit
+			return {
+				"x": (x + mte.x) * def.size,
+				"y": (y + mte.y) * def.size,
+				"size": Vector2(mte.size[0] * def.size, mte.size[1] * def.size)
+			}
+		else:
+			var size = get_meta_size(def, meta_name) * def.size
+			return {
+				"x": x * def.size,
+				"y": y * def.size,
+				"size": size
+			}
+	return null
+
 
 func _ready():
 	rescan()
@@ -124,7 +142,32 @@ func _validate_meta_tile(def, meta_name):
 	if meta.icon < 0:
 		print("Meta tile icon id out of bounds.")
 		return false
+	
+	if meta.has("exit"):
+		var einfo = meta.exit;
+		if not einfo.has("x"):
+			print("Meta tile exit info missing 'x' parameter.")
+			return false
+		if typeof(einfo.x) != TYPE_REAL:
+			print("Meta tile exit info 'x' parameter contains invalid data type.")
+			return false
+		if not einfo.has("y"):
+			print("Meta tile exit info missing 'y' parameter.")
+			return false
+		if typeof(einfo.y) != TYPE_REAL:
+			print("Meta tile exit info 'y' parameter contains invalid data type.")
+			return false
+		if not einfo.has("size"):
+			print("Meta tile exit info missing 'size' parameter")
+			return false
+		if typeof(einfo.size) != TYPE_ARRAY:
+			print("Meta tile exit info 'size' parameter contains invalid data type.")
+			return false
+		if einfo.size.size() != 2:
+			print("Meta tile exit info 'size' must only contains two values.")
+			return false
 	return true
+
 
 func _process_tileset_definition(def : Dictionary):
 	# TODO: Return an error object instead of true/false

@@ -126,6 +126,22 @@ func detach_camera_to(container : Node2D):
 	_swap_to_container(container, camera_node)
 	camera_node = null
 
+func position_player_start(x, y):
+	var player_start = get_node(player_start_path)
+	if !player_start:
+		return
+	
+	var cell = $Floors.cell_size
+	player_start.position = Vector2(
+		(cell.x * floor(x)) + (cell.x * 0.5),
+		(cell.y * floor(y)) + (cell.y * 0.5)
+	)
+	if player_node != null:
+		player_node.global_position = player_start.global_position
+
+func position_player_start_to(pos : Vector2):
+	pos = $Floors.world_to_map(pos)
+	position_player_start(pos.x, pos.y)
 
 func is_over_pit(pos : Vector2, footprint : int = 0):
 	return mapCTRL._is_over_pit(pos, footprint)

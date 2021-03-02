@@ -27,6 +27,16 @@ func player_start_to_tracker():
 	
 	return {"status":"success"}
 
+func position_player_start(x, y):
+	player_start.position = Vector2(
+		(cell.x * floor(x)) + (cell.x * 0.5),
+		(cell.y * floor(y)) + (cell.y * 0.5)
+	)
+
+func position_player_start_to(pos : Vector2):
+	pos = walls_node.world_to_map(pos)
+	position_player_start(pos.x, pos.y)
+
 func move_tracker(x, y):
 	if abs(x) > 0:
 		tracker.position.x += cell.x * floor(x)

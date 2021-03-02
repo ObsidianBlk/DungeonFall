@@ -8,7 +8,9 @@ var ready = false
 var tileset_def = null
 var RNG = null
 
+var map_name = "User Map"
 var breakable_tile_resources = {}
+var dungeon_exits = []
 
 onready var floors_map = get_parent().get_node("Floors")
 onready var walls_map = get_parent().get_node("Walls")
@@ -61,6 +63,30 @@ func _recalculate_walls(wall_tile : int):
 	walls_map.update_bitmask_region()
 
 
+func _removeExitIfOverlap(einfo):
+	if dungeon_exits.size() > 0:
+		# TODO: Check if I can range() backwards!!!
+		var i = dungeon_exits.size() - 1
+		while i >= 0:
+			var de = dungeon_exits[i]
+			var derect = Rect2(
+				de.x - (de.size.x * 0.5),
+				de.y - (de.size.y * 0.5),
+				de.size.x,
+				de.size.y
+			)
+			
+			var einforect = Rect2(
+				einfo.x - (einfo.size.x * 0.5),
+				einfo.y - (einfo.size.y * 0.5),
+				einfo.size.x,
+				einfo.size.y
+			)
+			
+			if derect.intersects(einforect):
+				dungeon_exits.remove(i)
+			i -= 1
+
 # -----------------------------------------------------------------------------
 # "PUBLIC" METHODS
 
@@ -82,6 +108,13 @@ func set_tileset_definition(def):
 		if res:
 			tileset_def = def
 			_set_tilemaps_tileset(res)
+
+func get_map_name():
+	return map_name
+
+func set_map_name(name : String):
+	if name != "":
+		map_name = name
 
 func is_tile_breakable(tile_id):
 	if is_valid():
@@ -166,7 +199,7 @@ func set_floor_at_pos(pos : Vector2, floor_tile, wall_tile : int = -1):
 	pos = floors_map.world_to_map(pos)
 	return set_floor(floor(pos.x), floor(pos.y), floor_tile, wall_tile)
 
-func set_floor(x : int, y : int, floor_tile, wall_tile : int = -1):
+func set_floor(x : int, y : int, floor_tile, wall_tile : int = -1, no_exit_info = false):
 	if not is_valid():
 		return false
 		
@@ -197,10 +230,23 @@ func set_floor(x : int, y : int, floor_tile, wall_tile : int = -1):
 						floors_map.set_cell(x + tx, y + ty, tileid)
 					else:
 						floors_map.set_cell(x + tx, y + ty, -1)
+			var einfo = TilesetStore.get_meta_exit_info(tileset_def, floor_tile, x, y)
+			_removeExitIfOverlap(einfo)
+			if is_tile_exit(floor_tile):
+				if einfo != null:
+					dungeon_exits.append(einfo)
 		else:
 			print("ERROR: Failed to set meta tile '", floor_tile, "'. Size does not match given tiles.")
 	else:
 		floors_map.set_cell(x, y, floor_tile)
+		var einfo = {
+			"x": (x * tileset_def.size) + (floors_map.cell_size.x * 0.5),
+			"y": (y * tileset_def.size) + (floors_map.cell_size.y * 0.5),
+			"size": floors_map.cell_size * 0.5
+		}
+		_removeExitIfOverlap(einfo)
+		if no_exit_info == false and is_tile_exit(floor_tile):
+			dungeon_exits.append(einfo)
 	
 	_recalculate_walls(wall_tile)
 	return true
@@ -250,6 +296,80 @@ func set_ghost_tile(x: int, y: int, tile_id):
 func clear_ghost_tiles():
 	ghost_map.clear()
 
+
+
+func save_map():
+	var player_start = get_parent().get_node("Player_Start")
+	if not player_start:
+		return
+		
+	var data = {
+		"name": map_name,
+		"version": [0,1,0],
+		"tileset_name": tileset_def.name,
+		"player_start": player_start.position,
+		"floors": [],
+		"walls": [],
+		"exits": null
+	}
+	
+	# Storing Floor Tiles
+	var tiles = floors_map.get_used_cells()
+	for i in range(0, tiles.size()):
+		var findex = floors_map.get_cell(tiles[i].x, tiles[i].y)
+		data.floors.append({
+			"x": tiles[i].x,
+			"y": tiles[i].y,
+			"idx": findex
+		})
+	
+	# Storing Wall Tiles
+	tiles = walls_map.get_used_cells()
+	for i in range(0, tiles.size()):
+		var windex = walls_map.get_cell(tiles[i].x, tiles[i].y)
+		data.walls.append({
+			"x": tiles[i].x,
+			"y": tiles[i].y,
+			"idx": windex
+		})
+	
+	# Store dungeon exit information
+	data.exits = dungeon_exits
+	
+	# TODO: Actually save this data object!!
+
+
+func load_map(mapPath : String):
+	# TODO: Load map from path
+	# TODO: Fail out if map cannot load
+	# TODO: Fail out if cannot get data object
+	# TODO: Fail out if version mismatch
+	
+	var data = {} # This is a place holder for all of the above.
+	if not TilesetStore.has_tileset(data.tileset_name):
+		# TODO: Tell user there was an issue.
+		print("ERROR: Map tileset not found in system.")
+		TilesetStore.activate_tileset(data.tileset_name)
+	
+	# Position the player start.
+	get_parent().position_player_start_to(data.player_start)
+	
+	floors_map.clear()
+	for i in range(0, data.floors.size()):
+		floors_map.set_cell(data.floors[i].x, data.floors[i].y, data.floors[i].idx)
+	
+	walls_map.clear()
+	for i in range(0, data.walls.size()):
+		walls_map.set_cell(data.walls[i].x, data.walls[i].y, data.walls[i].idx)
+	walls_map.update_bitmask_region()
+	
+	# TODO: Can I just do... dungeon_exits = data.exits ???
+	dungeon_exits = []
+	for i in range(0, data.exits.size()):
+		dungeon_exits.append(data.exits[i])
+		# TODO: If Trigger node exists, build actual triggers from this information!
+	
+	
 
 
 # -----------------------------------------------------------------------------

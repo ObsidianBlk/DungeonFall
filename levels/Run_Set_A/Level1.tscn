@@ -170,6 +170,7 @@ format = 1
 
 [node name="Player_Start" parent="." instance=ExtResource( 3 )]
 position = Vector2( 943.166, 497.358 )
+map_editor_mode = false
 
 [node name="Triggers" type="Node2D" parent="."]
 
