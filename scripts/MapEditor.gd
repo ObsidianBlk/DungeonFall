@@ -164,3 +164,12 @@ func _on_player_start(button_pressed):
 		editor_mode = EDITOR_MODE.PLAYER_START
 		editorlevel_node.clear_ghost_tiles()
 
+func _on_save_map():
+	var mapData = editorlevel_node.generateMapData()
+	if mapData:
+		Io.storeMapData("MyMap.dfm", mapData)
+
+func _on_load_map():
+	# TODO: This is just place holder (and a quickie test).
+	var res = Io.readMapHeader("user://maps/MyMap.dfm")
+	print("Header Result: ", res)

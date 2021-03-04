@@ -477,7 +477,6 @@ custom_constants/separation = 24
 
 [node name="GeneralUI" type="Control" parent="CanvasLayer"]
 pause_mode = 2
-visible = false
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -495,10 +494,10 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GeneralUI/PopupMenu"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 226.0
-margin_bottom = 225.0
+margin_left = 15.1389
+margin_top = 15.2078
+margin_right = 234.139
+margin_bottom = 301.208
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -522,44 +521,46 @@ custom_constants/separation = 12
 [node name="Buttons" type="VBoxContainer" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer"]
 margin_top = 53.0
 margin_right = 219.0
-margin_bottom = 218.0
+margin_bottom = 286.0
 mouse_filter = 2
 custom_constants/separation = 11
 
 [node name="BTN_New" type="Button" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons"]
 margin_right = 219.0
-margin_bottom = 33.0
+margin_bottom = 50.2954
 mouse_filter = 1
 text = "New"
 
 [node name="BTN_Save" type="Button" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons"]
-margin_top = 44.0
+margin_top = 61.0
 margin_right = 219.0
-margin_bottom = 77.0
+margin_bottom = 111.295
 mouse_filter = 1
 text = "Save"
 
 [node name="BTN_Load" type="Button" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons"]
-margin_top = 88.0
+margin_top = 122.0
 margin_right = 219.0
-margin_bottom = 121.0
+margin_bottom = 172.295
 mouse_filter = 1
 text = "Load"
 
 [node name="BTN_Exit" type="Button" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons"]
-margin_top = 132.0
+margin_top = 183.0
 margin_right = 219.0
-margin_bottom = 165.0
+margin_bottom = 233.295
 mouse_filter = 1
 text = "Exit Editor"
 [connection signal="active_floor_type" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" to="." method="_on_active_floor_type"]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/Top/RandBox/Check" to="." method="_on_random_floor"]
-[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "B" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "B" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "S" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "B" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "S" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "E" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "S" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "E" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "E" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Player_Start" to="." method="_on_player_start"]
 [connection signal="tile_selected" from="CanvasLayer/EditorUI/FloorList" to="." method="_on_tile_selected"]
+[connection signal="pressed" from="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons/BTN_Save" to="." method="_on_save_map"]
+[connection signal="pressed" from="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons/BTN_Load" to="." method="_on_load_map"]
 [connection signal="pressed" from="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons/BTN_Exit" to="." method="_on_editor_quit"]

@@ -32,6 +32,30 @@ var cur_level_stats = null
 onready var gameview = $GameView/Port
 
 func _ready():
+	# Initialize IO
+	Io.initialize()
+	
+	# ------------------ START OF BRAIN DRIVIL
+	#print("Bin Val: ", 0b0000000100000001)
+	#print("Val: ", (int(257) >> 8) & 0x0F)
+	#print("Val2: ", (int(1) << 8))
+	#print("Val3: ", ((int(1) << 8) | int(1)))
+	
+	#var v = 1
+	#print("V: ", v << 8)
+	#print("V2: ", (v << 8) | v)
+	#var test = PoolByteArray()
+	#var v = var2bytes(257)
+	#  00000001 00000001
+	#print("V Size: ", v.size())
+	#for i in range(0, v.size()):
+	#	print("idx: ", i, " | val: ", v[i])
+	#v = bytes2var(v)
+	#print("OG Val: ", v)
+	#GD.var2byes()
+	# ------------------ END OF BRAIN DRIVIL
+	
+	# Connect required signals
 	$Perma_Objects/Player.connect("request_game_pause", self, "_on_game_pause")
 	emit_signal("request_ui_vis_change", false, "Game")
 	emit_signal("request_ui_vis_change", false, "LevelTransition")

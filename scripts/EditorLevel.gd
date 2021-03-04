@@ -183,3 +183,7 @@ func set_ghost_tile(x: int, y: int, tile_id):
 
 func clear_ghost_tiles():
 	mapBT_node.clear_ghost_tiles()
+
+
+func generateMapData():
+	return mapBT_node.generateMapData("I'm a MAP!")

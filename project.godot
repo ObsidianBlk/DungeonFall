@@ -40,6 +40,7 @@ config/icon="res://icon.png"
 [autoload]
 
 TilesetStore="*res://scripts/Autoloads/TilesetStore.gd"
+Io="*res://scripts/Autoloads/io.gd"
 
 [display]
 
