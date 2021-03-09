@@ -369,12 +369,26 @@ func buildMapFromData(data):
 		walls_map.set_cell(data.map.walls[i].x, data.map.walls[i].y, data.map.walls[i].idx)
 	walls_map.update_bitmask_region()
 	
-	# TODO: Can I just do... dungeon_exits = data.exits ???
+	
 	dungeon_exits = []
+	var trigger_node = get_parent().get_node("Triggers")
 	for i in range(0, data.map.exits.size()):
 		dungeon_exits.append(data.map.exits[i])
-		# TODO: If Trigger node exists, build actual triggers from this information!
-	
+		
+		if trigger_node:
+			var shape = CircleShape2D.new()
+			shape.radius = data.map.exits[i].size.x
+			var col = CollisionShape2D.new()
+			col.shape = shape
+			
+			var a = Area2D.new()
+			a.add_child(col)
+			trigger_node.add_child(a)
+			a.position = Vector2(data.map.exits[i].x, data.map.exits[i].x)
+			a.set_script(load("res://objects/level_exit/Level Exit.gd"))
+			a.connect("body_entered", a, "_on_Level_Exit_body_entered")
+			a.connect("level_exit", get_parent(), "exit_level")
+			
 	
 
 

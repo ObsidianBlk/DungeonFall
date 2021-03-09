@@ -22,6 +22,9 @@ export var camera_container_node_path : NodePath = ""
 export var player_start_path : NodePath = ""
 
 
+var ready = false
+var map_data = null
+
 var start_pos = null
 var player_node : Node2D = null
 var camera_node : Node2D = null
@@ -37,6 +40,11 @@ var points = 0
 onready var mapCTRL = $MapCTRL
 
 func _ready():
+	ready = true
+	if map_data != null:
+		$MapBuildTools.buildMapFromData(map_data)
+		map_data = null
+	
 	mapCTRL.connect("pickup", self, "_on_pickup")
 	emit_signal("point_update", points)
 	emit_signal("play_timer_changed", play_timer)
@@ -78,6 +86,16 @@ func _connect_camera_to_player():
 	if player_node != null and camera_node != null:
 		camera_node.target_node_path = player_node.get_path()
 
+
+func load_user_level(path : String):
+	var data = Io.readMapData(path)
+	if data:
+		if ready:
+			$MapBuildTools.buildMapFromData(data)
+		else:
+			map_data = data
+		return true
+	return false
 
 func attach_player(player : Node2D):
 	if player_node != null:

@@ -187,3 +187,6 @@ func clear_ghost_tiles():
 
 func generateMapData():
 	return mapBT_node.generateMapData("I'm a MAP!")
+
+func buildMapFromData(data):
+	mapBT_node.buildMapFromData(data)

@@ -13,15 +13,16 @@ signal level_time_visible(enable)
 signal total_run_time(val)
 signal total_run_points(val)
 
-
 const EDITOR_WORLD_SCENE = "res://MapEditor.tscn"
+const BASE_LEVEL_SCENE = "res://levels/BaseLevel.tscn"
 
 # TODO:
 # Setup an over-all game "state" system to determine what menu player is in or if they are actively in the game.
 var in_game_pause_state = false
 
 #var TEST_LEVEL = "res://levels/test_level/Test_Level.tscn"
-var FIRST_LEVEL = "res://levels/Run_Set_A/Level1.tscn"
+#var FIRST_LEVEL = "res://levels/Run_Set_A/Level1.tscn"
+var FIRST_LEVEL = "user://maps/MyMap.dfm"
 var scene = null
 var level = null
 var cur_level_info = {"src":FIRST_LEVEL}
@@ -94,14 +95,23 @@ func unload_level():
 		level.queue_free()
 		level = null
 
-func load_level(res_path : String, new_level : bool = true):
-	var scene = load(res_path)
+func load_level(res_path : String, new_level : bool = true, is_user_level : bool = false):
+	var scene = null
+	if is_user_level:
+		scene = load(BASE_LEVEL_SCENE)
+	else:
+		scene = load(res_path)
+	
 	if scene != null:
 		if new_level:
 			_store_run()
 		
 		unload_level()
 		level = scene.instance()
+		if is_user_level:
+			if not level.load_user_level(res_path):
+				return false
+			
 		level.connect("end_of_run", self, "_on_end_of_run")
 		level.connect("level_exit", self, "_on_level_exit")
 		level.connect("point_update", self, "_on_point_update")
@@ -118,6 +128,14 @@ func load_level(res_path : String, new_level : bool = true):
 		level.attach_camera($Perma_Objects/Camera)
 		return true
 	return false
+
+
+func _load_user_level(path : String):
+	var scene = load(BASE_LEVEL_SCENE)
+	scene = scene.instance()
+	if scene.load_user_level(path):
+		return scene
+	return null
 
 
 func _on_start():
@@ -187,7 +205,7 @@ func _on_end_of_run():
 	#emit_signal("request_ui_vis_change", true, "MainMenu")
 
 func _on_continue_to_level(is_new_level : bool = true):
-	if load_level(cur_level_info.src, is_new_level):
+	if load_level(cur_level_info.src, is_new_level, true):
 		#$CanvasLayer/UI/Game.visible = true
 		emit_signal("request_ui_vis_change", true, "Game")
 		get_tree().paused = false

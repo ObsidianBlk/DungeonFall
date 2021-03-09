@@ -171,5 +171,6 @@ func _on_save_map():
 
 func _on_load_map():
 	# TODO: This is just place holder (and a quickie test).
-	var res = Io.readMapHeader("user://maps/MyMap.dfm")
-	print("Header Result: ", res)
+	var data = Io.readMapData("user://maps/MyMap.dfm")
+	if data:
+		editorlevel_node.buildMapFromData(data)

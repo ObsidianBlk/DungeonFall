@@ -47,7 +47,7 @@ format = 1
 position = Vector2( 0, 8 )
 map_editor_mode = true
 
-[node name="Triggers" type="Node2D" parent="."]
+[node name="Triggers_Depricated" type="Node2D" parent="."]
 
 [node name="Tracker" type="Position2D" parent="."]
 position = Vector2( 8, 8 )

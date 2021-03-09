@@ -24,13 +24,19 @@ func _Int2ByteArray(v : int, byteCount = 8):
 	return pool
 
 
-func _ByteArray2Int(ba : PoolByteArray):
-	if ba.size() <= 0:
+func _ByteArray2Int(ba : PoolByteArray, byteCount = 0, offset = 0):
+	if ba.size() <= 0 or offset < 0 or offset >= ba.size():
+		return 0
+	if byteCount == 0:
+		byteCount = ba.size() - offset
+		if byteCount > 8:
+			byteCount = 8
+	if byteCount < 1 or byteCount > 8:
 		return 0
 	
 	var val = 0
-	for i in range(0, ba.size()):
-		val |= int(ba[i]) << (i * 8)
+	for i in range(offset, offset + byteCount):
+		val |= int(ba[i]) << ((i - offset) * 8)
 	return val
 
 
@@ -47,7 +53,10 @@ func _GetAvailableMaps(mapBasePath : String = ""):
 			if dir.current_is_dir():
 				maps.append_array(_GetAvailableMaps(dir.get_current_dir() + file_name))
 			else:
-				pass # TODO: Get map's name
+				if file_name.get_extension().to_lower() == "dfm":
+					var header = readMapData(file_name, true)
+					if header:
+						maps.append({"file":file_name, "map_name":header.name})
 			file_name = dir.get_next()
 	
 	return maps
@@ -81,8 +90,9 @@ func storeMapData(filePath : String, data):
 			var mapData = PoolByteArray()
 			val = data.map.tileset_name.to_utf8()
 			var size = val.size()
-			mapData.append(int(size) >> 8)
-			mapData.append(size)
+			mapData.append_array(_Int2ByteArray(size, 2))
+			#mapData.append(int(size) >> 8)
+			#mapData.append(size)
 			mapData.append_array(val)
 			mapData.append_array(var2bytes(data.map.player_start.x))
 			mapData.append_array(var2bytes(data.map.player_start.y))
@@ -103,10 +113,13 @@ func storeMapData(filePath : String, data):
 			for i in range(0, data.map.exits.size()):
 				mapData.append_array(var2bytes(data.map.exits[i].x))
 				mapData.append_array(var2bytes(data.map.exits[i].y))
-				mapData.append_array(var2bytes(data.map.exits[i].size))
+				mapData.append_array(var2bytes(data.map.exits[i].size.x))
+				mapData.append_array(var2bytes(data.map.exits[i].size.y))
 			
 			# Store uncompressed size
 			file.store_64(mapData.size())
+			print("Map Data Size (on save): ", mapData.size())
+			print(" ---------------------------------------------")
 			mapData = mapData.compress(File.COMPRESSION_GZIP)
 			# Store compressed size
 			file.store_64(mapData.size())
@@ -118,27 +131,98 @@ func storeMapData(filePath : String, data):
 	return false
 
 
-func readMapHeader(filePath : String):
+func readMapData(filePath : String, headerOnly : bool = false):
 	var file = File.new()
 	var status = file.open(filePath, File.READ)
 	if status == OK:
+		var data = {}
 		var id = file.get_buffer(5)
 		if id.get_string_from_ascii() != "DFMAP":
 			print("READ MAP ERROR: ID does not match 'DFMAP'.")
 			return null
-		var version = file.get_buffer(3)
-		if version[0] != 0 or version[1] != 1 or version[2] != 0:
+		data.version = Array(file.get_buffer(3))
+		if data.version[0] != 0 or data.version[1] != 1 or data.version[2] != 0:
 			print("READ MAP ERROR: Version mismatch.")
 			return null
 		var size = file.get_16()
-		var map_name = file.get_buffer(size).get_string_from_utf8()
+		data.name = file.get_buffer(size).get_string_from_utf8()
 		
-		return {
-			"name": map_name,
-			"version": [version[0], version[1], version[2]]
-		}
+		if headerOnly:
+			file.close()
+			return data
+		
+		data.map = {}
+		
+		var ucsize = file.get_64()
+		var csize = file.get_64()
+		
+		var mapData = file.get_buffer(csize)
+		var index = 0
+		print("mapData Size [Compressed]: ", mapData.size())
+		mapData = mapData.decompress(ucsize, File.COMPRESSION_GZIP)
+		if mapData.size() != ucsize:
+			print("READ MAP ERROR: Uncompressed map data size invalid.")
+			return null
+		
+		size = _ByteArray2Int(mapData, 2, index)
+		index += 2
+		
+		data.map.tileset_name = mapData.subarray(index, index + (size-1)).get_string_from_utf8()
+		index += size
+		
+		data.map.player_start = Vector2.ZERO
+		data.map.player_start.x = bytes2var(mapData.subarray(index, index+7))
+		index += 8
+		data.map.player_start.y = bytes2var(mapData.subarray(index, index+7))
+		index += 8
+		
+		
+		# ----- Loading Floor tile data
+		size = _ByteArray2Int(mapData, 4, index)
+		index += 4
+		data.map.floors = []
+		for i in range(0, size):
+			var x = _ByteArray2Int(mapData, 4, index)
+			index += 4
+			var y = _ByteArray2Int(mapData, 4, index)
+			index += 4
+			var idx = mapData[index]
+			index += 1
+			data.map.floors.append({"x":x, "y":y, "idx":idx})
+		
+		# ----- Loading Wall tile data
+		size = _ByteArray2Int(mapData, 4, index)
+		index += 4
+		data.map.walls = []
+		for i in range(0, size):
+			var x = _ByteArray2Int(mapData, 4, index)
+			index += 4
+			var y = _ByteArray2Int(mapData, 4, index)
+			index += 4
+			var idx = mapData[index]
+			index += 1
+			data.map.walls.append({"x":x, "y":y, "idx":idx})
+		
+		# ----- Loading dungeon exit information
+		size = mapData[index] #_ByteArray2Int(mapData, 4, index)
+		index += 1
+		data.map.exits = []
+		for i in range(0, size):
+			var x = bytes2var(mapData.subarray(index, index + 7))
+			index += 8
+			var y = bytes2var(mapData.subarray(index, index + 7))
+			index += 8
+			var sa = mapData.subarray(index, index + 7)
+			var sizex = bytes2var(mapData.subarray(index, index + 7))
+			index += 8
+			var sizey = bytes2var(mapData.subarray(index, index + 7))
+			index += 8
+			data.map.exits.append({"x":x, "y":y, "size":Vector2(sizex, sizey)})
+		
+		return data
+	
+	print("ERROR: Failed to open map file.")
 	return null
 
 
-func readMapData(filePath : String):
-	pass
+
