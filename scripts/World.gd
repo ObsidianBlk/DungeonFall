@@ -25,7 +25,12 @@ var in_game_pause_state = false
 var FIRST_LEVEL = "user://maps/MyMap.dfm"
 var scene = null
 var level = null
-var cur_level_info = {"src":FIRST_LEVEL}
+var cur_level_info = {
+	"src":FIRST_LEVEL,
+	"proceedural": false,
+	"seed": 0,
+	"is_dfm":true
+}
 
 var run_results = []
 var cur_level_stats = null
@@ -95,9 +100,9 @@ func unload_level():
 		level.queue_free()
 		level = null
 
-func load_level(res_path : String, new_level : bool = true, is_user_level : bool = false):
+func load_level(res_path : String, new_level : bool = true, is_dfm : bool = false):
 	var scene = null
-	if is_user_level:
+	if is_dfm:
 		scene = load(BASE_LEVEL_SCENE)
 	else:
 		scene = load(res_path)
@@ -108,7 +113,7 @@ func load_level(res_path : String, new_level : bool = true, is_user_level : bool
 		
 		unload_level()
 		level = scene.instance()
-		if is_user_level:
+		if is_dfm:
 			if not level.load_user_level(res_path):
 				return false
 			
@@ -139,17 +144,13 @@ func _load_user_level(path : String):
 
 
 func _on_start():
-	cur_level_info = {
-		"src": FIRST_LEVEL,
-		"proceedural": false,
-		"seed": 0
-	}
+	cur_level_info.src = FIRST_LEVEL
 	run_results = []
 	_on_continue_to_level()
 
 
 func _on_game_pause():
-	print ("Pause requested")
+	# print ("Pause requested")
 	emit_signal("request_ui_vis_change", false, "Game")
 	emit_signal("request_ui_vis_change", true, "PauseMenu")
 	get_tree().paused = true
@@ -176,6 +177,8 @@ func _on_level_timer_changed(time_val):
 
 func _on_level_exit(next_level_info):
 	# TODO: Handle proceedural levels when ready!
+	# TODO: Ummm... like, level info objects should have a "create" method to keep
+	#   them consistent!
 	cur_level_info = next_level_info
 	emit_signal("request_ui_vis_change", false, "Game")
 	emit_signal("request_ui_vis_change", true, "LevelTransition")
@@ -190,7 +193,6 @@ func _on_end_of_run():
 	var total_play_time = 0.0
 	var total_points = 0
 	for res in run_results:
-		print("Result set: ", res)
 		total_play_time += res.time
 		total_points += res.points
 	var total_dungeons = run_results.size()
@@ -205,13 +207,14 @@ func _on_end_of_run():
 	#emit_signal("request_ui_vis_change", true, "MainMenu")
 
 func _on_continue_to_level(is_new_level : bool = true):
-	if load_level(cur_level_info.src, is_new_level, true):
+	print(cur_level_info)
+	if load_level(cur_level_info.src, is_new_level, cur_level_info.is_dfm):
 		#$CanvasLayer/UI/Game.visible = true
 		emit_signal("request_ui_vis_change", true, "Game")
 		get_tree().paused = false
 
 func _on_player_death():
-	load_level(cur_level_info.src, false)
+	load_level(cur_level_info.src, false, cur_level_info.is_dfm)
 
 func _on_open_editor():
 	var editor = load(EDITOR_WORLD_SCENE)

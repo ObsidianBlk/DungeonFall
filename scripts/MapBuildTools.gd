@@ -69,22 +69,28 @@ func _removeExitIfOverlap(einfo):
 		while i >= 0:
 			var de = dungeon_exits[i]
 			var derect = Rect2(
-				de.x - (de.size.x * 0.5),
-				de.y - (de.size.y * 0.5),
-				de.size.x,
-				de.size.y
+				de.position - (de.size * 0.5),
+				de.size
 			)
 			
 			var einforect = Rect2(
-				einfo.x - (einfo.size.x * 0.5),
-				einfo.y - (einfo.size.y * 0.5),
-				einfo.size.x,
-				einfo.size.y
+				einfo.position - (einfo.size * 0.5),
+				einfo.size
 			)
 			
 			if derect.intersects(einforect):
 				dungeon_exits.remove(i)
 			i -= 1
+
+
+func _IDMatch(id1, id2):
+	var tid1 = typeof(id1)
+	var tid2 = typeof(id2)
+	if tid1 == TYPE_STRING and tid1 == tid2:
+		return id1 == id2
+	elif (tid1 == TYPE_INT or tid1 == TYPE_REAL) and (tid2 == TYPE_INT or tid2 == TYPE_REAL):
+		return int(id1) == int(id2)
+	return false
 
 # -----------------------------------------------------------------------------
 # "PUBLIC" METHODS
@@ -119,7 +125,7 @@ func is_tile_breakable(tile_id):
 	if is_valid():
 		for i in range(0, tileset_def.floors.breakable.size()):
 			var fi = tileset_def.floors.breakable[i].index
-			if typeof(fi) == typeof(tile_id):
+			if _IDMatch(fi, tile_id):
 				if fi == tile_id:
 					return true
 	return false
@@ -128,7 +134,7 @@ func is_tile_safe(tile_id):
 	if is_valid():
 		for i in range(0, tileset_def.floors.safe.size()):
 			var si = tileset_def.floors.safe[i]
-			if typeof(si) == typeof(tile_id):
+			if _IDMatch(si, tile_id):
 				if si == tile_id:
 					return true
 	return false
@@ -137,7 +143,7 @@ func is_tile_exit(tile_id):
 	if is_valid():
 		for i in range(0, tileset_def.floors.exit.size()):
 			var ei = tileset_def.floors.exit[i]
-			if typeof(ei) == typeof(tile_id):
+			if _IDMatch(ei, tile_id):
 				if ei == tile_id:
 					return true
 	return false
@@ -239,8 +245,11 @@ func set_floor(x : int, y : int, floor_tile, wall_tile : int = -1, no_exit_info 
 	else:
 		floors_map.set_cell(x, y, floor_tile)
 		var einfo = {
-			"x": (x * tileset_def.size) + (floors_map.cell_size.x * 0.5),
-			"y": (y * tileset_def.size) + (floors_map.cell_size.y * 0.5),
+			"position": Vector2(
+				(x * tileset_def.size) + (floors_map.cell_size.x * 0.5),
+				(y * tileset_def.size) + (floors_map.cell_size.y * 0.5)
+			),
+			"type": "circle",
 			"size": floors_map.cell_size * 0.5
 		}
 		_removeExitIfOverlap(einfo)
@@ -376,19 +385,30 @@ func buildMapFromData(data):
 		dungeon_exits.append(data.map.exits[i])
 		
 		if trigger_node:
-			var shape = CircleShape2D.new()
-			shape.radius = data.map.exits[i].size.x
-			var col = CollisionShape2D.new()
-			col.shape = shape
+			var shape = null
 			
-			var a = Area2D.new()
-			a.add_child(col)
-			trigger_node.add_child(a)
-			a.position = Vector2(data.map.exits[i].x, data.map.exits[i].x)
-			a.set_script(load("res://objects/level_exit/Level Exit.gd"))
-			a.connect("body_entered", a, "_on_Level_Exit_body_entered")
-			a.connect("level_exit", get_parent(), "exit_level")
+			if data.map.exits[i].type == "circle":
+				shape = CircleShape2D.new()
+				shape.radius = data.map.exits[i].size.x
+			elif data.map.exits[i].type == "rect":
+				shape = RectangleShape2D.new()
+				shape.extents = data.map.exits[i].size
 			
+			if shape != null:
+				var col = CollisionShape2D.new()
+				col.shape = shape
+				
+				var a = Area2D.new()
+				a.add_child(col)
+				trigger_node.add_child(a)
+				a.collision_layer = 0
+				a.collision_mask = 256
+				a.position = data.map.exits[i].position
+				a.set_script(load("res://objects/level_exit/Level Exit.gd"))
+				a.connect("body_entered", a, "_on_Level_Exit_body_entered")
+				a.connect("level_exit", get_parent(), "exit_level")
+			else:
+				print("WARNING: Failed to create exit trigger shape.")
 	
 
 

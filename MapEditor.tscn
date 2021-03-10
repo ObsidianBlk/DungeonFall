@@ -477,6 +477,7 @@ custom_constants/separation = 24
 
 [node name="GeneralUI" type="Control" parent="CanvasLayer"]
 pause_mode = 2
+visible = false
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -553,12 +554,12 @@ mouse_filter = 1
 text = "Exit Editor"
 [connection signal="active_floor_type" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" to="." method="_on_active_floor_type"]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/Top/RandBox/Check" to="." method="_on_random_floor"]
-[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "B" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "B" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "S" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "B" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "S" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "E" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "S" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "E" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "E" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Player_Start" to="." method="_on_player_start"]
 [connection signal="tile_selected" from="CanvasLayer/EditorUI/FloorList" to="." method="_on_tile_selected"]
 [connection signal="pressed" from="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons/BTN_Save" to="." method="_on_save_map"]

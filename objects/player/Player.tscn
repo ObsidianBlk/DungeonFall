@@ -401,7 +401,7 @@ nodes/run_mult/node = SubResource( 22 )
 nodes/run_mult/position = Vector2( -400, -120 )
 nodes/state/node = SubResource( 23 )
 nodes/state/position = Vector2( 120, 160 )
-node_connections = [ "idle", 0, "Animation", "idle", 1, "Animation 2", "output", 0, "state", "state", 0, "moving", "state", 1, "air", "state", 2, "OneShot", "OneShot", 0, "Animation 8", "air", 0, "Animation 4", "air", 1, "Animation 5", "air", 2, "Animation 6", "air", 3, "Animation 7", "run_mult", 0, "Animation 3", "moving", 0, "run_mult", "moving", 1, "idle" ]
+node_connections = [ "idle", 0, "Animation", "idle", 1, "Animation 2", "output", 0, "state", "state", 0, "moving", "state", 1, "air", "state", 2, "OneShot", "air", 0, "Animation 4", "air", 1, "Animation 5", "air", 2, "Animation 6", "air", 3, "Animation 7", "run_mult", 0, "Animation 3", "moving", 0, "run_mult", "moving", 1, "idle", "OneShot", 0, "Animation 8" ]
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 256

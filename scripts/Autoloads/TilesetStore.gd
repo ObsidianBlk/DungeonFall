@@ -66,15 +66,24 @@ func get_meta_exit_info(def, meta_name, x=0, y=0):
 		if def.metas[meta_name].has("exit"):
 			var mte = def.metas[meta_name].exit
 			return {
-				"x": (x + mte.x) * def.size,
-				"y": (y + mte.y) * def.size,
-				"size": Vector2(mte.size[0] * def.size, mte.size[1] * def.size)
+				"position": Vector2(
+					(x + mte.x) * def.size,
+					(y + mte.y) * def.size
+				),
+				"type": mte.type,
+				"size": Vector2(
+					mte.size[0] * def.size,
+					mte.size[1] * def.size
+				)
 			}
 		else:
 			var size = get_meta_size(def, meta_name) * def.size
 			return {
-				"x": x * def.size,
-				"y": y * def.size,
+				"position": Vector2(
+					x * def.size,
+					y * def.size
+				),
+				"type": "circle",
 				"size": size
 			}
 	return null
@@ -165,6 +174,15 @@ func _validate_meta_tile(def, meta_name):
 			return false
 		if einfo.size.size() != 2:
 			print("Meta tile exit info 'size' must only contains two values.")
+			return false
+		if not einfo.has("type"):
+			print("Meta tile exit info missing 'type' parameter")
+			return false
+		if typeof(einfo.type) != TYPE_STRING:
+			print("Meta tile exit info 'type' must be a string");
+			return false
+		if einfo.type != "circle" and einfo.type != "rect":
+			print("Meta tile exit info 'type' unknown. Expecting 'circle' or 'rect'.")
 			return false
 	return true
 

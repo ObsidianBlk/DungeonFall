@@ -12,6 +12,7 @@
       "exit":{
         "x": 1,
         "y": 1,
+        "type": "circle",
         "size": [1,1]
       }
     }

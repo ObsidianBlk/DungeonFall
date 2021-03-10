@@ -84,13 +84,7 @@ visible = false
 
 [node name="Player" parent="Perma_Objects" instance=ExtResource( 2 )]
 position = Vector2( 71.7173, 75.7264 )
-map_node_path = NodePath("")
 units_per_second = 6
-max_hp = 100.0
-footprint = 2
-jump_height_time = 0.5
-jump_position_delta = 6.0
-facing = 0
 
 [node name="Camera" parent="Perma_Objects" instance=ExtResource( 3 )]
 

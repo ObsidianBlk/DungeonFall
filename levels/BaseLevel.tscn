@@ -47,4 +47,3 @@ format = 1
 [node name="Triggers" type="Node2D" parent="."]
 
 [node name="Player_Start" parent="." instance=ExtResource( 3 )]
-map_editor_mode = false

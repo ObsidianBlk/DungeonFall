@@ -111,15 +111,16 @@ func storeMapData(filePath : String, data):
 			
 			mapData.append(data.map.exits.size())
 			for i in range(0, data.map.exits.size()):
-				mapData.append_array(var2bytes(data.map.exits[i].x))
-				mapData.append_array(var2bytes(data.map.exits[i].y))
+				mapData.append_array(var2bytes(data.map.exits[i].position.x))
+				mapData.append_array(var2bytes(data.map.exits[i].position.y))
 				mapData.append_array(var2bytes(data.map.exits[i].size.x))
 				mapData.append_array(var2bytes(data.map.exits[i].size.y))
+				val = data.map.exits[i].type.to_utf8()
+				mapData.append(val.size())
+				mapData.append_array(val)
 			
 			# Store uncompressed size
 			file.store_64(mapData.size())
-			print("Map Data Size (on save): ", mapData.size())
-			print(" ---------------------------------------------")
 			mapData = mapData.compress(File.COMPRESSION_GZIP)
 			# Store compressed size
 			file.store_64(mapData.size())
@@ -158,7 +159,6 @@ func readMapData(filePath : String, headerOnly : bool = false):
 		
 		var mapData = file.get_buffer(csize)
 		var index = 0
-		print("mapData Size [Compressed]: ", mapData.size())
 		mapData = mapData.decompress(ucsize, File.COMPRESSION_GZIP)
 		if mapData.size() != ucsize:
 			print("READ MAP ERROR: Uncompressed map data size invalid.")
@@ -217,7 +217,20 @@ func readMapData(filePath : String, headerOnly : bool = false):
 			index += 8
 			var sizey = bytes2var(mapData.subarray(index, index + 7))
 			index += 8
-			data.map.exits.append({"x":x, "y":y, "size":Vector2(sizex, sizey)})
+			var tsize = mapData[index]
+			index += 1
+			var type = mapData.subarray(index, index + (tsize-1)).get_string_from_utf8()
+			index += tsize
+			
+			# TODO: Validate type = "circle" or "rect"
+			# TODO: Validate position ON a floor tile
+			# TODO: Validate size x and y are both positive!
+			
+			data.map.exits.append({
+				"position": Vector2(x, y),
+				"size":Vector2(sizex, sizey),
+				"type":type
+			})
 		
 		return data
 	
