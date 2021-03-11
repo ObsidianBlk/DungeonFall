@@ -174,3 +174,8 @@ func _on_load_map():
 	var data = Io.readMapData("user://maps/MyMap.dfm")
 	if data:
 		editorlevel_node.buildMapFromData(data)
+
+
+
+func _on_map_settings_toggled(button_pressed):
+	$CanvasLayer/MapSettingsUI.visible = button_pressed
