@@ -7,7 +7,7 @@
 [ext_resource path="res://scripts/UI/TimersCTRL.gd" type="Script" id=5]
 [ext_resource path="res://scripts/UI/SimpleUI.gd" type="Script" id=6]
 [ext_resource path="res://assets/graphics/tilesets/tilesetA/tilesetA_Floors.png" type="Texture" id=7]
-[ext_resource path="res://themes/Minion.theme" type="Theme" id=8]
+[ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=8]
 [ext_resource path="res://themes/fonts/satansminions_dfd.tres" type="DynamicFontData" id=9]
 
 [sub_resource type="DynamicFontData" id=1]
@@ -264,7 +264,7 @@ __meta__ = {
 margin_left = 469.0
 margin_top = 417.0
 margin_right = 1451.0
-margin_bottom = 662.0
+margin_bottom = 663.0
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info"]
 margin_right = 982.0
@@ -322,7 +322,7 @@ text = "0"
 [node name="BTN_NextLevel" type="Button" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info"]
 margin_top = 195.0
 margin_right = 982.0
-margin_bottom = 228.0
+margin_bottom = 246.249
 custom_fonts/font = SubResource( 12 )
 text = "Continue to Next Level"
 
@@ -360,7 +360,7 @@ __meta__ = {
 margin_left = 362.0
 margin_top = 417.0
 margin_right = 1557.0
-margin_bottom = 662.0
+margin_bottom = 663.0
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/LastLevelResults/CenterContainer/Info"]
 margin_right = 1195.0
@@ -456,7 +456,7 @@ __meta__ = {
 margin_left = 301.0
 margin_top = 425.0
 margin_right = 1619.0
-margin_bottom = 654.0
+margin_bottom = 655.0
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info"]
 margin_right = 1318.0
@@ -576,7 +576,7 @@ __meta__ = {
 
 [node name="ColorRect2" type="ColorRect" parent="CanvasLayer/UI/MainMenu"]
 margin_top = 270.0
-margin_right = 400.0
+margin_right = 161.0
 margin_bottom = 810.0
 color = Color( 0, 0, 0, 0.501961 )
 __meta__ = {
@@ -590,22 +590,24 @@ text = "Instructions...
 W,A,S,D - Move
 Space - Jump
 ESC - Pause Menu
-   - Safe Square
-   - Exit Square
+
+        - Safe Square
+
+        - Exit Square
 "
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Sprite" type="Sprite" parent="CanvasLayer/UI/MainMenu/ColorRect2"]
-position = Vector2( 22, 160 )
+position = Vector2( 22, 132 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 7 )
 region_enabled = true
 region_rect = Rect2( 64, 0, 16, 16 )
 
 [node name="Sprite2" type="Sprite" parent="CanvasLayer/UI/MainMenu/ColorRect2"]
-position = Vector2( 22, 200 )
+position = Vector2( 22, 180 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 7 )
 region_enabled = true
@@ -614,15 +616,17 @@ region_rect = Rect2( 80, 0, 16, 16 )
 [node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/UI/MainMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = -1.7818
+margin_bottom = -1.78186
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/MainMenu/CenterContainer"]
 margin_left = 704.0
-margin_top = 298.0
+margin_top = 297.0
 margin_right = 1216.0
-margin_bottom = 781.0
+margin_bottom = 783.0
 custom_constants/separation = 72
 
 [node name="Title" type="Label" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer"]
@@ -639,26 +643,26 @@ __meta__ = {
 [node name="MMOptions" type="VBoxContainer" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer"]
 margin_top = 245.0
 margin_right = 512.0
-margin_bottom = 483.0
+margin_bottom = 486.0
 custom_constants/separation = 20
 
 [node name="BTN_Start" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
 margin_right = 512.0
-margin_bottom = 66.2954
+margin_bottom = 67.2487
 custom_fonts/font = SubResource( 15 )
 text = "Start"
 
 [node name="BTN_Editor" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_top = 86.0
+margin_top = 87.0
 margin_right = 512.0
-margin_bottom = 152.295
+margin_bottom = 154.249
 custom_fonts/font = SubResource( 15 )
 text = "Dungeon Editor"
 
 [node name="BTN_Quit" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_top = 172.0
+margin_top = 174.0
 margin_right = 512.0
-margin_bottom = 238.295
+margin_bottom = 241.249
 custom_fonts/font = SubResource( 15 )
 text = "Quit"
 
@@ -692,9 +696,9 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/PauseMenu/CenterContainer"]
 margin_left = 744.0
-margin_top = 322.0
+margin_top = 321.0
 margin_right = 1176.0
-margin_bottom = 757.0
+margin_bottom = 759.0
 custom_constants/separation = 0
 
 [node name="Title" type="Label" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer"]

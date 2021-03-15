@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scripts/MapEditor.gd" type="Script" id=1]
 [ext_resource path="res://objects/camera/Camera.tscn" type="PackedScene" id=2]
-[ext_resource path="res://themes/Minion.theme" type="Theme" id=3]
+[ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=3]
 [ext_resource path="res://scripts/UI/MapEditor/TilesetSelection.gd" type="Script" id=4]
 [ext_resource path="res://scripts/UI/MapEditor/FloorTools.gd" type="Script" id=5]
 [ext_resource path="res://scripts/UI/MapEditor/FloorList.gd" type="Script" id=6]
@@ -393,10 +393,10 @@ __meta__ = {
 }
 
 [node name="Control" type="Control" parent="CanvasLayer/EditorUI/Toolbar"]
-margin_left = 15.1389
-margin_top = 15.2078
-margin_right = 1892.5
-margin_bottom = 123.572
+margin_left = 15.2862
+margin_top = 15.5567
+margin_right = 1884.58
+margin_bottom = 114.226
 mouse_filter = 1
 
 [node name="TilesetSelection" type="MenuButton" parent="CanvasLayer/EditorUI/Toolbar/Control"]
@@ -419,40 +419,40 @@ __meta__ = {
 }
 
 [node name="FloorTools" type="VBoxContainer" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools"]
-margin_right = 340.0
+margin_right = 336.0
 margin_bottom = 118.0
 script = ExtResource( 5 )
 
 [node name="Top" type="HBoxContainer" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools"]
-margin_right = 340.0
+margin_right = 336.0
 margin_bottom = 50.0
 
 [node name="Label" type="Label" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/Top"]
-margin_top = 8.0
-margin_right = 120.0
-margin_bottom = 41.0
+margin_top = 14.0
+margin_right = 44.0
+margin_bottom = 35.0
 text = "Floors:"
 
 [node name="RandBox" type="HBoxContainer" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/Top"]
-margin_left = 124.0
-margin_right = 340.0
+margin_left = 48.0
+margin_right = 182.0
 margin_bottom = 50.0
 
 [node name="Check" type="CheckBox" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/Top/RandBox"]
-margin_right = 34.2469
-margin_bottom = 50.2954
+margin_right = 50.6343
+margin_bottom = 50.2487
 flat = true
 
 [node name="Label" type="Label" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/Top/RandBox"]
-margin_left = 38.0
-margin_top = 8.0
-margin_right = 216.0
-margin_bottom = 41.0
+margin_left = 54.0
+margin_top = 14.0
+margin_right = 134.0
+margin_bottom = 35.0
 text = "( Random )"
 
 [node name="CTRLs" type="HBoxContainer" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools"]
 margin_top = 54.0
-margin_right = 340.0
+margin_right = 336.0
 margin_bottom = 118.0
 
 [node name="BTN_Breakable" type="TextureButton" parent="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs"]
@@ -525,10 +525,10 @@ __meta__ = {
 }
 
 [node name="Margins" type="MarginContainer" parent="CanvasLayer/EditorUI/FloorList"]
-margin_left = 15.1389
-margin_top = 15.2078
-margin_right = 172.503
-margin_bottom = 803.572
+margin_left = 15.2862
+margin_top = 15.5567
+margin_right = 164.579
+margin_bottom = 794.226
 mouse_filter = 1
 custom_constants/margin_right = 8
 custom_constants/margin_top = 8
@@ -538,8 +538,8 @@ custom_constants/margin_bottom = 8
 [node name="Scroll" type="ScrollContainer" parent="CanvasLayer/EditorUI/FloorList/Margins"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 149.0
-margin_bottom = 780.0
+margin_right = 141.0
+margin_bottom = 770.0
 mouse_filter = 1
 
 [node name="Tiles" type="VBoxContainer" parent="CanvasLayer/EditorUI/FloorList/Margins/Scroll"]
@@ -579,14 +579,14 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="CanvasLayer/MapSettingsUI/Margins/Control/MapName"]
-margin_top = 5.0
-margin_right = 191.0
-margin_bottom = 38.0
+margin_top = 11.0
+margin_right = 87.0
+margin_bottom = 32.0
 text = "Map Name: "
 
 [node name="LineEdit" type="LineEdit" parent="CanvasLayer/MapSettingsUI/Margins/Control/MapName"]
-margin_left = 195.0
-margin_right = 397.0
+margin_left = 91.0
+margin_right = 179.0
 margin_bottom = 43.0
 max_length = 255
 
@@ -594,6 +594,7 @@ max_length = 255
 pause_mode = 2
 visible = false
 mouse_filter = 2
+theme = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -604,77 +605,76 @@ margin_top = 426.245
 margin_right = 1080.49
 margin_bottom = 658.245
 mouse_filter = 2
-theme = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GeneralUI/PopupMenu"]
-margin_left = 15.1389
-margin_top = 15.2078
-margin_right = 234.139
-margin_bottom = 301.208
+margin_left = 15.2862
+margin_top = 15.5567
+margin_right = 217.579
+margin_bottom = 245.557
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer"]
-margin_right = 219.0
-margin_bottom = 33.0
+margin_right = 202.0
+margin_bottom = 21.0
 text = "Editor Menu"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HSeparator" type="HSeparator" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer"]
-margin_top = 37.0
-margin_right = 219.0
-margin_bottom = 49.0
+margin_top = 25.0
+margin_right = 202.0
+margin_bottom = 37.0
 mouse_filter = 2
 custom_constants/separation = 12
 
 [node name="Buttons" type="VBoxContainer" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer"]
-margin_top = 53.0
-margin_right = 219.0
-margin_bottom = 286.0
+margin_top = 41.0
+margin_right = 202.0
+margin_bottom = 230.0
 mouse_filter = 2
 custom_constants/separation = 11
 
 [node name="BTN_New" type="Button" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons"]
-margin_right = 219.0
-margin_bottom = 50.2954
+margin_right = 202.0
+margin_bottom = 39.2487
 mouse_filter = 1
 text = "New"
 
 [node name="BTN_Save" type="Button" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons"]
-margin_top = 61.0
-margin_right = 219.0
-margin_bottom = 111.295
+margin_top = 50.0
+margin_right = 202.0
+margin_bottom = 89.2487
 mouse_filter = 1
 text = "Save"
 
 [node name="BTN_Load" type="Button" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons"]
-margin_top = 122.0
-margin_right = 219.0
-margin_bottom = 172.295
+margin_top = 100.0
+margin_right = 202.0
+margin_bottom = 139.249
 mouse_filter = 1
 text = "Load"
 
 [node name="BTN_Exit" type="Button" parent="CanvasLayer/GeneralUI/PopupMenu/VBoxContainer/Buttons"]
-margin_top = 183.0
-margin_right = 219.0
-margin_bottom = 233.295
+margin_top = 150.0
+margin_right = 202.0
+margin_bottom = 189.249
 mouse_filter = 1
 text = "Exit Editor"
 [connection signal="active_floor_type" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" to="." method="_on_active_floor_type"]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/Top/RandBox/Check" to="." method="_on_random_floor"]
-[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "B" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "B" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "S" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "B" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "S" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "E" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "S" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools" method="_on_floor_btn_toggle" binds= [ "E" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/FloorList" method="_on_floor_btn_toggle" binds= [ "E" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_Player_Start" to="." method="_on_player_start"]
 [connection signal="toggled" from="CanvasLayer/EditorUI/Toolbar/Control/Tools/FloorTools/CTRLs/BTN_MapSettings" to="." method="_on_map_settings_toggled"]
 [connection signal="tile_selected" from="CanvasLayer/EditorUI/FloorList" to="." method="_on_tile_selected"]
