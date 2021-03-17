@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scripts/UI/ValTracker.gd" type="Script" id=1]
 [ext_resource path="res://objects/player/Player.tscn" type="PackedScene" id=2]
@@ -9,70 +9,29 @@
 [ext_resource path="res://assets/graphics/tilesets/tilesetA/tilesetA_Floors.png" type="Texture" id=7]
 [ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=8]
 [ext_resource path="res://themes/fonts/satansminions_dfd.tres" type="DynamicFontData" id=9]
+[ext_resource path="res://themes/Game.tres" type="Theme" id=10]
+[ext_resource path="res://themes/fonts/badbehavior_48_df.tres" type="DynamicFont" id=11]
+[ext_resource path="res://themes/fonts/satansminions_72_df.tres" type="DynamicFont" id=12]
 
-[sub_resource type="DynamicFontData" id=1]
-font_path = "res://assets/fonts/SATAM___.TTF"
-
-[sub_resource type="DynamicFont" id=2]
-size = 36
-font_data = SubResource( 1 )
-
-[sub_resource type="DynamicFontData" id=3]
-font_path = "res://assets/fonts/Bad_Behaviour.ttf"
-
-[sub_resource type="DynamicFont" id=4]
-size = 48
-use_mipmaps = true
-font_data = SubResource( 3 )
-
-[sub_resource type="DynamicFontData" id=5]
-font_path = "res://assets/fonts/SATAM___.TTF"
-
-[sub_resource type="DynamicFont" id=6]
-size = 72
-use_mipmaps = true
-font_data = SubResource( 5 )
-
-[sub_resource type="DynamicFontData" id=7]
-font_path = "res://assets/fonts/SATAM___.TTF"
-
-[sub_resource type="DynamicFont" id=8]
-size = 38
-font_data = SubResource( 7 )
-
-[sub_resource type="DynamicFontData" id=9]
-font_path = "res://assets/fonts/Bad_Behaviour.ttf"
-
-[sub_resource type="DynamicFont" id=10]
-size = 48
-font_data = SubResource( 9 )
-
-[sub_resource type="DynamicFontData" id=11]
-font_path = "res://assets/fonts/SATAM___.TTF"
-
-[sub_resource type="DynamicFont" id=12]
-size = 32
-font_data = SubResource( 11 )
-
-[sub_resource type="DynamicFont" id=13]
+[sub_resource type="DynamicFont" id=1]
 size = 84
 font_data = ExtResource( 9 )
 
-[sub_resource type="DynamicFontData" id=14]
+[sub_resource type="DynamicFontData" id=2]
 font_path = "res://assets/fonts/SATAM___.TTF"
 
-[sub_resource type="DynamicFont" id=15]
+[sub_resource type="DynamicFont" id=3]
 size = 48
-font_data = SubResource( 14 )
+font_data = SubResource( 2 )
 
-[sub_resource type="DynamicFontData" id=16]
+[sub_resource type="DynamicFontData" id=4]
 font_path = "res://assets/fonts/SATAM___.TTF"
 
-[sub_resource type="DynamicFont" id=17]
+[sub_resource type="DynamicFont" id=5]
 size = 96
 use_mipmaps = true
 use_filter = true
-font_data = SubResource( 16 )
+font_data = SubResource( 4 )
 
 [node name="World" type="Node2D"]
 pause_mode = 2
@@ -127,6 +86,7 @@ __meta__ = {
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 10 )
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -152,7 +112,6 @@ value_label_node_path = NodePath("Time")
 margin_top = 9.0
 margin_right = 200.0
 margin_bottom = 46.0
-custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.764706, 0.611765, 0.415686, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_x = 2
@@ -163,7 +122,7 @@ text = "Play Time:"
 margin_left = 224.0
 margin_right = 308.0
 margin_bottom = 55.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = ExtResource( 11 )
 custom_colors/font_color = Color( 0.67451, 0.67451, 0.67451, 1 )
 text = "0.00"
 
@@ -180,7 +139,6 @@ value_label_node_path = NodePath("Time")
 margin_top = 9.0
 margin_right = 188.0
 margin_bottom = 46.0
-custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.764706, 0.611765, 0.415686, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_x = 2
@@ -191,7 +149,7 @@ text = "Time Left:"
 margin_left = 224.0
 margin_right = 308.0
 margin_bottom = 55.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = ExtResource( 11 )
 custom_colors/font_color = Color( 0.913725, 0.329412, 0.14902, 1 )
 text = "0.00"
 
@@ -215,7 +173,6 @@ margin_left = 247.0
 margin_top = 9.0
 margin_right = 383.0
 margin_bottom = 46.0
-custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.764706, 0.611765, 0.415686, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_x = 2
@@ -226,7 +183,7 @@ text = "Points:"
 margin_left = 387.0
 margin_right = 411.0
 margin_bottom = 55.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = ExtResource( 11 )
 custom_colors/font_color = Color( 0.67451, 0.67451, 0.67451, 1 )
 text = "0"
 
@@ -234,6 +191,7 @@ text = "0"
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 10 )
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -262,14 +220,14 @@ __meta__ = {
 
 [node name="Info" type="VBoxContainer" parent="CanvasLayer/UI/LevelTransition/CenterContainer"]
 margin_left = 469.0
-margin_top = 417.0
+margin_top = 415.0
 margin_right = 1451.0
-margin_bottom = 663.0
+margin_bottom = 665.0
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info"]
 margin_right = 982.0
 margin_bottom = 73.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "You have found the exit!"
 
@@ -282,18 +240,17 @@ signal_name = "play_time_changed"
 value_label_node_path = NodePath("../../../../LevelTransition/CenterContainer/Info/CompTime/Time")
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info/CompTime"]
-margin_top = 8.0
-margin_right = 328.0
-margin_bottom = 47.0
-custom_fonts/font = SubResource( 8 )
+margin_top = 9.0
+margin_right = 310.0
+margin_bottom = 46.0
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "Completed Time:"
 
 [node name="Time" type="Label" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info/CompTime"]
-margin_left = 332.0
-margin_right = 416.0
+margin_left = 314.0
+margin_right = 398.0
 margin_bottom = 55.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = ExtResource( 11 )
 text = "0.00"
 
 [node name="CompPoints" type="HBoxContainer" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info"]
@@ -305,31 +262,30 @@ signal_name = "points_value_changed"
 value_label_node_path = NodePath("../../../../LevelTransition/CenterContainer/Info/CompPoints/Points")
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info/CompPoints"]
-margin_top = 8.0
-margin_right = 273.0
-margin_bottom = 47.0
-custom_fonts/font = SubResource( 8 )
+margin_top = 9.0
+margin_right = 261.0
+margin_bottom = 46.0
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "Total Points:"
 
 [node name="Points" type="Label" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info/CompPoints"]
-margin_left = 277.0
-margin_right = 301.0
+margin_left = 265.0
+margin_right = 289.0
 margin_bottom = 55.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = ExtResource( 11 )
 text = "0"
 
 [node name="BTN_NextLevel" type="Button" parent="CanvasLayer/UI/LevelTransition/CenterContainer/Info"]
 margin_top = 195.0
 margin_right = 982.0
-margin_bottom = 246.249
-custom_fonts/font = SubResource( 12 )
+margin_bottom = 250.249
 text = "Continue to Next Level"
 
 [node name="LastLevelResults" type="Control" parent="CanvasLayer/UI"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 10 )
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -358,14 +314,14 @@ __meta__ = {
 
 [node name="Info" type="VBoxContainer" parent="CanvasLayer/UI/LastLevelResults/CenterContainer"]
 margin_left = 362.0
-margin_top = 417.0
+margin_top = 415.0
 margin_right = 1557.0
-margin_bottom = 663.0
+margin_bottom = 665.0
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/LastLevelResults/CenterContainer/Info"]
 margin_right = 1195.0
 margin_bottom = 73.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "You have found the final exit!"
 
@@ -378,18 +334,17 @@ signal_name = "play_time_changed"
 value_label_node_path = NodePath("Time")
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/CompTime"]
-margin_top = 8.0
-margin_right = 328.0
-margin_bottom = 47.0
-custom_fonts/font = SubResource( 8 )
+margin_top = 9.0
+margin_right = 310.0
+margin_bottom = 46.0
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "Completed Time:"
 
 [node name="Time" type="Label" parent="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/CompTime"]
-margin_left = 332.0
-margin_right = 416.0
+margin_left = 314.0
+margin_right = 398.0
 margin_bottom = 55.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = ExtResource( 11 )
 text = "0.00"
 
 [node name="CompPoints" type="HBoxContainer" parent="CanvasLayer/UI/LastLevelResults/CenterContainer/Info"]
@@ -401,31 +356,30 @@ signal_name = "points_value_changed"
 value_label_node_path = NodePath("Points")
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/CompPoints"]
-margin_top = 8.0
-margin_right = 273.0
-margin_bottom = 47.0
-custom_fonts/font = SubResource( 8 )
+margin_top = 9.0
+margin_right = 261.0
+margin_bottom = 46.0
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "Total Points:"
 
 [node name="Points" type="Label" parent="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/CompPoints"]
-margin_left = 277.0
-margin_right = 301.0
+margin_left = 265.0
+margin_right = 289.0
 margin_bottom = 55.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = ExtResource( 11 )
 text = "0"
 
 [node name="BTN_EndRun" type="Button" parent="CanvasLayer/UI/LastLevelResults/CenterContainer/Info"]
 margin_top = 195.0
 margin_right = 1195.0
-margin_bottom = 228.0
-custom_fonts/font = SubResource( 12 )
+margin_bottom = 250.249
 text = "Contiue to results"
 
 [node name="RunCompletion" type="Control" parent="CanvasLayer/UI"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 10 )
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -454,104 +408,99 @@ __meta__ = {
 
 [node name="Info" type="VBoxContainer" parent="CanvasLayer/UI/RunCompletion/CenterContainer"]
 margin_left = 301.0
-margin_top = 425.0
+margin_top = 424.0
 margin_right = 1619.0
-margin_bottom = 655.0
+margin_bottom = 656.0
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info"]
 margin_right = 1318.0
 margin_bottom = 73.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "You have completed the full run"
 
 [node name="LBL_RunTotals" type="Label" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info"]
 margin_top = 77.0
 margin_right = 1318.0
-margin_bottom = 116.0
-custom_fonts/font = SubResource( 8 )
+margin_bottom = 114.0
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "Run Totals..."
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info"]
-margin_top = 120.0
+margin_top = 118.0
 margin_right = 1318.0
-margin_bottom = 175.0
+margin_bottom = 173.0
 custom_constants/separation = 56
 
 [node name="CompDungeons" type="HBoxContainer" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info/HBoxContainer"]
-margin_right = 246.0
+margin_right = 234.0
 margin_bottom = 55.0
 script = ExtResource( 1 )
 signal_name = "total_dungeon_runs"
 value_label_node_path = NodePath("Points")
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info/HBoxContainer/CompDungeons"]
-margin_top = 8.0
-margin_right = 218.0
-margin_bottom = 47.0
-custom_fonts/font = SubResource( 8 )
+margin_top = 9.0
+margin_right = 206.0
+margin_bottom = 46.0
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "Dungeons: "
 
 [node name="Points" type="Label" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info/HBoxContainer/CompDungeons"]
-margin_left = 222.0
-margin_right = 246.0
+margin_left = 210.0
+margin_right = 234.0
 margin_bottom = 55.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = ExtResource( 11 )
 text = "0"
 
 [node name="CompTime" type="HBoxContainer" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info/HBoxContainer"]
-margin_left = 302.0
-margin_right = 751.0
+margin_left = 290.0
+margin_right = 721.0
 margin_bottom = 55.0
 script = ExtResource( 1 )
 signal_name = "total_play_time"
 value_label_node_path = NodePath("Time")
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info/HBoxContainer/CompTime"]
-margin_top = 8.0
-margin_right = 361.0
-margin_bottom = 47.0
-custom_fonts/font = SubResource( 8 )
+margin_top = 9.0
+margin_right = 343.0
+margin_bottom = 46.0
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "Completion Time: "
 
 [node name="Time" type="Label" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info/HBoxContainer/CompTime"]
-margin_left = 365.0
-margin_right = 449.0
+margin_left = 347.0
+margin_right = 431.0
 margin_bottom = 55.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = ExtResource( 11 )
 text = "0.00"
 
 [node name="CompPoints" type="HBoxContainer" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info/HBoxContainer"]
-margin_left = 807.0
-margin_right = 995.0
+margin_left = 777.0
+margin_right = 959.0
 margin_bottom = 55.0
 script = ExtResource( 1 )
 signal_name = "total_points_obtained"
 value_label_node_path = NodePath("Points")
 
 [node name="Label" type="Label" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info/HBoxContainer/CompPoints"]
-margin_top = 8.0
-margin_right = 160.0
-margin_bottom = 47.0
-custom_fonts/font = SubResource( 8 )
+margin_top = 9.0
+margin_right = 154.0
+margin_bottom = 46.0
 custom_colors/font_color = Color( 0.752941, 0.760784, 0.635294, 1 )
 text = "Points: "
 
 [node name="Points" type="Label" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info/HBoxContainer/CompPoints"]
-margin_left = 164.0
-margin_right = 188.0
+margin_left = 158.0
+margin_right = 182.0
 margin_bottom = 55.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = ExtResource( 11 )
 text = "0"
 
 [node name="BTN_EndRun" type="Button" parent="CanvasLayer/UI/RunCompletion/CenterContainer/Info"]
-margin_top = 179.0
+margin_top = 177.0
 margin_right = 1318.0
-margin_bottom = 212.0
-custom_fonts/font = SubResource( 12 )
+margin_bottom = 232.249
 text = "Done With Run"
 
 [node name="MainMenu" type="Control" parent="CanvasLayer/UI"]
@@ -632,7 +581,7 @@ custom_constants/separation = 72
 [node name="Title" type="Label" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer"]
 margin_right = 512.0
 margin_bottom = 173.0
-custom_fonts/font = SubResource( 13 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.72549, 0.47451, 0.290196, 1 )
 text = "Dungeon
        Falls"
@@ -649,21 +598,21 @@ custom_constants/separation = 20
 [node name="BTN_Start" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
 margin_right = 512.0
 margin_bottom = 67.2487
-custom_fonts/font = SubResource( 15 )
+custom_fonts/font = SubResource( 3 )
 text = "Start"
 
 [node name="BTN_Editor" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
 margin_top = 87.0
 margin_right = 512.0
 margin_bottom = 154.249
-custom_fonts/font = SubResource( 15 )
+custom_fonts/font = SubResource( 3 )
 text = "Dungeon Editor"
 
 [node name="BTN_Quit" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
 margin_top = 174.0
 margin_right = 512.0
 margin_bottom = 241.249
-custom_fonts/font = SubResource( 15 )
+custom_fonts/font = SubResource( 3 )
 text = "Quit"
 
 [node name="PauseMenu" type="Control" parent="CanvasLayer/UI"]
@@ -704,7 +653,7 @@ custom_constants/separation = 0
 [node name="Title" type="Label" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer"]
 margin_right = 432.0
 margin_bottom = 197.0
-custom_fonts/font = SubResource( 17 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0.72549, 0.47451, 0.290196, 1 )
 text = "PAUSED
 "
@@ -715,35 +664,35 @@ __meta__ = {
 [node name="MMOptions" type="VBoxContainer" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer"]
 margin_top = 197.0
 margin_right = 432.0
-margin_bottom = 384.0
+margin_bottom = 438.0
 custom_constants/separation = 20
 
 [node name="BTN_Resume" type="Button" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions"]
 margin_right = 432.0
-margin_bottom = 49.0
-custom_fonts/font = SubResource( 15 )
+margin_bottom = 67.2487
+custom_fonts/font = SubResource( 3 )
 text = "Resume"
 
 [node name="BTN_Restart" type="Button" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_top = 69.0
+margin_top = 87.0
 margin_right = 432.0
-margin_bottom = 118.0
-custom_fonts/font = SubResource( 15 )
+margin_bottom = 154.249
+custom_fonts/font = SubResource( 3 )
 text = "Restart"
 
 [node name="BTN_Quit" type="Button" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_top = 138.0
+margin_top = 174.0
 margin_right = 432.0
-margin_bottom = 187.0
-custom_fonts/font = SubResource( 15 )
+margin_bottom = 241.249
+custom_fonts/font = SubResource( 3 )
 text = "Quit"
 [connection signal="dead" from="Perma_Objects/Player" to="." method="_on_player_death"]
 [connection signal="pressed" from="CanvasLayer/UI/LevelTransition/CenterContainer/Info/BTN_NextLevel" to="." method="_on_continue_to_level"]
 [connection signal="pressed" from="CanvasLayer/UI/LevelTransition/CenterContainer/Info/BTN_NextLevel" to="CanvasLayer/UI/LevelTransition" method="_on_change_visible" binds= [ false ]]
-[connection signal="pressed" from="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/RunCompletion" method="_on_change_visible" binds= [ true ]]
 [connection signal="pressed" from="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/LastLevelResults" method="_on_change_visible" binds= [ false ]]
-[connection signal="pressed" from="CanvasLayer/UI/RunCompletion/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/RunCompletion" method="_on_change_visible" binds= [ false ]]
+[connection signal="pressed" from="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/RunCompletion" method="_on_change_visible" binds= [ true ]]
 [connection signal="pressed" from="CanvasLayer/UI/RunCompletion/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/MainMenu" method="_on_change_visible" binds= [ true ]]
+[connection signal="pressed" from="CanvasLayer/UI/RunCompletion/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/RunCompletion" method="_on_change_visible" binds= [ false ]]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Start" to="." method="_on_start"]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Start" to="CanvasLayer/UI/MainMenu" method="_on_change_visible" binds= [ false ]]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Editor" to="." method="_on_open_editor"]

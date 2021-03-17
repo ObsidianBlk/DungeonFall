@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=24 format=2]
+[gd_resource type="Theme" load_steps=54 format=2]
 
 [ext_resource path="res://assets/graphics/ui/UI_Button_Disabled.png" type="Texture" id=1]
 [ext_resource path="res://assets/graphics/ui/UI_Button_Hover.png" type="Texture" id=2]
@@ -11,6 +11,18 @@
 [ext_resource path="res://assets/graphics/ui/check_radio_btns/Radio_Unchecked.png" type="Texture" id=9]
 [ext_resource path="res://assets/graphics/ui/UI_Panel.png" type="Texture" id=10]
 [ext_resource path="res://assets/graphics/ui/UI_TextBox.png" type="Texture" id=11]
+[ext_resource path="res://assets/graphics/ui/h_slider/Grabber_Normal.png" type="Texture" id=12]
+[ext_resource path="res://assets/graphics/ui/scrollbar/Grabber_Highlight.png" type="Texture" id=13]
+[ext_resource path="res://assets/graphics/ui/scrollbar/Grabber_Normal.png" type="Texture" id=14]
+[ext_resource path="res://assets/graphics/ui/scrollbar/Slider.png" type="Texture" id=15]
+[ext_resource path="res://assets/graphics/ui/scrollbar/Grabber_Pressed.png" type="Texture" id=16]
+[ext_resource path="res://assets/graphics/ui/h_slider/Grabber_Highlight.png" type="Texture" id=17]
+[ext_resource path="res://assets/graphics/ui/v_slider/Grabber_Normal.png" type="Texture" id=18]
+[ext_resource path="res://assets/graphics/ui/ProgressBar.png" type="Texture" id=19]
+[ext_resource path="res://assets/graphics/ui/h_slider/Grabber_Disabled.png" type="Texture" id=20]
+[ext_resource path="res://assets/graphics/ui/v_slider/Grabber_Disabled.png" type="Texture" id=21]
+[ext_resource path="res://assets/graphics/ui/h_slider/Slider.png" type="Texture" id=22]
+[ext_resource path="res://assets/graphics/ui/v_slider/Grabber_Highlight.png" type="Texture" id=23]
 
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 1 )
@@ -44,7 +56,66 @@ margin_right = 9.38139
 margin_top = 7.96776
 margin_bottom = 9.38139
 
+[sub_resource type="StyleBoxTexture" id=5]
+texture = ExtResource( 14 )
+region_rect = Rect2( 0, 0, 10, 10 )
+margin_left = 3.08429
+margin_right = 3.08429
+margin_top = 3.08429
+margin_bottom = 2.0562
+
 [sub_resource type="StyleBoxTexture" id=6]
+texture = ExtResource( 13 )
+region_rect = Rect2( 0, 0, 10, 10 )
+margin_left = 3.08429
+margin_right = 3.2128
+margin_top = 3.2128
+margin_bottom = 2.31322
+
+[sub_resource type="StyleBoxTexture" id=7]
+texture = ExtResource( 16 )
+region_rect = Rect2( 0, 0, 10, 10 )
+margin_left = 3.08429
+margin_right = 3.2128
+margin_top = 3.2128
+margin_bottom = 2.31322
+
+[sub_resource type="StyleBoxTexture" id=8]
+texture = ExtResource( 15 )
+region_rect = Rect2( 0, 0, 12, 12 )
+margin_left = 2.0562
+margin_right = 2.18471
+margin_top = 2.44173
+margin_bottom = 2.31322
+
+[sub_resource type="StyleBoxLine" id=9]
+color = Color( 0.984314, 0.819608, 0.384314, 1 )
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.984314, 0.819608, 0.384314, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+
+[sub_resource type="StyleBoxFlat" id=11]
+bg_color = Color( 0.988235, 0.890196, 0.623529, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+
+[sub_resource type="StyleBoxTexture" id=12]
+texture = ExtResource( 22 )
+region_rect = Rect2( 0, 0, 12, 12 )
+margin_left = 9.67614
+margin_right = 9.53631
+margin_top = 9.79334
+margin_bottom = 9.60151
+
+[sub_resource type="StyleBoxTexture" id=13]
 texture = ExtResource( 11 )
 region_rect = Rect2( 0, 0, 64, 64 )
 margin_left = 7.51746
@@ -52,7 +123,7 @@ margin_right = 8.0
 margin_top = 8.0
 margin_bottom = 8.0
 
-[sub_resource type="StyleBoxTexture" id=7]
+[sub_resource type="StyleBoxTexture" id=14]
 texture = ExtResource( 11 )
 region_rect = Rect2( 0, 0, 64, 64 )
 margin_left = 8.0
@@ -60,7 +131,7 @@ margin_right = 8.0
 margin_top = 8.0
 margin_bottom = 8.0
 
-[sub_resource type="StyleBoxTexture" id=8]
+[sub_resource type="StyleBoxTexture" id=15]
 texture = ExtResource( 11 )
 region_rect = Rect2( 0, 0, 64, 64 )
 margin_left = 8.0
@@ -68,7 +139,7 @@ margin_right = 8.0
 margin_top = 8.0
 margin_bottom = 8.0
 
-[sub_resource type="StyleBoxTexture" id=5]
+[sub_resource type="StyleBoxTexture" id=16]
 texture = ExtResource( 10 )
 region_rect = Rect2( 0, 0, 64, 64 )
 margin_left = 15.2797
@@ -76,7 +147,7 @@ margin_right = 13.4112
 margin_top = 15.4624
 margin_bottom = 15.9357
 
-[sub_resource type="StyleBoxTexture" id=12]
+[sub_resource type="StyleBoxTexture" id=17]
 texture = ExtResource( 10 )
 region_rect = Rect2( 0, 0, 64, 64 )
 margin_left = 15.2862
@@ -84,7 +155,21 @@ margin_right = 15.4215
 margin_top = 15.5567
 margin_bottom = 16.7742
 
-[sub_resource type="StyleBoxTexture" id=9]
+[sub_resource type="StyleBoxTexture" id=18]
+texture = ExtResource( 15 )
+region_rect = Rect2( 0, 0, 12, 12 )
+margin_left = 2.18471
+margin_right = 2.44173
+margin_top = 2.31322
+margin_bottom = 2.0562
+
+[sub_resource type="StyleBoxTexture" id=19]
+texture = ExtResource( 19 )
+region_rect = Rect2( 0, 0, 12, 24 )
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxTexture" id=20]
 texture = ExtResource( 11 )
 region_rect = Rect2( 0, 0, 64, 64 )
 margin_left = 8.0
@@ -92,7 +177,7 @@ margin_right = 8.0
 margin_top = 8.0
 margin_bottom = 8.0
 
-[sub_resource type="StyleBoxTexture" id=10]
+[sub_resource type="StyleBoxTexture" id=21]
 texture = ExtResource( 11 )
 region_rect = Rect2( 0, 0, 64, 64 )
 margin_left = 8.0
@@ -100,13 +185,73 @@ margin_right = 8.0
 margin_top = 8.0
 margin_bottom = 8.0
 
-[sub_resource type="StyleBoxTexture" id=11]
+[sub_resource type="StyleBoxTexture" id=22]
 texture = ExtResource( 11 )
 region_rect = Rect2( 0, 0, 64, 64 )
 margin_left = 8.0
 margin_right = 8.0
 margin_top = 8.0
 margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id=23]
+texture = ExtResource( 14 )
+region_rect = Rect2( 0, 0, 10, 10 )
+margin_left = 3.08429
+margin_right = 3.2128
+margin_top = 3.08429
+margin_bottom = 2.31322
+
+[sub_resource type="StyleBoxTexture" id=24]
+texture = ExtResource( 13 )
+region_rect = Rect2( 0, 0, 10, 10 )
+margin_left = 3.08429
+margin_right = 3.2128
+margin_top = 3.2128
+margin_bottom = 2.31322
+
+[sub_resource type="StyleBoxTexture" id=25]
+texture = ExtResource( 16 )
+region_rect = Rect2( 0, 0, 10, 10 )
+margin_left = 3.08429
+margin_right = 3.2128
+margin_top = 3.08429
+margin_bottom = 2.31322
+
+[sub_resource type="StyleBoxTexture" id=26]
+texture = ExtResource( 15 )
+region_rect = Rect2( 0, 0, 12, 12 )
+margin_left = 2.18471
+margin_right = 2.31322
+margin_top = 2.0562
+margin_bottom = 2.44173
+
+[sub_resource type="StyleBoxLine" id=27]
+color = Color( 0.984314, 0.819608, 0.384314, 1 )
+vertical = true
+
+[sub_resource type="StyleBoxFlat" id=28]
+bg_color = Color( 0.984314, 0.819608, 0.384314, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+
+[sub_resource type="StyleBoxFlat" id=29]
+bg_color = Color( 0.988235, 0.890196, 0.623529, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+
+[sub_resource type="StyleBoxTexture" id=30]
+texture = ExtResource( 22 )
+region_rect = Rect2( 0, 0, 12, 12 )
+margin_left = 2.18471
+margin_right = 2.44173
+margin_top = 2.18471
+margin_bottom = 2.31322
 
 [resource]
 default_font = ExtResource( 5 )
@@ -139,6 +284,24 @@ CheckBox/styles/hover = null
 CheckBox/styles/hover_pressed = null
 CheckBox/styles/normal = null
 CheckBox/styles/pressed = null
+HScrollBar/icons/decrement = null
+HScrollBar/icons/decrement_highlight = null
+HScrollBar/icons/increment = null
+HScrollBar/icons/increment_highlight = null
+HScrollBar/styles/grabber = SubResource( 5 )
+HScrollBar/styles/grabber_highlight = SubResource( 6 )
+HScrollBar/styles/grabber_pressed = SubResource( 7 )
+HScrollBar/styles/scroll = SubResource( 8 )
+HScrollBar/styles/scroll_focus = null
+HSeparator/constants/separation = 4
+HSeparator/styles/separator = SubResource( 9 )
+HSlider/icons/grabber = ExtResource( 12 )
+HSlider/icons/grabber_disabled = ExtResource( 20 )
+HSlider/icons/grabber_highlight = ExtResource( 17 )
+HSlider/icons/tick = null
+HSlider/styles/grabber_area = SubResource( 10 )
+HSlider/styles/grabber_area_highlight = SubResource( 11 )
+HSlider/styles/slider = SubResource( 12 )
 Label/colors/font_color = Color( 0.882353, 0.811765, 0.623529, 1 )
 Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
 Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
@@ -158,9 +321,9 @@ LineEdit/colors/selection_color = Color( 0.49, 0.49, 0.49, 1 )
 LineEdit/constants/minimum_spaces = 12
 LineEdit/fonts/font = null
 LineEdit/icons/clear = null
-LineEdit/styles/focus = SubResource( 6 )
-LineEdit/styles/normal = SubResource( 7 )
-LineEdit/styles/read_only = SubResource( 8 )
+LineEdit/styles/focus = SubResource( 13 )
+LineEdit/styles/normal = SubResource( 14 )
+LineEdit/styles/read_only = SubResource( 15 )
 MenuButton/colors/font_color = Color( 0.882353, 0.811765, 0.623529, 1 )
 MenuButton/colors/font_color_disabled = Color( 0.972549, 0.756863, 0.180392, 0.2 )
 MenuButton/colors/font_color_hover = Color( 0.988235, 0.890196, 0.623529, 1 )
@@ -172,8 +335,13 @@ MenuButton/styles/focus = null
 MenuButton/styles/hover = null
 MenuButton/styles/normal = null
 MenuButton/styles/pressed = null
-Panel/styles/panel = SubResource( 5 )
-PanelContainer/styles/panel = SubResource( 12 )
+Panel/styles/panel = SubResource( 16 )
+PanelContainer/styles/panel = SubResource( 17 )
+ProgressBar/colors/font_color = Color( 0.882353, 0.811765, 0.623529, 1 )
+ProgressBar/colors/font_color_shadow = Color( 0.984314, 0.819608, 0.384314, 1 )
+ProgressBar/fonts/font = null
+ProgressBar/styles/bg = SubResource( 18 )
+ProgressBar/styles/fg = SubResource( 19 )
 TextEdit/colors/background_color = Color( 0, 0, 0, 0 )
 TextEdit/colors/bookmark_color = Color( 0.08, 0.49, 0.98, 1 )
 TextEdit/colors/brace_mismatch_color = Color( 1, 0.2, 0.2, 1 )
@@ -210,6 +378,24 @@ TextEdit/icons/folded = null
 TextEdit/icons/space = null
 TextEdit/icons/tab = null
 TextEdit/styles/completion = null
-TextEdit/styles/focus = SubResource( 9 )
-TextEdit/styles/normal = SubResource( 10 )
-TextEdit/styles/read_only = SubResource( 11 )
+TextEdit/styles/focus = SubResource( 20 )
+TextEdit/styles/normal = SubResource( 21 )
+TextEdit/styles/read_only = SubResource( 22 )
+VScrollBar/icons/decrement = null
+VScrollBar/icons/decrement_highlight = null
+VScrollBar/icons/increment = null
+VScrollBar/icons/increment_highlight = null
+VScrollBar/styles/grabber = SubResource( 23 )
+VScrollBar/styles/grabber_highlight = SubResource( 24 )
+VScrollBar/styles/grabber_pressed = SubResource( 25 )
+VScrollBar/styles/scroll = SubResource( 26 )
+VScrollBar/styles/scroll_focus = null
+VSeparator/constants/separation = 4
+VSeparator/styles/separator = SubResource( 27 )
+VSlider/icons/grabber = ExtResource( 18 )
+VSlider/icons/grabber_disabled = ExtResource( 21 )
+VSlider/icons/grabber_highlight = ExtResource( 23 )
+VSlider/icons/tick = null
+VSlider/styles/grabber_area = SubResource( 28 )
+VSlider/styles/grabber_area_highlight = SubResource( 29 )
+VSlider/styles/slider = SubResource( 30 )
