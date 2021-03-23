@@ -34,6 +34,10 @@ onready var vp_port = $MapView/Port
 onready var generalUI = $CanvasLayer/GeneralUI
 
 func _ready():
+	if not MemDB.has_db("MapEditor"):
+		MemDB.add_db("MapEditor")
+		print("Database added")
+
 	get_tree().paused = false
 	var EditorLevel = load(EDITORLEVEL_SCENE)
 	if EditorLevel:
