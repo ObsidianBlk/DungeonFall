@@ -8,15 +8,21 @@ signal play_timer_changed(tim_val)
 signal level_timer_changed(time_val)
 signal point_update(point_val)
 
-
+# Map configuration options
 export var level_name : String = "Level"
 export var level_max_timer : float = 0.0
 export var level_timer_autostart : bool = true
+export var tile_break_time : float = 1.0 setget _set_tile_break_time
+export var tile_break_variance : float = 0.2 setget _set_tile_break_variance
+
+# "Next" Map loading/selection/generation options
 export var is_last_level : bool = false
 export var next_level_path : String = ""
 export var next_level_proceedural : bool = false
 export var next_level_seed : int = 0
 export var next_level_seed_random : bool = false
+
+# Do I even need these now?!?!?!
 export var player_container_node_path : NodePath = ""
 export var camera_container_node_path : NodePath = ""
 export var player_start_path : NodePath = ""
@@ -38,6 +44,29 @@ var collpased = false
 var points = 0
 
 onready var mapCTRL = $MapCTRL
+
+
+func _set_tile_break_time(v):
+	if v < 0.1:
+		v = 0.1
+	elif v > 2.0:
+		v = 2.0
+	
+	if v != tile_break_time:
+		tile_break_time = v
+		if v < tile_break_variance:
+			tile_break_variance = v
+
+
+func _set_tile_break_variance(v):
+	if v < 0.0:
+		v = 0.0
+	elif v > tile_break_time:
+		v = tile_break_time
+	
+	if v < tile_break_variance:
+		tile_break_variance = v
+
 
 func _ready():
 	ready = true

@@ -1,5 +1,12 @@
 extends Node2D
 
+# TODO: Do these *really* need to be Export variables.
+export var level_name : String = "Level"
+export var level_max_timer : float = 0.0
+export var level_timer_autostart : bool = true
+export var tile_break_time : float = 1.0 setget _set_tile_break_time
+export var tile_break_variance : float = 0.2 setget _set_tile_break_variance
+
 var camera_node = null
 var cell = Vector2(16.0, 16.0)
 
@@ -8,6 +15,28 @@ onready var walls_node = $Walls
 onready var cam_container_node = $Camera_Container
 onready var tracker = $Tracker
 onready var player_start = $Player_Start
+
+func _set_tile_break_time(v):
+	if v < 0.1:
+		v = 0.1
+	elif v > 2.0:
+		v = 2.0
+	
+	if v != tile_break_time:
+		tile_break_time = v
+		if v < tile_break_variance:
+			tile_break_variance = v
+
+
+func _set_tile_break_variance(v):
+	if v < 0.0:
+		v = 0.0
+	elif v > tile_break_time:
+		v = tile_break_time
+	
+	if v < tile_break_variance:
+		tile_break_variance = v
+
 
 func _ready():
 	pass
@@ -186,7 +215,7 @@ func clear_ghost_tiles():
 
 
 func generateMapData():
-	return mapBT_node.generateMapData("I'm a MAP!")
+	return mapBT_node.generateMapData()
 
 func buildMapFromData(data):
 	mapBT_node.buildMapFromData(data)

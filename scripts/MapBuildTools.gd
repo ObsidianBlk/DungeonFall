@@ -11,6 +11,7 @@ var RNG = null
 var breakable_tile_resources = {}
 var dungeon_exits = []
 
+onready var parent_node = get_parent()
 onready var floors_map = get_parent().get_node("Floors")
 onready var walls_map = get_parent().get_node("Walls")
 onready var doors_map = get_parent().get_node("Doors")
@@ -306,17 +307,19 @@ func clear_ghost_tiles():
 
 
 
-func generateMapData(map_name):
-	var player_start = get_parent().get_node("Player_Start")
+func generateMapData():
+	var player_start = parent_node.get_node("Player_Start")
 	if not player_start:
 		return
 		
 	var data = {
-		"name": map_name,
+		"name": parent_node.level_name,
 		"version": [0,1,0],
 		"map":{
 			"tileset_name": tileset_def.name,
 			"player_start": player_start.position,
+			"tile_break_time": parent_node.tile_break_time,
+			"tile_break_variance": parent_node.tile_break_variance,
 			"floors": [],
 			"walls": [],
 			"exits": null
@@ -364,10 +367,16 @@ func buildMapFromData(data):
 	if not TilesetStore.has_tileset(data.map.tileset_name):
 		# TODO: Tell user there was an issue.
 		print("ERROR: Map tileset not found in system.")
+		return # <--- Yes? No? Oh for the love of...
 	TilesetStore.activate_tileset(data.map.tileset_name)
 	
+	parent_node.level_name = data.name
+	
 	# Position the player start.
-	get_parent().position_player_start_to(data.map.player_start)
+	parent_node.position_player_start_to(data.map.player_start)
+	parent_node.tile_break_time = data.map.tile_break_time
+	parent_node.tile_break_variance = data.map.tile_break_variance
+	
 	
 	floors_map.clear()
 	for i in range(0, data.map.floors.size()):

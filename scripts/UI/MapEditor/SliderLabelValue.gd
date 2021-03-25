@@ -26,7 +26,9 @@ func _ready():
 	#	DB.connect("value_change", self, "_on_db_value_change")
 	#else:
 	#	print("We have NO database")
-	MemDB.connect("database_added", self, "_on_db_added");
+	MemDB.connect("database_added", self, "_on_db_added")
+	if MemDB.has_db("MapEditor"):
+		_SetDB("MapEditor")
 	
 	value_node = get_node(Value_Node_Path)
 	if not value_node:
@@ -35,6 +37,14 @@ func _ready():
 	label_node = get_node(Label_Node_Path)
 	value_node.connect("value_changed", self, "_on_value_changed")
 
+
+func _SetDB(name : String):
+	if DB != null:
+		return
+	if MemDB.has_db(name):
+		DB = MemDB.get_db(name)
+		DB.connect("value_changed", self, "_on_db_value_changed")
+	
 
 
 func _on_value_changed(val : float):
@@ -53,23 +63,23 @@ func _on_db_added(name : String):
 		return
 
 	if name == "MapEditor":
-		DB = MemDB.get_db("MapEditor")
-		DB.connect("value_changed", self, "_on_db_value_changed")
-		if DB:
-			print("We have the DB!!!")
+		_SetDB(name)
 
 func _on_db_value_changed(name : String, val):
+	if typeof(val) != TYPE_REAL:
+		return
 	if not value_node:
 		return
 	if not (value_node is Range):
 		return
 	
-	print("So far so gooooooood")
-	if name == db_val_to_min and typeof(val) == TYPE_REAL:
+	if name == db_val_key:
+		value_node.value = val
+	if name == db_val_to_min:
 		if value_node.value < val:
 			value_node.value = val
 		value_node.min_value = val
-	elif name == db_val_to_max and typeof(val) == TYPE_REAL:
+	elif name == db_val_to_max:
 		if value_node.value > val:
 			value_node.value = val
 		value_node.max_value = val

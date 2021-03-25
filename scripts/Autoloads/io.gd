@@ -37,7 +37,28 @@ func _ByteArray2Int(ba : PoolByteArray, byteCount = 0, offset = 0):
 	var val = 0
 	for i in range(offset, offset + byteCount):
 		val |= int(ba[i]) << ((i - offset) * 8)
-	return val
+	return {"offset":offset + byteCount, "value":val}
+
+func _Var2Bytes(v):
+	var buff = PoolByteArray()
+	var vbuff = var2bytes(v)
+	print("Storing variable buffer of size: ", vbuff.size())
+	buff.append(vbuff.size())
+	buff.append_array(vbuff)
+	print("Buffered first value as: ", buff[0])
+	return buff
+
+func _Bytes2UTF8(ba : PoolByteArray, size, offset = 0):
+	var v = ba.subarray(offset, offset + (size - 1)).get_string_from_utf8()
+	return {"offset":offset + size, "value":v}
+
+func _Bytes2Var(ba : PoolByteArray, offset = 0):
+	print("Extracting at offset: ", offset)
+	var size = ba[offset]
+	offset += 1
+	print("Extracting ", size, " bytes for variable")
+	var v = bytes2var(ba.subarray(offset, offset + (size - 1)))
+	return {"offset":offset + size, "value" : v}
 
 
 func _GetAvailableMaps(mapBasePath : String = ""):
@@ -94,8 +115,12 @@ func storeMapData(filePath : String, data):
 			#mapData.append(int(size) >> 8)
 			#mapData.append(size)
 			mapData.append_array(val)
-			mapData.append_array(var2bytes(data.map.player_start.x))
-			mapData.append_array(var2bytes(data.map.player_start.y))
+			mapData.append_array(_Var2Bytes(data.map.player_start.x))
+			mapData.append_array(_Var2Bytes(data.map.player_start.y))
+			
+			var bytes = _Var2Bytes(data.map.tile_break_time)
+			mapData.append_array(bytes)
+			mapData.append_array(_Var2Bytes(data.map.tile_break_variance))
 			
 			mapData.append_array(_Int2ByteArray(data.map.floors.size(), 4))
 			for i in range(0, data.map.floors.size()):
@@ -111,10 +136,10 @@ func storeMapData(filePath : String, data):
 			
 			mapData.append(data.map.exits.size())
 			for i in range(0, data.map.exits.size()):
-				mapData.append_array(var2bytes(data.map.exits[i].position.x))
-				mapData.append_array(var2bytes(data.map.exits[i].position.y))
-				mapData.append_array(var2bytes(data.map.exits[i].size.x))
-				mapData.append_array(var2bytes(data.map.exits[i].size.y))
+				mapData.append_array(_Var2Bytes(data.map.exits[i].position.x))
+				mapData.append_array(_Var2Bytes(data.map.exits[i].position.y))
+				mapData.append_array(_Var2Bytes(data.map.exits[i].size.x))
+				mapData.append_array(_Var2Bytes(data.map.exits[i].size.y))
 				val = data.map.exits[i].type.to_utf8()
 				mapData.append(val.size())
 				mapData.append_array(val)
@@ -158,69 +183,97 @@ func readMapData(filePath : String, headerOnly : bool = false):
 		var csize = file.get_64()
 		
 		var mapData = file.get_buffer(csize)
-		var index = 0
+		var res = null
 		mapData = mapData.decompress(ucsize, File.COMPRESSION_GZIP)
 		if mapData.size() != ucsize:
 			print("READ MAP ERROR: Uncompressed map data size invalid.")
 			return null
 		
-		size = _ByteArray2Int(mapData, 2, index)
-		index += 2
+		res = _ByteArray2Int(mapData, 2, 0)
 		
-		data.map.tileset_name = mapData.subarray(index, index + (size-1)).get_string_from_utf8()
-		index += size
+		res = _Bytes2UTF8(mapData, res.value, res.offset)
+		data.map.tileset_name = res.value
+		print(res)
+		#data.map.tileset_name = mapData.subarray(index, index + (size-1)).get_string_from_utf8()
+		#index += size
 		
 		data.map.player_start = Vector2.ZERO
-		data.map.player_start.x = bytes2var(mapData.subarray(index, index+7))
-		index += 8
-		data.map.player_start.y = bytes2var(mapData.subarray(index, index+7))
-		index += 8
+		#res = _ByteArray2Int(mapData, 1, res.offset)
+		#print(res)
+
+		res = _Bytes2Var(mapData, res.offset)
+		data.map.player_start.x = res.value
+		print(res)
+
+		res = _Bytes2Var(mapData, res.offset)
+		data.map.player_start.y = res.value
+		print(res)
+		
+		res = _Bytes2Var(mapData, res.offset)
+		data.map.tile_break_time = res.value
+		print(res)
+		
+		res = _Bytes2Var(mapData, res.offset)
+		data.map.tile_break_variance = res.value
+		print(res)
 		
 		
 		# ----- Loading Floor tile data
-		size = _ByteArray2Int(mapData, 4, index)
-		index += 4
+		res = _ByteArray2Int(mapData, 4, res.offset)
+		size = res.value
+		print(res)
+		
 		data.map.floors = []
 		for i in range(0, size):
-			var x = _ByteArray2Int(mapData, 4, index)
-			index += 4
-			var y = _ByteArray2Int(mapData, 4, index)
-			index += 4
-			var idx = mapData[index]
-			index += 1
+			res = _ByteArray2Int(mapData, 4, res.offset)
+			var x = res.value
+			
+			res = _ByteArray2Int(mapData, 4, res.offset)
+			var y = res.value
+
+			res = _ByteArray2Int(mapData, 1, res.offset)
+			var idx = res.value
+
 			data.map.floors.append({"x":x, "y":y, "idx":idx})
 		
 		# ----- Loading Wall tile data
-		size = _ByteArray2Int(mapData, 4, index)
-		index += 4
+		res = _ByteArray2Int(mapData, 4, res.offset)
+		size = res.value
+		
 		data.map.walls = []
 		for i in range(0, size):
-			var x = _ByteArray2Int(mapData, 4, index)
-			index += 4
-			var y = _ByteArray2Int(mapData, 4, index)
-			index += 4
-			var idx = mapData[index]
-			index += 1
+			res = _ByteArray2Int(mapData, 4, res.offset)
+			var x = res.value
+			
+			res = _ByteArray2Int(mapData, 4, res.offset)
+			var y = res.value
+
+			res = _ByteArray2Int(mapData, 1, res.offset)
+			var idx = res.value
+			
 			data.map.walls.append({"x":x, "y":y, "idx":idx})
 		
 		# ----- Loading dungeon exit information
-		size = mapData[index] #_ByteArray2Int(mapData, 4, index)
-		index += 1
+		res = _ByteArray2Int(mapData, 1, res.offset)
+		size = res.value
+		
 		data.map.exits = []
 		for i in range(0, size):
-			var x = bytes2var(mapData.subarray(index, index + 7))
-			index += 8
-			var y = bytes2var(mapData.subarray(index, index + 7))
-			index += 8
-			var sa = mapData.subarray(index, index + 7)
-			var sizex = bytes2var(mapData.subarray(index, index + 7))
-			index += 8
-			var sizey = bytes2var(mapData.subarray(index, index + 7))
-			index += 8
-			var tsize = mapData[index]
-			index += 1
-			var type = mapData.subarray(index, index + (tsize-1)).get_string_from_utf8()
-			index += tsize
+			res = _Bytes2Var(mapData, res.offset)
+			var x = res.value
+			
+			res = _Bytes2Var(mapData, res.offset)
+			var y = res.value
+
+			res = _Bytes2Var(mapData, res.offset)
+			var sizex = res.value
+
+			res = _Bytes2Var(mapData, res.offset)
+			var sizey = res.value
+
+			res = _ByteArray2Int(mapData, 1, res.offset)
+			res = _Bytes2UTF8(mapData, res.value, res.offset)
+			var type = res.value
 			
 			# TODO: Validate type = "circle" or "rect"
 			# TODO: Validate position ON a floor tile
@@ -231,7 +284,7 @@ func readMapData(filePath : String, headerOnly : bool = false):
 				"size":Vector2(sizex, sizey),
 				"type":type
 			})
-		
+			
 		return data
 	
 	print("ERROR: Failed to open map file.")

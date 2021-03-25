@@ -2,9 +2,6 @@ extends Node2D
 
 signal pickup
 
-
-export (float, 0.1, 10.0) var time_to_collapse = 0.65
-
 var RNG = null
 
 var last_tile_pos = null
@@ -12,6 +9,7 @@ var tile_collapse_time = 0
 var collapsing_tiles = {}
 var player = null
 
+onready var parent_node = get_parent()
 onready var mbt_node = get_parent().get_node("MapBuildTools")
 onready var floors_map = get_parent().get_node("Floors")
 onready var walls_map = get_parent().get_node("Walls")
@@ -72,9 +70,10 @@ func _update_collapsing_tiles(delta):
 	var hcell_size = cell_size * 0.5
 	for key in collapsing_tiles:
 		var tpos = collapsing_tiles[key].pos
+		var ctm = collapsing_tiles[key].ctm
 		var ttc = collapsing_tiles[key].ttc
 		ttc += delta
-		if ttc >= time_to_collapse:
+		if ttc >= ctm:
 			var breakable_tile = _get_breakable_tile_from_map_position(tpos)
 			if breakable_tile != null:
 				floors_map.set_cellv(tpos, -1)
@@ -93,15 +92,18 @@ func _update_collapsing_tiles(delta):
 func _set_collapsing_tile(mpos : Vector2):
 	var key = String(mpos.x) + "x" + String(mpos.y)
 	if not (key in collapsing_tiles):
+		var variance = RNG.randf_range(-(parent_node.tile_break_variance * 0.5), (parent_node.tile_break_variance * 0.5))
+		var collapse_time_max = parent_node.tile_break_time + variance
+		
 		collapsing_tiles[key] = {
 			"pos": mpos,
+			"ctm": collapse_time_max,
 			"ttc": 0
 		}
 
 
 func _collapse_level():
 	# floors_map
-	print("Collapsing the level!!")
 	var floors = floors_map.get_used_cells()
 	for f in floors:
 		_set_collapsing_tile(f)

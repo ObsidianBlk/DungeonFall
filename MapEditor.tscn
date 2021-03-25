@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://scripts/MapEditor.gd" type="Script" id=1]
 [ext_resource path="res://objects/camera/Camera.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://scripts/MapEditor_Floors.gd" type="Script" id=7]
 [ext_resource path="res://scripts/MapEditor_PlayerStart.gd" type="Script" id=8]
 [ext_resource path="res://scripts/UI/MapEditor/SliderLabelValue.gd" type="Script" id=9]
+[ext_resource path="res://scripts/UI/MapEditor/EntryBoxValue.gd" type="Script" id=10]
 
 [sub_resource type="Image" id=43]
 data = {
@@ -591,9 +592,12 @@ size_flags_vertical = 3
 margin_right = 396.0
 margin_bottom = 37.0
 size_flags_horizontal = 3
+script = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+Value_Node_Path = NodePath("LineEdit")
+db_val_key = "level_name"
 
 [node name="Label" type="Label" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Left Column/MapName"]
 margin_top = 8.0
@@ -674,6 +678,7 @@ Value_Node_Path = NodePath("HSlider")
 Label_Node_Path = NodePath("Label")
 Label_Postfix = " second(s)"
 Value_Decimal_Padding = 1
+db_val_key = "tile_break_variance"
 db_val_to_max = "tile_break_time"
 
 [node name="HSlider" type="HSlider" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Right Column/BreakVariance/Slider"]

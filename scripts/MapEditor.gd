@@ -7,6 +7,8 @@ const REPEATER_UPDATE_STEP = 0.25
 
 enum EDITOR_MODE {NONE, FLOORS, PLAYER_START}
 
+var DB = null
+
 var tileset_def = null
 var tileset_resource = null
 
@@ -34,9 +36,11 @@ onready var vp_port = $MapView/Port
 onready var generalUI = $CanvasLayer/GeneralUI
 
 func _ready():
+	MemDB.connect("database_added", self, "_on_db_added")
 	if not MemDB.has_db("MapEditor"):
 		MemDB.add_db("MapEditor")
-		print("Database added")
+	else:
+		DB = MemDB.get_db("MapEditor")
 
 	get_tree().paused = false
 	var EditorLevel = load(EDITORLEVEL_SCENE)
@@ -128,10 +132,36 @@ func _process(delta):
 func reset_repeater():
 	repeater_update_step = 0.0
 
+func _listenDB():
+	if DB != null:
+		DB.connect("value_changed", self, "_on_db_value_changed")
+
+func _unlistenDB():
+	if DB != null:
+		DB.disconnect("value_changed", self, "_on_db_value_changed")
+
 
 func _on_tileset_activated(def):
 	tileset_def = def
 
+
+func _on_db_added(name : String):
+	if DB != null:
+		return
+
+	if name == "MapEditor":
+		DB = MemDB.get_db("MapEditor")
+		_listenDB()
+
+
+func _on_db_value_changed(name : String, val):
+	match(name):
+		"level_name":
+			editorlevel_node.level_name = val
+		"tile_break_time":
+			editorlevel_node.tile_break_time = val
+		"tile_break_variance":
+			editorlevel_node.tile_break_variance = val
 
 func _on_active_floor_type(type : String):
 	if flooreditor_node == null:
@@ -177,7 +207,12 @@ func _on_load_map():
 	# TODO: This is just place holder (and a quickie test).
 	var data = Io.readMapData("user://maps/MyMap.dfm")
 	if data:
+		_unlistenDB()
 		editorlevel_node.buildMapFromData(data)
+		DB.set_value("level_name", data.name)
+		DB.set_value("tile_break_time", data.map.tile_break_time)
+		DB.set_value("tile_break_variance", data.map.tile_break_variance)
+		_listenDB()
 
 
 
