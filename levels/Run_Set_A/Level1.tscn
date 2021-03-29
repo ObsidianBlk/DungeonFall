@@ -1,12 +1,15 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://scripts/DFLevel.gd" type="Script" id=1]
+[ext_resource path="res://scripts/Dungeon.gd" type="Script" id=1]
 [ext_resource path="res://objects/player_start/Player_Start.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tilesets/tilesetA/tilesetA.tres" type="TileSet" id=4]
-[ext_resource path="res://scripts/MapBuildTools.gd" type="Script" id=5]
+[ext_resource path="res://scripts/DungeonBuildTools.gd" type="Script" id=5]
 [ext_resource path="res://objects/level_exit/Level Exit.tscn" type="PackedScene" id=6]
 [ext_resource path="res://objects/gold/Gold.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scripts/MapCTRL.gd" type="Script" id=8]
+[ext_resource path="res://scripts/DungeonCTRL.gd" type="Script" id=8]
+
+
+
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 1 )

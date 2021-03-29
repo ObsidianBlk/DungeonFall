@@ -1,13 +1,13 @@
 [gd_scene load_steps=53 format=2]
 
-[ext_resource path="res://scripts/MapEditor.gd" type="Script" id=1]
+[ext_resource path="res://scripts/DungeonEditor.gd" type="Script" id=1]
 [ext_resource path="res://objects/camera/Camera.tscn" type="PackedScene" id=2]
 [ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=3]
 [ext_resource path="res://scripts/UI/MapEditor/TilesetSelection.gd" type="Script" id=4]
 [ext_resource path="res://scripts/UI/MapEditor/FloorTools.gd" type="Script" id=5]
 [ext_resource path="res://scripts/UI/MapEditor/FloorList.gd" type="Script" id=6]
-[ext_resource path="res://scripts/MapEditor_Floors.gd" type="Script" id=7]
-[ext_resource path="res://scripts/MapEditor_PlayerStart.gd" type="Script" id=8]
+[ext_resource path="res://scripts/DungeonEditor_Floors.gd" type="Script" id=7]
+[ext_resource path="res://scripts/DungeonEditor_PlayerStart.gd" type="Script" id=8]
 [ext_resource path="res://scripts/UI/MapEditor/SliderLabelValue.gd" type="Script" id=9]
 [ext_resource path="res://scripts/UI/MapEditor/EntryBoxValue.gd" type="Script" id=10]
 
@@ -326,7 +326,7 @@ flags = 3
 image = SubResource( 63 )
 size = Vector2( 64, 64 )
 
-[node name="MapEditor" type="Node2D"]
+[node name="DungeonEditor" type="Node2D"]
 pause_mode = 2
 script = ExtResource( 1 )
 
@@ -346,7 +346,7 @@ __meta__ = {
 [node name="Camera" parent="Perma_Objects" instance=ExtResource( 2 )]
 current = false
 
-[node name="MapView" type="ViewportContainer" parent="."]
+[node name="DungeonView" type="ViewportContainer" parent="."]
 pause_mode = 1
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -361,7 +361,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Port" type="Viewport" parent="MapView"]
+[node name="Port" type="Viewport" parent="DungeonView"]
 size = Vector2( 480, 270 )
 size_override_stretch = true
 handle_input_locally = false
@@ -547,7 +547,7 @@ mouse_filter = 1
 [node name="Tiles" type="VBoxContainer" parent="CanvasLayer/EditorUI/FloorList/Margins/Scroll"]
 custom_constants/separation = 24
 
-[node name="MapSettingsUI" type="Panel" parent="CanvasLayer"]
+[node name="DungeonSettingsUI" type="Panel" parent="CanvasLayer"]
 margin_left = 655.0
 margin_top = 242.0
 margin_right = 1905.0
@@ -557,7 +557,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Margins" type="MarginContainer" parent="CanvasLayer/MapSettingsUI"]
+[node name="Margins" type="MarginContainer" parent="CanvasLayer/DungeonSettingsUI"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 10.0
@@ -568,11 +568,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Control" type="Control" parent="CanvasLayer/MapSettingsUI/Margins"]
+[node name="Control" type="Control" parent="CanvasLayer/DungeonSettingsUI/Margins"]
 margin_right = 1230.0
 margin_bottom = 801.0
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/MapSettingsUI/Margins/Control"]
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/vseparation = 0
@@ -582,13 +582,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Left Column" type="VBoxContainer" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer"]
+[node name="Left Column" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer"]
 margin_right = 396.0
 margin_bottom = 801.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="MapName" type="HBoxContainer" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Left Column"]
+[node name="DungeonName" type="HBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Left Column"]
 margin_right = 396.0
 margin_bottom = 37.0
 size_flags_horizontal = 3
@@ -596,50 +596,49 @@ script = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-Value_Node_Path = NodePath("LineEdit")
-db_val_key = "level_name"
+db_name = "Editor"
+db_val_key = "dungeon_name"
 
-[node name="Label" type="Label" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Left Column/MapName"]
+[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Left Column/DungeonName"]
 margin_top = 8.0
-margin_right = 87.0
+margin_right = 120.0
 margin_bottom = 29.0
-text = "Map Name: "
+text = "Dungeon Name: "
 
-[node name="LineEdit" type="LineEdit" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Left Column/MapName"]
-margin_left = 91.0
+[node name="Value" type="LineEdit" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Left Column/DungeonName"]
+margin_left = 124.0
 margin_right = 396.0
 margin_bottom = 37.0
 size_flags_horizontal = 3
 max_length = 255
-placeholder_text = "Level Name"
+placeholder_text = "Enter name"
 
-[node name="Center Column" type="VBoxContainer" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer"]
+[node name="Center Column" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer"]
 margin_left = 416.0
 margin_right = 812.0
 margin_bottom = 801.0
 size_flags_horizontal = 3
 
-[node name="BreakTime" type="VBoxContainer" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Center Column"]
+[node name="BreakTime" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Center Column"]
 margin_right = 396.0
 margin_bottom = 46.0
 
-[node name="Label" type="Label" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Center Column/BreakTime"]
+[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Center Column/BreakTime"]
 margin_right = 396.0
 margin_bottom = 21.0
 text = "Tile Break Time:"
 
-[node name="Slider" type="HBoxContainer" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Center Column/BreakTime"]
+[node name="Slider" type="HBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Center Column/BreakTime"]
 margin_top = 25.0
 margin_right = 396.0
 margin_bottom = 46.0
 script = ExtResource( 9 )
-Value_Node_Path = NodePath("HSlider")
-Label_Node_Path = NodePath("Label")
+db_name = "Editor"
+db_val_key = "tile_break_time"
 Label_Postfix = " second(s)"
 Value_Decimal_Padding = 1
-db_val_key = "tile_break_time"
 
-[node name="HSlider" type="HSlider" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Center Column/BreakTime/Slider"]
+[node name="Value" type="HSlider" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Center Column/BreakTime/Slider"]
 margin_right = 303.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
@@ -648,47 +647,46 @@ max_value = 2.0
 step = 0.1
 value = 1.0
 
-[node name="Label" type="Label" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Center Column/BreakTime/Slider"]
+[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Center Column/BreakTime/Slider"]
 margin_left = 307.0
 margin_right = 396.0
 margin_bottom = 21.0
 text = "1.0 second(s)"
 
-[node name="Right Column" type="VBoxContainer" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer"]
+[node name="Right Column" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer"]
 margin_left = 832.0
 margin_right = 1228.0
 margin_bottom = 801.0
 size_flags_horizontal = 3
 
-[node name="BreakVariance" type="VBoxContainer" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Right Column"]
+[node name="BreakVariance" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Right Column"]
 margin_right = 396.0
 margin_bottom = 46.0
 
-[node name="Label" type="Label" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Right Column/BreakVariance"]
+[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Right Column/BreakVariance"]
 margin_right = 396.0
 margin_bottom = 21.0
 text = "Tile Break Variance:"
 
-[node name="Slider" type="HBoxContainer" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Right Column/BreakVariance"]
+[node name="Slider" type="HBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Right Column/BreakVariance"]
 margin_top = 25.0
 margin_right = 396.0
 margin_bottom = 46.0
 script = ExtResource( 9 )
-Value_Node_Path = NodePath("HSlider")
-Label_Node_Path = NodePath("Label")
+db_name = "Editor"
+db_val_key = "tile_break_variance"
 Label_Postfix = " second(s)"
 Value_Decimal_Padding = 1
-db_val_key = "tile_break_variance"
 db_val_to_max = "tile_break_time"
 
-[node name="HSlider" type="HSlider" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Right Column/BreakVariance/Slider"]
+[node name="Value" type="HSlider" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Right Column/BreakVariance/Slider"]
 margin_right = 300.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
 max_value = 1.0
 step = 0.1
 
-[node name="Label" type="Label" parent="CanvasLayer/MapSettingsUI/Margins/Control/GridContainer/Right Column/BreakVariance/Slider"]
+[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Right Column/BreakVariance/Slider"]
 margin_left = 304.0
 margin_right = 396.0
 margin_bottom = 21.0

@@ -313,7 +313,7 @@ func generateMapData():
 		return
 		
 	var data = {
-		"name": parent_node.level_name,
+		"name": parent_node.dungeon_name,
 		"version": [0,1,0],
 		"map":{
 			"tileset_name": tileset_def.name,
@@ -370,7 +370,7 @@ func buildMapFromData(data):
 		return # <--- Yes? No? Oh for the love of...
 	TilesetStore.activate_tileset(data.map.tileset_name)
 	
-	parent_node.level_name = data.name
+	parent_node.dungeon_name = data.name
 	
 	# Position the player start.
 	parent_node.position_player_start_to(data.map.player_start)

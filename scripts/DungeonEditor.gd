@@ -2,8 +2,10 @@ extends Node2D
 
 const DEFAULT_TILESET_NAME = "Moldy Dungeon"
 const MAIN_WORLD_SCENE = "res://World.tscn"
-const EDITORLEVEL_SCENE = "res://levels/EditorLevel.tscn"
+const DUNGEONLEVEL_SCENE = "res://levels/EditorDungeon.tscn"
 const REPEATER_UPDATE_STEP = 0.25
+
+const DB_NAME = "Editor"
 
 enum EDITOR_MODE {NONE, FLOORS, PLAYER_START}
 
@@ -12,12 +14,8 @@ var DB = null
 var tileset_def = null
 var tileset_resource = null
 
-var editorlevel_node = null
+var dungeonlevel_node = null
 var tile_selector_inst = null
-
-#var active_floor_type = "B"
-#var floor_tile_id = -1
-#var rand_floor = false
 
 var repeater_update_step = 0.0
 var tracker_motion = Vector2.ZERO
@@ -30,27 +28,28 @@ onready var playerstarteditor_node = $PlayerStartEditor
 onready var camera = $Perma_Objects/Camera
 onready var floorList_node = $CanvasLayer/EditorUI/FloorList
 
-onready var vp_container = $MapView
-onready var vp_port = $MapView/Port
+onready var vp_container = $DungeonView
+onready var vp_port = $DungeonView/Port
 
+onready var dungeonSettingsUI = $CanvasLayer/DungeonSettingsUI
 onready var generalUI = $CanvasLayer/GeneralUI
 
 func _ready():
 	MemDB.connect("database_added", self, "_on_db_added")
-	if not MemDB.has_db("MapEditor"):
-		MemDB.add_db("MapEditor")
+	if not MemDB.has_db(DB_NAME):
+		MemDB.add_db(DB_NAME)
 	else:
-		DB = MemDB.get_db("MapEditor")
+		DB = MemDB.get_db(DB_NAME)
 
 	get_tree().paused = false
-	var EditorLevel = load(EDITORLEVEL_SCENE)
-	if EditorLevel:
-		editorlevel_node = EditorLevel.instance()
-		$MapView/Port.add_child(editorlevel_node)
-		editorlevel_node.attach_camera(camera)
+	var DungeonLevel = load(DUNGEONLEVEL_SCENE)
+	if DungeonLevel:
+		dungeonlevel_node = DungeonLevel.instance()
+		vp_port.add_child(dungeonlevel_node)
+		dungeonlevel_node.attach_camera(camera)
 		
-		flooreditor_node.set_leveleditor_node(editorlevel_node)
-		playerstarteditor_node.set_leveleditor_node(editorlevel_node)
+		flooreditor_node.set_editordungeon_node(dungeonlevel_node)
+		playerstarteditor_node.set_editordungeon_node(dungeonlevel_node)
 
 		tileset_def = TilesetStore.get_definition()
 		TilesetStore.connect("tileset_activated", self, "_on_tileset_activated")
@@ -63,19 +62,19 @@ func _mousepos_to_vp(pos : Vector2, campos : Vector2):
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
-		editorlevel_node.enable_camera_tracking(false)
-		var campos = editorlevel_node.get_camera_position()
+		dungeonlevel_node.enable_camera_tracking(false)
+		var campos = dungeonlevel_node.get_camera_position()
 		var mpos = _mousepos_to_vp(event.position, campos)
 		if map_dragging:
 			#var pos = mpos - campos
-			editorlevel_node.move_camera(event.relative)
-			campos = editorlevel_node.get_camera_position()
+			dungeonlevel_node.move_camera(event.relative)
+			campos = dungeonlevel_node.get_camera_position()
 			mpos = _mousepos_to_vp(event.position, campos)
 		
-		var tpos = editorlevel_node.get_tracker_position()
-		editorlevel_node.position_tracker_to(mpos)
+		var tpos = dungeonlevel_node.get_tracker_position()
+		dungeonlevel_node.position_tracker_to(mpos)
 		#var floor_mode = editor_mode == EDITOR_MODE.PLACE_FLOOR or editor_mode == EDITOR_MODE.CLEAR_FLOOR
-		if editor_mode == EDITOR_MODE.FLOORS and editorlevel_node.get_tracker_position() != tpos:
+		if editor_mode == EDITOR_MODE.FLOORS and dungeonlevel_node.get_tracker_position() != tpos:
 			repeater_update_step = 0.0
 	elif event is InputEventMouseButton:
 		if event.is_action_pressed("MapEditor_MouseMapDrag"):
@@ -88,7 +87,7 @@ func _unhandled_input(event):
 			get_tree().paused = generalUI.visible
 		
 		if event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right"):
-			editorlevel_node.enable_camera_tracking(true)
+			dungeonlevel_node.enable_camera_tracking(true)
 			if event.is_action_pressed("ui_left"):
 				tracker_motion.x -= 1
 			if event.is_action_pressed("ui_right"):
@@ -98,7 +97,7 @@ func _unhandled_input(event):
 			tracker_motion.x = 0
 		
 		if event.is_action_pressed("ui_up") or event.is_action_pressed("ui_down"):
-			editorlevel_node.enable_camera_tracking(true)
+			dungeonlevel_node.enable_camera_tracking(true)
 			if event.is_action_pressed("ui_up"):
 				tracker_motion.y -= 1
 			if event.is_action_pressed("ui_down"):
@@ -117,7 +116,7 @@ func _unhandled_input(event):
 func _process(delta):
 	if repeater_update_step <= 0.0:
 		if tracker_motion.length_squared() > 0:
-			editorlevel_node.move_tracker(
+			dungeonlevel_node.move_tracker(
 				tracker_motion.x,
 				tracker_motion.y
 			)
@@ -149,19 +148,19 @@ func _on_db_added(name : String):
 	if DB != null:
 		return
 
-	if name == "MapEditor":
-		DB = MemDB.get_db("MapEditor")
+	if name == DB_NAME:
+		DB = MemDB.get_db(DB_NAME)
 		_listenDB()
 
 
 func _on_db_value_changed(name : String, val):
 	match(name):
-		"level_name":
-			editorlevel_node.level_name = val
+		"dungeon_name":
+			dungeonlevel_node.dungeon_name = val
 		"tile_break_time":
-			editorlevel_node.tile_break_time = val
+			dungeonlevel_node.tile_break_time = val
 		"tile_break_variance":
-			editorlevel_node.tile_break_variance = val
+			dungeonlevel_node.tile_break_variance = val
 
 func _on_active_floor_type(type : String):
 	if flooreditor_node == null:
@@ -196,10 +195,10 @@ func _on_random_floor(button_pressed):
 func _on_player_start(button_pressed):
 	if button_pressed:
 		editor_mode = EDITOR_MODE.PLAYER_START
-		editorlevel_node.clear_ghost_tiles()
+		dungeonlevel_node.clear_ghost_tiles()
 
 func _on_save_map():
-	var mapData = editorlevel_node.generateMapData()
+	var mapData = dungeonlevel_node.generateMapData()
 	if mapData:
 		Io.storeMapData("MyMap.dfm", mapData)
 
@@ -208,8 +207,8 @@ func _on_load_map():
 	var data = Io.readMapData("user://maps/MyMap.dfm")
 	if data:
 		_unlistenDB()
-		editorlevel_node.buildMapFromData(data)
-		DB.set_value("level_name", data.name)
+		dungeonlevel_node.buildMapFromData(data)
+		DB.set_value("dungeon_name", data.name)
 		DB.set_value("tile_break_time", data.map.tile_break_time)
 		DB.set_value("tile_break_variance", data.map.tile_break_variance)
 		_listenDB()
@@ -217,4 +216,4 @@ func _on_load_map():
 
 
 func _on_map_settings_toggled(button_pressed):
-	$CanvasLayer/MapSettingsUI.visible = button_pressed
+	dungeonSettingsUI.visible = button_pressed

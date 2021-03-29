@@ -13,8 +13,8 @@ signal level_time_visible(enable)
 signal total_run_time(val)
 signal total_run_points(val)
 
-const EDITOR_WORLD_SCENE = "res://MapEditor.tscn"
-const BASE_LEVEL_SCENE = "res://levels/BaseLevel.tscn"
+const EDITOR_WORLD_SCENE = "res://DungeonEditor.tscn"
+const DUNGEON_SCENE = "res://levels/Dungeon.tscn"
 
 # TODO:
 # Setup an over-all game "state" system to determine what menu player is in or if they are actively in the game.
@@ -92,7 +92,7 @@ func unload_level():
 		level.disconnect("level_exit", self, "_on_level_exit")
 		level.disconnect("point_update", self, "_on_point_update")
 		level.disconnect("play_timer_changed", self, "_on_play_timer_changed")
-		if level.level_max_timer > 0.0:
+		if level.dungeon_max_timer > 0.0:
 			level.disconnect("level_timer_changed", self, "_on_level_timer_changed")
 		level.detach_player_to($Perma_Objects)
 		level.detach_camera_to($Perma_Objects)
@@ -103,7 +103,7 @@ func unload_level():
 func load_level(res_path : String, new_level : bool = true, is_dfm : bool = false):
 	var scene = null
 	if is_dfm:
-		scene = load(BASE_LEVEL_SCENE)
+		scene = load(DUNGEON_SCENE)
 	else:
 		scene = load(res_path)
 	
@@ -121,7 +121,7 @@ func load_level(res_path : String, new_level : bool = true, is_dfm : bool = fals
 		level.connect("level_exit", self, "_on_level_exit")
 		level.connect("point_update", self, "_on_point_update")
 		level.connect("play_timer_changed", self, "_on_play_timer_changed")
-		if level.level_max_timer > 0.0:
+		if level.dungeon_max_timer > 0.0:
 			emit_signal("level_time_visible", true)
 			level.connect("level_timer_changed", self, "_on_level_timer_changed")
 		else:
@@ -136,7 +136,7 @@ func load_level(res_path : String, new_level : bool = true, is_dfm : bool = fals
 
 
 func _load_user_level(path : String):
-	var scene = load(BASE_LEVEL_SCENE)
+	var scene = load(DUNGEON_SCENE)
 	scene = scene.instance()
 	if scene.load_user_level(path):
 		return scene

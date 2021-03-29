@@ -42,10 +42,8 @@ func _ByteArray2Int(ba : PoolByteArray, byteCount = 0, offset = 0):
 func _Var2Bytes(v):
 	var buff = PoolByteArray()
 	var vbuff = var2bytes(v)
-	print("Storing variable buffer of size: ", vbuff.size())
 	buff.append(vbuff.size())
 	buff.append_array(vbuff)
-	print("Buffered first value as: ", buff[0])
 	return buff
 
 func _Bytes2UTF8(ba : PoolByteArray, size, offset = 0):
@@ -53,10 +51,8 @@ func _Bytes2UTF8(ba : PoolByteArray, size, offset = 0):
 	return {"offset":offset + size, "value":v}
 
 func _Bytes2Var(ba : PoolByteArray, offset = 0):
-	print("Extracting at offset: ", offset)
 	var size = ba[offset]
 	offset += 1
-	print("Extracting ", size, " bytes for variable")
 	var v = bytes2var(ba.subarray(offset, offset + (size - 1)))
 	return {"offset":offset + size, "value" : v}
 
@@ -193,7 +189,6 @@ func readMapData(filePath : String, headerOnly : bool = false):
 		
 		res = _Bytes2UTF8(mapData, res.value, res.offset)
 		data.map.tileset_name = res.value
-		print(res)
 		#data.map.tileset_name = mapData.subarray(index, index + (size-1)).get_string_from_utf8()
 		#index += size
 		
@@ -203,25 +198,20 @@ func readMapData(filePath : String, headerOnly : bool = false):
 
 		res = _Bytes2Var(mapData, res.offset)
 		data.map.player_start.x = res.value
-		print(res)
 
 		res = _Bytes2Var(mapData, res.offset)
 		data.map.player_start.y = res.value
-		print(res)
 		
 		res = _Bytes2Var(mapData, res.offset)
 		data.map.tile_break_time = res.value
-		print(res)
 		
 		res = _Bytes2Var(mapData, res.offset)
 		data.map.tile_break_variance = res.value
-		print(res)
 		
 		
 		# ----- Loading Floor tile data
 		res = _ByteArray2Int(mapData, 4, res.offset)
 		size = res.value
-		print(res)
 		
 		data.map.floors = []
 		for i in range(0, size):

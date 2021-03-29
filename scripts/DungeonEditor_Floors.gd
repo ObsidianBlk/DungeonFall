@@ -1,6 +1,6 @@
 extends Node
 
-var editorlevel_node = null
+var dungeonlevel_node = null
 
 var active_floor_type = "B"
 var floor_tile_id = -1
@@ -9,8 +9,8 @@ var active = false
 var clear = false
 
 
-func set_leveleditor_node(lenode : Node):
-	editorlevel_node = lenode
+func set_editordungeon_node(lenode : Node):
+	dungeonlevel_node = lenode
 
 func set_active_floor_type(type):
 	if type == "B" or type == "S" or type == "E":
@@ -62,7 +62,7 @@ func _handleInput(event):
 
 func _updateProcess(delta):
 	if active:
-		editorlevel_node.clear_ghost_tiles()
+		dungeonlevel_node.clear_ghost_tiles()
 		_updateFloor(clear)
 	else:
 		_updateGhost()
@@ -77,30 +77,30 @@ func _floorTileIDPlaceable():
 	return false
 
 func _updateFloor(clear : bool = false):
-	if editorlevel_node != null:
+	if dungeonlevel_node != null:
 		if clear:
-			editorlevel_node.clear_floor_at_tracker()
+			dungeonlevel_node.clear_floor_at_tracker()
 		elif rand_floor or not _floorTileIDPlaceable():
 			match(active_floor_type):
 				"B":
-					editorlevel_node.set_rand_breakable_floor_at_tracker()
+					dungeonlevel_node.set_rand_breakable_floor_at_tracker()
 				"S":
-					editorlevel_node.set_rand_safe_floor_at_tracker()
+					dungeonlevel_node.set_rand_safe_floor_at_tracker()
 				"E":
-					editorlevel_node.set_rand_exit_floor_at_tracker()
+					dungeonlevel_node.set_rand_exit_floor_at_tracker()
 		else:
-			editorlevel_node.set_floor_at_tracker(floor_tile_id)
+			dungeonlevel_node.set_floor_at_tracker(floor_tile_id)
 
 
 func _updateGhost():
-	if editorlevel_node != null:
+	if dungeonlevel_node != null:
 		if rand_floor or not _floorTileIDPlaceable():
 			match(active_floor_type):
 				"B":
-					editorlevel_node.set_ghost_rand_breakable_at_tracker()
+					dungeonlevel_node.set_ghost_rand_breakable_at_tracker()
 				"S":
-					editorlevel_node.set_ghost_rand_safe_at_tracker()
+					dungeonlevel_node.set_ghost_rand_safe_at_tracker()
 				"E":
-					editorlevel_node.set_ghost_rand_exit_at_tracker()
+					dungeonlevel_node.set_ghost_rand_exit_at_tracker()
 		else:
-			editorlevel_node.set_ghost_tile_at_tracker(floor_tile_id)
+			dungeonlevel_node.set_ghost_tile_at_tracker(floor_tile_id)

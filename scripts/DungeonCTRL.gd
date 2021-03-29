@@ -10,7 +10,7 @@ var collapsing_tiles = {}
 var player = null
 
 onready var parent_node = get_parent()
-onready var mbt_node = get_parent().get_node("MapBuildTools")
+onready var dbt_node = get_parent().get_node("DungeonBuildTools")
 onready var floors_map = get_parent().get_node("Floors")
 onready var walls_map = get_parent().get_node("Walls")
 onready var doors_map = get_parent().get_node("Doors")
@@ -49,20 +49,20 @@ func _physics_process(delta):
 func _check_for_collapsable_tile(pos : Vector2):
 	var mpos = floors_map.world_to_map(pos)
 	var tindex = floors_map.get_cellv(mpos)
-	if mbt_node.is_tile_breakable(tindex):
+	if dbt_node.is_tile_breakable(tindex):
 		_set_collapsing_tile(mpos)
 
 func _get_breakable_tile_from_map_position(mpos : Vector2):
 	if floors_map != null:
 		var ti = floors_map.get_cellv(mpos)
-		return mbt_node.get_breakable_tile_resource(ti)
+		return dbt_node.get_breakable_tile_resource(ti)
 	return null
 
 func _update_collapsing_tiles(delta):
-	if not mbt_node.is_valid() or floors_map == null:
+	if not dbt_node.is_valid() or floors_map == null:
 		return
 	
-	var cell_size = mbt_node.get_cell_size()
+	var cell_size = dbt_node.get_cell_size()
 	if cell_size <= 0:
 		return
 	

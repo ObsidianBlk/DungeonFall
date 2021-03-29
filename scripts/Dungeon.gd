@@ -8,9 +8,9 @@ signal level_timer_changed(time_val)
 signal point_update(point_val)
 
 # Map configuration options
-export var level_name : String = "Dungeon"
-export var level_max_timer : float = 0.0
-export var level_timer_autostart : bool = true
+export var dungeon_name : String = "Level"
+export var dungeon_max_timer : float = 0.0
+export var dungeon_timer_autostart : bool = true
 export var tile_break_time : float = 1.0 setget _set_tile_break_time
 export var tile_break_variance : float = 0.2 setget _set_tile_break_variance
 
@@ -37,11 +37,12 @@ var camera_node : Node2D = null
 var timer_started = false
 var play_timer = 0.0
 var last_play_timer = ""
-var last_level_timer = ""
+var last_dungeon_timer = ""
 var collpased = false
 
 var points = 0
 
+onready var dungeonBT_node = $DungeonBuildTools
 onready var dungeonCTRL = $DungeonCTRL
 
 
@@ -70,17 +71,17 @@ func _set_tile_break_variance(v):
 func _ready():
 	ready = true
 	if map_data != null:
-		$MapBuildTools.buildMapFromData(map_data)
+		dungeonBT_node.buildMapFromData(map_data)
 		map_data = null
 	
-	mapCTRL.connect("pickup", self, "_on_pickup")
+	dungeonCTRL.connect("pickup", self, "_on_pickup")
 	emit_signal("point_update", points)
 	emit_signal("play_timer_changed", play_timer)
-	if level_max_timer > 0.0:
-		emit_signal("level_timer_changed", level_max_timer - play_timer)
+	if dungeon_max_timer > 0.0:
+		emit_signal("level_timer_changed", dungeon_max_timer - play_timer)
 	else:
 		emit_signal("level_timer_changed", 0)
-	timer_started = level_timer_autostart
+	timer_started = dungeon_timer_autostart
 
 func _physics_process(delta):
 	if timer_started:
@@ -89,17 +90,17 @@ func _physics_process(delta):
 		if new_play_timer != last_play_timer:
 			last_play_timer = new_play_timer
 			emit_signal("play_timer_changed", play_timer)
-		if level_max_timer > 0.0 and not collpased:
-			if level_max_timer - play_timer <= 0.0:
+		if dungeon_max_timer > 0.0 and not collpased:
+			if dungeon_max_timer - play_timer <= 0.0:
 				collpased = true
 				emit_signal("level_timer_changed", 0.0)
 				#print("Collapse the floors!")
-				mapCTRL._collapse_level()
+				dungeonCTRL._collapse_level()
 			else:
-				var new_level_timer = str(level_max_timer - play_timer).pad_decimals(2)
-				if new_level_timer != last_level_timer:
-					last_level_timer = new_level_timer
-					emit_signal("level_timer_changed", level_max_timer - play_timer)
+				var new_dungeon_timer = str(dungeon_max_timer - play_timer).pad_decimals(2)
+				if new_dungeon_timer != last_dungeon_timer:
+					last_dungeon_timer = new_dungeon_timer
+					emit_signal("level_timer_changed", dungeon_max_timer - play_timer)
 	elif start_pos != null:
 		if start_pos != player_node.global_position or player_node.inair:
 			timer_started = true
@@ -119,7 +120,7 @@ func load_user_level(path : String):
 	var data = Io.readMapData(path)
 	if data:
 		if ready:
-			$MapBuildTools.buildMapFromData(data)
+			dungeonBT_node.buildMapFromData(data)
 		else:
 			map_data = data
 		return true
@@ -140,7 +141,7 @@ func attach_player(player : Node2D):
 		_swap_to_container(container, player)
 		player.global_position = start_pos
 		player.map_node_path = self.get_path()
-		mapCTRL.set_player(player)
+		dungeonCTRL.set_player(player)
 		_connect_camera_to_player()
 
 func detach_player_to(container : Node2D):
@@ -190,7 +191,7 @@ func position_player_start_to(pos : Vector2):
 	position_player_start(pos.x, pos.y)
 
 func is_over_pit(pos : Vector2, footprint : int = 0):
-	return mapCTRL._is_over_pit(pos, footprint)
+	return dungeonCTRL._is_over_pit(pos, footprint)
 
 
 func exit_level():

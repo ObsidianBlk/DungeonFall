@@ -4,7 +4,7 @@ func _process(delta):
 	update()
 
 func _draw():
-	var mbt = get_parent().get_node("MapBuildTools")
+	var mbt = get_parent().get_node("DungeonBuildTools")
 	if mbt:
 		var color = Color(0.15, 0, 1.0, 0.5)
 		var dungeon_exits = mbt.dungeon_exits
