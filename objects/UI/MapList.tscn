@@ -1,0 +1,70 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/UI/MapList.gd" type="Script" id=2]
+
+[node name="MapList" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 1910.0
+margin_bottom = 1070.0
+custom_constants/separation = 10
+
+[node name="Tree" type="Tree" parent="VBoxContainer"]
+margin_right = 1900.0
+margin_bottom = 1011.0
+size_flags_vertical = 3
+hide_root = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 1021.0
+margin_right = 1900.0
+margin_bottom = 1060.0
+custom_constants/separation = 10
+
+[node name="BTN_Reload" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_right = 28.6343
+margin_bottom = 39.2487
+text = "R"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 38.0
+margin_right = 1900.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+custom_constants/separation = 10
+
+[node name="BTN_LoadDungeon" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
+margin_right = 926.0
+margin_bottom = 39.2487
+size_flags_horizontal = 3
+disabled = true
+text = "LOAD"
+
+[node name="BTN_DeleteDungeon" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
+margin_left = 936.0
+margin_right = 1862.0
+margin_bottom = 39.2487
+size_flags_horizontal = 3
+disabled = true
+text = "DELETE"
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="item_selected" from="VBoxContainer/Tree" to="." method="_on_dungeon_selected"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/BTN_Reload" to="." method="_on_Reload_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/BTN_LoadDungeon" to="." method="_on_LoadDungeon_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/BTN_DeleteDungeon" to="." method="_on_DeleteDungeon_pressed"]

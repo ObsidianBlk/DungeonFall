@@ -568,13 +568,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Control" type="Control" parent="CanvasLayer/DungeonSettingsUI/Margins"]
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/DungeonSettingsUI/Margins"]
 margin_right = 1230.0
 margin_bottom = 801.0
-
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
 custom_constants/vseparation = 0
 custom_constants/hseparation = 20
 columns = 3
@@ -582,13 +578,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Left Column" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer"]
+[node name="Left Column" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer"]
 margin_right = 396.0
 margin_bottom = 801.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="DungeonName" type="HBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Left Column"]
+[node name="DungeonName" type="HBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Left Column"]
 margin_right = 396.0
 margin_bottom = 37.0
 size_flags_horizontal = 3
@@ -599,13 +595,13 @@ __meta__ = {
 db_name = "Editor"
 db_val_key = "dungeon_name"
 
-[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Left Column/DungeonName"]
+[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Left Column/DungeonName"]
 margin_top = 8.0
 margin_right = 120.0
 margin_bottom = 29.0
 text = "Dungeon Name: "
 
-[node name="Value" type="LineEdit" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Left Column/DungeonName"]
+[node name="Value" type="LineEdit" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Left Column/DungeonName"]
 margin_left = 124.0
 margin_right = 396.0
 margin_bottom = 37.0
@@ -613,22 +609,22 @@ size_flags_horizontal = 3
 max_length = 255
 placeholder_text = "Enter name"
 
-[node name="Center Column" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer"]
+[node name="Center Column" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer"]
 margin_left = 416.0
 margin_right = 812.0
 margin_bottom = 801.0
 size_flags_horizontal = 3
 
-[node name="BreakTime" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Center Column"]
+[node name="BreakTime" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Center Column"]
 margin_right = 396.0
 margin_bottom = 46.0
 
-[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Center Column/BreakTime"]
+[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Center Column/BreakTime"]
 margin_right = 396.0
 margin_bottom = 21.0
 text = "Tile Break Time:"
 
-[node name="Slider" type="HBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Center Column/BreakTime"]
+[node name="Slider" type="HBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Center Column/BreakTime"]
 margin_top = 25.0
 margin_right = 396.0
 margin_bottom = 46.0
@@ -638,7 +634,7 @@ db_val_key = "tile_break_time"
 Label_Postfix = " second(s)"
 Value_Decimal_Padding = 1
 
-[node name="Value" type="HSlider" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Center Column/BreakTime/Slider"]
+[node name="Value" type="HSlider" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Center Column/BreakTime/Slider"]
 margin_right = 303.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
@@ -647,28 +643,28 @@ max_value = 2.0
 step = 0.1
 value = 1.0
 
-[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Center Column/BreakTime/Slider"]
+[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Center Column/BreakTime/Slider"]
 margin_left = 307.0
 margin_right = 396.0
 margin_bottom = 21.0
 text = "1.0 second(s)"
 
-[node name="Right Column" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer"]
+[node name="Right Column" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer"]
 margin_left = 832.0
 margin_right = 1228.0
 margin_bottom = 801.0
 size_flags_horizontal = 3
 
-[node name="BreakVariance" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Right Column"]
+[node name="BreakVariance" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Right Column"]
 margin_right = 396.0
 margin_bottom = 46.0
 
-[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Right Column/BreakVariance"]
+[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Right Column/BreakVariance"]
 margin_right = 396.0
 margin_bottom = 21.0
 text = "Tile Break Variance:"
 
-[node name="Slider" type="HBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Right Column/BreakVariance"]
+[node name="Slider" type="HBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Right Column/BreakVariance"]
 margin_top = 25.0
 margin_right = 396.0
 margin_bottom = 46.0
@@ -679,14 +675,14 @@ Label_Postfix = " second(s)"
 Value_Decimal_Padding = 1
 db_val_to_max = "tile_break_time"
 
-[node name="Value" type="HSlider" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Right Column/BreakVariance/Slider"]
+[node name="Value" type="HSlider" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Right Column/BreakVariance/Slider"]
 margin_right = 300.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
 max_value = 1.0
 step = 0.1
 
-[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/Control/GridContainer/Right Column/BreakVariance/Slider"]
+[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Right Column/BreakVariance/Slider"]
 margin_left = 304.0
 margin_right = 396.0
 margin_bottom = 21.0

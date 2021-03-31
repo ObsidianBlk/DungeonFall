@@ -1,6 +1,6 @@
 extends Node
 
-const MAP_PATH = "maps/"
+const MAP_PATH = "maps"
 
 
 func initialize():
@@ -57,9 +57,41 @@ func _Bytes2Var(ba : PoolByteArray, offset = 0):
 	return {"offset":offset + size, "value" : v}
 
 
+func _GetDungeonPathTree(dungeonBasePath : String = ""):
+	if dungeonBasePath == "":
+		dungeonBasePath = "user://" + MAP_PATH
+	var data = {}
+	
+	var dir = Directory.new()
+	if dir.open(dungeonBasePath) == OK:
+		dir.list_dir_begin(false, true)
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir():
+				if file_name != "." and file_name != "..":
+					var subdata = _GetDungeonPathTree(dir.get_current_dir() + "/" + file_name)
+					if subdata != null:
+						data[file_name] = subdata
+			else:
+				if file_name.get_extension().to_lower() == "dfm":
+					var header = readMapData(dungeonBasePath + "/" + file_name, true)
+					if header:
+						if not ("__DUNGEONS__" in data):
+							data["__DUNGEONS__"] = []
+						data["__DUNGEONS__"].append({
+							"path": dungeonBasePath,
+							"file":file_name,
+							"name":header.name
+						})
+			file_name = dir.get_next()
+	if data.empty():
+		return null
+	return data
+
+# NOTE: This method is recursive.
 func _GetAvailableMaps(mapBasePath : String = ""):
 	if mapBasePath == "":
-		mapBasePath = "user://" + MAP_PATH;
+		mapBasePath = "user://" + MAP_PATH
 	var maps = []
 	
 	var dir = Directory.new()
@@ -68,18 +100,23 @@ func _GetAvailableMaps(mapBasePath : String = ""):
 		var file_name = dir.get_next()
 		while file_name != "":
 			if dir.current_is_dir():
-				maps.append_array(_GetAvailableMaps(dir.get_current_dir() + file_name))
+				if file_name != "." and file_name != "..":
+					maps = maps + _GetAvailableMaps(dir.get_current_dir() + "/" + file_name)
 			else:
 				if file_name.get_extension().to_lower() == "dfm":
-					var header = readMapData(file_name, true)
+					var header = readMapData(mapBasePath + "/" + file_name, true)
 					if header:
-						maps.append({"file":file_name, "map_name":header.name})
+						maps.append({"path": mapBasePath, "file":file_name, "dungeon_name":header.name})
 			file_name = dir.get_next()
-	
 	return maps
 
+# NOTE: This is a non-recursive wrapper for the _GetAvailableMaps() method.
 func getAvailableMaps():
 	return _GetAvailableMaps()
+
+# NOTE: This is a non-recursive wrapper for the _GetDungeonPathTree() method.
+func getDungeonPathTree():
+	return _GetDungeonPathTree()
 
 func storeMapData(filePath : String, data):
 	if not filePath.is_valid_filename():
@@ -277,7 +314,7 @@ func readMapData(filePath : String, headerOnly : bool = false):
 			
 		return data
 	
-	print("ERROR: Failed to open map file.")
+	print("ERROR: Failed to open map file, '", filePath, "'.")
 	return null
 
 
