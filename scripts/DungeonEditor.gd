@@ -22,17 +22,20 @@ var tracker_motion = Vector2.ZERO
 var editor_mode = EDITOR_MODE.FLOORS;
 var map_dragging = false
 
+onready var confirmpopup_node = $CanvasLayer/ConfirmPopup
+onready var dungeonload_node = $CanvasLayer/DungeonLoadPopup
+
 onready var flooreditor_node = $FloorEditor
 onready var playerstarteditor_node = $PlayerStartEditor
 
 onready var camera = $Perma_Objects/Camera
-onready var floorList_node = $CanvasLayer/EditorUI/FloorList
+onready var floorList_node = $CanvasLayer/EditorUI/VBoxContainer/FloorList
 
 onready var vp_container = $DungeonView
 onready var vp_port = $DungeonView/Port
 
 onready var dungeonSettingsUI = $CanvasLayer/DungeonSettingsUI
-onready var generalUI = $CanvasLayer/GeneralUI
+#onready var generalUI = $CanvasLayer/GeneralUI
 
 func _ready():
 	MemDB.connect("database_added", self, "_on_db_added")
@@ -60,6 +63,14 @@ func _mousepos_to_vp(pos : Vector2, campos : Vector2):
 	var offset = campos - (vp_port.size * 0.5)
 	return (pos * scale) + offset
 
+func _ShowConfirmPopup(text : String, method : String):
+	if method == "" or confirmpopup_node.visible:
+		return false
+	confirmpopup_node.text = text
+	confirmpopup_node.connect("confirm", self, method)
+	confirmpopup_node.popup()
+	return true
+
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		dungeonlevel_node.enable_camera_tracking(false)
@@ -83,8 +94,10 @@ func _unhandled_input(event):
 			map_dragging = false
 	else:
 		if event.is_action_pressed("ui_cancel"):
-			generalUI.visible = not generalUI.visible
-			get_tree().paused = generalUI.visible
+			if not _ShowConfirmPopup("Exit Dungeon Editor?", "_on_editor_quit"):
+				_on_ConfirmPopup_cancel()
+			#generalUI.visible = not generalUI.visible
+			#get_tree().paused = generalUI.visible
 		
 		if event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right"):
 			dungeonlevel_node.enable_camera_tracking(true)
@@ -130,6 +143,20 @@ func _process(delta):
 
 func reset_repeater():
 	repeater_update_step = 0.0
+
+
+func _loadDungeon(path):
+	# TODO: This is just place holder (and a quickie test).
+	var data = Io.readMapData(path)
+	if data:
+		_unlistenDB()
+		dungeonlevel_node.buildMapFromData(data)
+		DB.set_value("dungeon_name", data.name)
+		DB.set_value("tile_break_time", data.map.tile_break_time)
+		DB.set_value("tile_break_variance", data.map.tile_break_variance)
+		_listenDB()
+
+
 
 func _listenDB():
 	if DB != null:
@@ -202,18 +229,31 @@ func _on_save_map():
 	if mapData:
 		Io.storeMapData("MyMap.dfm", mapData)
 
-func _on_load_map():
-	# TODO: This is just place holder (and a quickie test).
-	var data = Io.readMapData("user://maps/MyMap.dfm")
-	if data:
-		_unlistenDB()
-		dungeonlevel_node.buildMapFromData(data)
-		DB.set_value("dungeon_name", data.name)
-		DB.set_value("tile_break_time", data.map.tile_break_time)
-		DB.set_value("tile_break_variance", data.map.tile_break_variance)
-		_listenDB()
-
-
 
 func _on_map_settings_toggled(button_pressed):
 	dungeonSettingsUI.visible = button_pressed
+
+func _on_ConfirmPopup_cancel():
+	if not confirmpopup_node.visible:
+		return
+	
+	var cl = confirmpopup_node.get_signal_connection_list("confirm")
+	if cl.size() > 0:
+		for i in range(0, cl.size()):
+			confirmpopup_node.disconnect("confirm", cl[i].target, cl[i].method)
+	confirmpopup_node.visible = false
+	confirmpopup_node.text = ""
+
+
+func _on_dungeonload_cancel():
+	dungeonload_node.visible = false
+
+
+func _on_rquestdungeonload_pressed():
+	dungeonload_node.popup()
+
+
+func _on_loaddungeonfresh_dungeon(path):
+	dungeonload_node.visible = false
+	# TODO: Check if any changes have been made to existing map... if any.
+	_loadDungeon(path)

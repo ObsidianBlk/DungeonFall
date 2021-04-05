@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=1]
-[ext_resource path="res://scripts/UI/MapList.gd" type="Script" id=2]
+[ext_resource path="res://scripts/UI/DungeonList.gd" type="Script" id=2]
 
-[node name="MapList" type="MarginContainer"]
+[node name="DungeonList" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -50,21 +50,29 @@ size_flags_horizontal = 3
 custom_constants/separation = 10
 
 [node name="BTN_LoadDungeon" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
-margin_right = 926.0
+margin_right = 614.0
 margin_bottom = 39.2487
 size_flags_horizontal = 3
 disabled = true
 text = "LOAD"
 
 [node name="BTN_DeleteDungeon" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
-margin_left = 936.0
-margin_right = 1862.0
+margin_left = 624.0
+margin_right = 1238.0
 margin_bottom = 39.2487
 size_flags_horizontal = 3
 disabled = true
 text = "DELETE"
+
+[node name="BTN_Cancel" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
+margin_left = 1248.0
+margin_right = 1862.0
+margin_bottom = 39.2487
+size_flags_horizontal = 3
+text = "Cancel"
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="item_selected" from="VBoxContainer/Tree" to="." method="_on_dungeon_selected"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/BTN_Reload" to="." method="_on_Reload_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/BTN_LoadDungeon" to="." method="_on_LoadDungeon_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/BTN_DeleteDungeon" to="." method="_on_DeleteDungeon_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/BTN_Cancel" to="." method="_on_cancel_pressed"]

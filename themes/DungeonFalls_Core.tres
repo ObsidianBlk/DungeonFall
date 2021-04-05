@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=54 format=2]
+[gd_resource type="Theme" load_steps=55 format=2]
 
 [ext_resource path="res://assets/graphics/ui/UI_Button_Disabled.png" type="Texture" id=1]
 [ext_resource path="res://assets/graphics/ui/UI_Button_Hover.png" type="Texture" id=2]
@@ -154,6 +154,14 @@ margin_left = 15.2862
 margin_right = 15.4215
 margin_top = 15.5567
 margin_bottom = 16.7742
+
+[sub_resource type="StyleBoxTexture" id=31]
+texture = ExtResource( 10 )
+region_rect = Rect2( 0, 0, 64, 64 )
+margin_left = 8.36018
+margin_right = 8.56409
+margin_top = 8.36018
+margin_bottom = 8.56409
 
 [sub_resource type="StyleBoxTexture" id=18]
 texture = ExtResource( 15 )
@@ -337,6 +345,7 @@ MenuButton/styles/normal = null
 MenuButton/styles/pressed = null
 Panel/styles/panel = SubResource( 16 )
 PanelContainer/styles/panel = SubResource( 17 )
+PopupPanel/styles/panel = SubResource( 31 )
 ProgressBar/colors/font_color = Color( 0.882353, 0.811765, 0.623529, 1 )
 ProgressBar/colors/font_color_shadow = Color( 0.984314, 0.819608, 0.384314, 1 )
 ProgressBar/fonts/font = null

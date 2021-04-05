@@ -2,8 +2,9 @@ extends Container
 
 
 signal dungeon_selected
+signal cancel
 signal load_dungeon(path)
-signal delete_dungeon(path)
+signal delete_dungeon(name, path)
 
 
 
@@ -84,10 +85,12 @@ func _on_LoadDungeon_pressed():
 
 func _on_DeleteDungeon_pressed():
 	if selected_dungeon != null:
-		emit_signal("delete_dungeon", selected_dungeon.path + "/" + selected_dungeon.file)
-
-
+		emit_signal("delete_dungeon", selected_dungeon.name, selected_dungeon.path + "/" + selected_dungeon.file)
 
 
 func _on_Reload_pressed():
 	requery_tree()
+
+
+func _on_cancel_pressed():
+	emit_signal("cancel")
