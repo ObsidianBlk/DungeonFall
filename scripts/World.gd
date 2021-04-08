@@ -28,14 +28,14 @@ var level = null
 var cur_level_info = {
 	"src":FIRST_LEVEL,
 	"proceedural": false,
-	"seed": 0,
-	"is_dfm":true
+	"seed": 0
 }
 
 var run_results = []
 var cur_level_stats = null
 
 onready var gameview = $GameView/Port
+onready var dungeonload_node = $CanvasLayer/UI/DungeonLoad
 
 func _ready():
 	# Initialize IO
@@ -100,12 +100,9 @@ func unload_level():
 		level.queue_free()
 		level = null
 
-func load_level(res_path : String, new_level : bool = true, is_dfm : bool = false):
-	var scene = null
-	if is_dfm:
-		scene = load(DUNGEON_SCENE)
-	else:
-		scene = load(res_path)
+func load_level(res_path : String, new_level : bool = true):
+	print("Loading map: ", res_path, " - New Level: ", new_level)
+	var scene = load(DUNGEON_SCENE)
 	
 	if scene != null:
 		if new_level:
@@ -113,10 +110,17 @@ func load_level(res_path : String, new_level : bool = true, is_dfm : bool = fals
 		
 		unload_level()
 		level = scene.instance()
-		if is_dfm:
-			if not level.load_user_level(res_path):
-				return false
-			
+		if not level.load_user_level(res_path):
+			level.queue_free()
+			level = null
+			return false
+		
+		gameview.add_child(level)
+		
+		$Perma_Objects/Player.revive() # Make sure player is alive again!
+		level.attach_player($Perma_Objects/Player)
+		level.attach_camera($Perma_Objects/Camera)
+		
 		level.connect("end_of_run", self, "_on_end_of_run")
 		level.connect("level_exit", self, "_on_level_exit")
 		level.connect("point_update", self, "_on_point_update")
@@ -126,11 +130,7 @@ func load_level(res_path : String, new_level : bool = true, is_dfm : bool = fals
 			level.connect("level_timer_changed", self, "_on_level_timer_changed")
 		else:
 			emit_signal("level_time_visible", false)
-		gameview.add_child(level)
-		
-		$Perma_Objects/Player.revive() # Make sure player is alive again!
-		level.attach_player($Perma_Objects/Player)
-		level.attach_camera($Perma_Objects/Camera)
+			
 		return true
 	return false
 
@@ -144,7 +144,16 @@ func _load_user_level(path : String):
 
 
 func _on_start():
-	cur_level_info.src = FIRST_LEVEL
+	if not dungeonload_node.visible:
+		dungeonload_node.popup()
+
+func _on_cancel_dungeonload():
+	dungeonload_node.visible = false
+	emit_signal("request_ui_vis_change", true, "MainMenu")
+
+func _on_dungeon_start(dungeonPath):
+	dungeonload_node.visible = false
+	cur_level_info.src = dungeonPath
 	run_results = []
 	_on_continue_to_level()
 
@@ -207,14 +216,15 @@ func _on_end_of_run():
 	#emit_signal("request_ui_vis_change", true, "MainMenu")
 
 func _on_continue_to_level(is_new_level : bool = true):
-	print(cur_level_info)
-	if load_level(cur_level_info.src, is_new_level, cur_level_info.is_dfm):
+	if load_level(cur_level_info.src, is_new_level):
 		#$CanvasLayer/UI/Game.visible = true
 		emit_signal("request_ui_vis_change", true, "Game")
 		get_tree().paused = false
+	else:
+		emit_signal("request_ui_vis_change", true, "MainMenu")
 
 func _on_player_death():
-	load_level(cur_level_info.src, false, cur_level_info.is_dfm)
+	load_level(cur_level_info.src, false)
 
 func _on_open_editor():
 	var editor = load(EDITOR_WORLD_SCENE)

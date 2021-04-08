@@ -6,7 +6,7 @@ signal cancel
 signal load_dungeon(path)
 signal delete_dungeon(name, path)
 
-
+export var Allow_Dungeon_Deletion: bool = true
 
 onready var tree_node = $VBoxContainer/Tree
 onready var btn_load = $VBoxContainer/HBoxContainer/HBoxContainer/BTN_LoadDungeon
@@ -15,6 +15,8 @@ onready var btn_delete = $VBoxContainer/HBoxContainer/HBoxContainer/BTN_DeleteDu
 var selected_dungeon = null
 
 func _ready():
+	if not Allow_Dungeon_Deletion:
+		btn_delete.visible = false
 	requery_tree()
 	#var dungeons = Io.getAvailableMaps()
 	
@@ -47,13 +49,13 @@ func requery_tree():
 	if tree_node == null:
 		return
 		
+	tree_node.clear()
 	var dtree = Io.getDungeonPathTree()
 	if dtree != null:
 		selected_dungeon = null
 		btn_load.disabled = true
 		btn_delete.disabled = true
 			
-		tree_node.clear()
 		var root = tree_node.create_item()
 		root.set_text(0, "Dungeons")
 		_Dict2Tree(root, dtree)

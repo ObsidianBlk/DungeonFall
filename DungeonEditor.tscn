@@ -347,6 +347,32 @@ size_flags_horizontal = 3
 max_length = 255
 placeholder_text = "Enter name"
 
+[node name="EngineerName" type="HBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Left Column"]
+margin_top = 41.0
+margin_right = 396.0
+margin_bottom = 78.0
+size_flags_horizontal = 3
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+db_name = "Editor"
+db_val_key = "engineer_name"
+
+[node name="Label" type="Label" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Left Column/EngineerName"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 29.0
+text = "Engineer Name:  "
+
+[node name="Value" type="LineEdit" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer/Left Column/EngineerName"]
+margin_left = 124.0
+margin_right = 396.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+max_length = 255
+placeholder_text = "Enter name"
+
 [node name="Center Column" type="VBoxContainer" parent="CanvasLayer/DungeonSettingsUI/Margins/GridContainer"]
 margin_left = 416.0
 margin_right = 812.0
@@ -449,17 +475,19 @@ margin_top = 8.36018
 margin_right = -8.56409
 margin_bottom = -8.56409
 [connection signal="pressed" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/BTN_LoadDungeon" to="." method="_on_rquestdungeonload_pressed"]
+[connection signal="pressed" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/BTN_SaveDungeon" to="." method="_on_save_dungeon"]
 [connection signal="active_floor_type" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" to="." method="_on_active_floor_type"]
 [connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/Top/RandBox/Check" to="." method="_on_random_floor"]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/VBoxContainer/FloorList" method="_on_floor_btn_toggle" binds= [ "B" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" method="_on_floor_btn_toggle" binds= [ "B" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/VBoxContainer/FloorList" method="_on_floor_btn_toggle" binds= [ "S" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/VBoxContainer/FloorList" method="_on_floor_btn_toggle" binds= [ "B" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" method="_on_floor_btn_toggle" binds= [ "S" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/VBoxContainer/FloorList" method="_on_floor_btn_toggle" binds= [ "E" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/VBoxContainer/FloorList" method="_on_floor_btn_toggle" binds= [ "S" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" method="_on_floor_btn_toggle" binds= [ "E" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/VBoxContainer/FloorList" method="_on_floor_btn_toggle" binds= [ "E" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Player_Start" to="." method="_on_player_start"]
 [connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_MapSettings" to="." method="_on_map_settings_toggled"]
 [connection signal="tile_selected" from="CanvasLayer/EditorUI/VBoxContainer/FloorList" to="." method="_on_tile_selected"]
 [connection signal="cancel" from="CanvasLayer/ConfirmPopup" to="." method="_on_ConfirmPopup_cancel"]
 [connection signal="cancel" from="CanvasLayer/DungeonLoadPopup/DungeonList" to="." method="_on_dungeonload_cancel"]
+[connection signal="delete_dungeon" from="CanvasLayer/DungeonLoadPopup/DungeonList" to="." method="_on_requestdelete_dungeon"]
 [connection signal="load_dungeon" from="CanvasLayer/DungeonLoadPopup/DungeonList" to="." method="_on_loaddungeonfresh_dungeon"]

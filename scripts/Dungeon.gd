@@ -9,6 +9,7 @@ signal point_update(point_val)
 
 # Map configuration options
 export var dungeon_name : String = "Level"
+export var engineer_name : String = ""
 export var dungeon_max_timer : float = 0.0
 export var dungeon_timer_autostart : bool = true
 export var tile_break_time : float = 1.0 setget _set_tile_break_time
@@ -84,6 +85,9 @@ func _ready():
 	timer_started = dungeon_timer_autostart
 
 func _physics_process(delta):
+	if player_node == null:
+		return
+
 	if timer_started:
 		play_timer += delta
 		var new_play_timer = str(play_timer).pad_decimals(2)
@@ -104,6 +108,7 @@ func _physics_process(delta):
 	elif start_pos != null:
 		if start_pos != player_node.global_position or player_node.inair:
 			timer_started = true
+			emit_signal("level_started")
 
 
 func _swap_to_container(container : Node2D, obj : Node2D):

@@ -63,11 +63,11 @@ func _mousepos_to_vp(pos : Vector2, campos : Vector2):
 	var offset = campos - (vp_port.size * 0.5)
 	return (pos * scale) + offset
 
-func _ShowConfirmPopup(text : String, method : String):
+func _ShowConfirmPopup(text : String, method : String, binds : Array = []):
 	if method == "" or confirmpopup_node.visible:
 		return false
 	confirmpopup_node.text = text
-	confirmpopup_node.connect("confirm", self, method)
+	confirmpopup_node.connect("confirm", self, method, binds)
 	confirmpopup_node.popup()
 	return true
 
@@ -152,6 +152,7 @@ func _loadDungeon(path):
 		_unlistenDB()
 		dungeonlevel_node.buildMapFromData(data)
 		DB.set_value("dungeon_name", data.name)
+		DB.set_value("engineer_name", data.engineer)
 		DB.set_value("tile_break_time", data.map.tile_break_time)
 		DB.set_value("tile_break_variance", data.map.tile_break_variance)
 		_listenDB()
@@ -184,6 +185,8 @@ func _on_db_value_changed(name : String, val):
 	match(name):
 		"dungeon_name":
 			dungeonlevel_node.dungeon_name = val
+		"engineer_name":
+			dungeonlevel_node.engineer_name = val
 		"tile_break_time":
 			dungeonlevel_node.tile_break_time = val
 		"tile_break_variance":
@@ -224,10 +227,24 @@ func _on_player_start(button_pressed):
 		editor_mode = EDITOR_MODE.PLAYER_START
 		dungeonlevel_node.clear_ghost_tiles()
 
-func _on_save_map():
-	var mapData = dungeonlevel_node.generateMapData()
-	if mapData:
-		Io.storeMapData("MyMap.dfm", mapData)
+
+func _on_save_dungeon():
+	var dungeonData = dungeonlevel_node.generateMapData()
+	if dungeonData:
+		if Io.storeDungeonData(dungeonData):
+			print("Dungeon successfully saved!")
+		else:
+			print("Failed to save dungeon data.")
+
+
+func _on_requestdelete_dungeon(name : String, path : String):
+	_ShowConfirmPopup("Delete dungeon '" + name + "'?", "_on_delete_dungeon", [name, path])
+
+
+func _on_delete_dungeon(name : String, path: String):
+	_on_ConfirmPopup_cancel()
+	Io.deleteDungeon(path)
+	dungeonload_node.visible = false
 
 
 func _on_map_settings_toggled(button_pressed):
@@ -254,6 +271,7 @@ func _on_rquestdungeonload_pressed():
 
 
 func _on_loaddungeonfresh_dungeon(path):
+	_on_ConfirmPopup_cancel()
 	dungeonload_node.visible = false
 	# TODO: Check if any changes have been made to existing map... if any.
 	_loadDungeon(path)

@@ -1,10 +1,11 @@
 extends Node
 
-const MAP_PATH = "maps"
+const DUNGEON_PATH = "dungeons"
+const DUNGEON_EXTENSION = "dfd"
 
 
 func initialize():
-	var user_paths = [MAP_PATH]
+	var user_paths = [DUNGEON_PATH]
 	
 	var dir = Directory.new()
 	if dir.open("user://") == OK:
@@ -59,7 +60,7 @@ func _Bytes2Var(ba : PoolByteArray, offset = 0):
 
 func _GetDungeonPathTree(dungeonBasePath : String = ""):
 	if dungeonBasePath == "":
-		dungeonBasePath = "user://" + MAP_PATH
+		dungeonBasePath = "user://" + DUNGEON_PATH
 	var data = {}
 	
 	var dir = Directory.new()
@@ -73,7 +74,7 @@ func _GetDungeonPathTree(dungeonBasePath : String = ""):
 					if subdata != null:
 						data[file_name] = subdata
 			else:
-				if file_name.get_extension().to_lower() == "dfm":
+				if file_name.get_extension().to_lower() == DUNGEON_EXTENSION:
 					var header = readMapData(dungeonBasePath + "/" + file_name, true)
 					if header:
 						if not ("__DUNGEONS__" in data):
@@ -91,7 +92,7 @@ func _GetDungeonPathTree(dungeonBasePath : String = ""):
 # NOTE: This method is recursive.
 func _GetAvailableMaps(mapBasePath : String = ""):
 	if mapBasePath == "":
-		mapBasePath = "user://" + MAP_PATH
+		mapBasePath = "user://" + DUNGEON_PATH
 	var maps = []
 	
 	var dir = Directory.new()
@@ -103,10 +104,15 @@ func _GetAvailableMaps(mapBasePath : String = ""):
 				if file_name != "." and file_name != "..":
 					maps = maps + _GetAvailableMaps(dir.get_current_dir() + "/" + file_name)
 			else:
-				if file_name.get_extension().to_lower() == "dfm":
+				if file_name.get_extension().to_lower() == DUNGEON_EXTENSION:
 					var header = readMapData(mapBasePath + "/" + file_name, true)
 					if header:
-						maps.append({"path": mapBasePath, "file":file_name, "dungeon_name":header.name})
+						maps.append({
+							"path": mapBasePath,
+							"file":file_name,
+							"dungeon_name":header.name,
+							"engineer_name":header.engineer
+						})
 			file_name = dir.get_next()
 	return maps
 
@@ -118,11 +124,30 @@ func getAvailableMaps():
 func getDungeonPathTree():
 	return _GetDungeonPathTree()
 
-func storeMapData(filePath : String, data):
-	if not filePath.is_valid_filename():
+
+func storeDungeonData(data):
+	var dungeonName = data.name.strip_edges()
+	if dungeonName == "":
+		print("Dungeon missing name!")
 		return false
 	
-	var mapBasePath = "user://" + MAP_PATH;
+	if not dungeonName.is_valid_filename():
+		print("Dungeon name contains invalid characters.")
+		return false
+		
+	var dungeonBasePath = "" #"user://" + DUNGEON_PATH
+	if data.engineer.strip_edges() != "":
+		dungeonBasePath += data.engineer.strip_edges()
+		if not dungeonBasePath.is_valid_filename():
+			print("Engineer name contains invalid characters.")
+			return false
+			
+	var filePath = dungeonBasePath + "/" + dungeonName + "." + DUNGEON_EXTENSION
+	return storeMapData(filePath, data)
+
+
+func storeMapData(filePath : String, data):
+	var mapBasePath = "user://" + DUNGEON_PATH;
 	
 	var dir = Directory.new()
 	if dir.open(mapBasePath) == OK:
@@ -140,6 +165,14 @@ func storeMapData(filePath : String, data):
 			var val = data.name.to_utf8()
 			file.store_16(val.size())
 			file.store_buffer(val)
+			
+			val = data.engineer.strip_edges()
+			if val != "":
+				val = val.to_utf8()
+				file.store_16(val.size())
+				file.store_buffer(val)
+			else:
+				file.store_16(0)
 			
 			var mapData = PoolByteArray()
 			val = data.map.tileset_name.to_utf8()
@@ -205,6 +238,12 @@ func readMapData(filePath : String, headerOnly : bool = false):
 			return null
 		var size = file.get_16()
 		data.name = file.get_buffer(size).get_string_from_utf8()
+		
+		data.engineer = ""
+		size = file.get_16()
+		if size > 0:
+			data.engineer = file.get_buffer(size).get_string_from_utf8()
+		
 		
 		if headerOnly:
 			file.close()
@@ -317,5 +356,25 @@ func readMapData(filePath : String, headerOnly : bool = false):
 	print("ERROR: Failed to open map file, '", filePath, "'.")
 	return null
 
+
+func deleteDungeon(filePath : String):
+	var dungeonBasePath = "user://" + DUNGEON_PATH;
+	if not filePath.begins_with(dungeonBasePath + "/"):
+		print("File is not in the user's dungeon folder... '" + filePath + "'.")
+		return false
+	
+	var dir = Directory.new()
+	if dir.open(dungeonBasePath) == OK:
+		filePath = filePath.substr(dungeonBasePath.length() + 1)
+		dir.remove(filePath)
+		var basePath = filePath.get_base_dir()
+		if basePath != "":
+			# If basePath is empty, let's remove it.
+			# .remove() will not delete a directory with files still inside.
+			dir.remove(basePath)
+		
+	
+	
+	
 
 

@@ -314,6 +314,7 @@ func generateMapData():
 		
 	var data = {
 		"name": parent_node.dungeon_name,
+		"engineer": parent_node.engineer_name,
 		"version": [0,1,0],
 		"map":{
 			"tileset_name": tileset_def.name,
@@ -371,6 +372,7 @@ func buildMapFromData(data):
 	TilesetStore.activate_tileset(data.map.tileset_name)
 	
 	parent_node.dungeon_name = data.name
+	parent_node.engineer_name = data.engineer
 	
 	# Position the player start.
 	parent_node.position_player_start_to(data.map.player_start)
@@ -389,6 +391,7 @@ func buildMapFromData(data):
 	
 	
 	dungeon_exits = []
+	print("Adding dungeon exits")
 	var trigger_node = get_parent().get_node("Triggers")
 	for i in range(0, data.map.exits.size()):
 		dungeon_exits.append(data.map.exits[i])
@@ -409,13 +412,14 @@ func buildMapFromData(data):
 				
 				var a = Area2D.new()
 				a.add_child(col)
-				trigger_node.add_child(a)
 				a.collision_layer = 0
 				a.collision_mask = 256
-				a.position = data.map.exits[i].position
+				a.global_position = data.map.exits[i].position
 				a.set_script(load("res://objects/level_exit/Level Exit.gd"))
 				a.connect("body_entered", a, "_on_Level_Exit_body_entered")
 				a.connect("level_exit", get_parent(), "exit_level")
+				trigger_node.add_child(a)
+				a._initialize()
 			else:
 				print("WARNING: Failed to create exit trigger shape.")
 	
