@@ -6,12 +6,11 @@ signal level_exit
 const TRIGGER_MAX_DIST = 2.0
 const TRIGGER_TIMER = 1.0 # Should be in seconds
 
-var ready = false
+var watch_for_player = false
 var player_node = null
 var timer = 0.0
 
-func _initialize():
-	ready = true
+func _ready():
 	_enable_process(false)
 
 func _enable_process(e : bool = true):
@@ -24,10 +23,7 @@ func _process(delta):
 			print("Calling for exit level ... Distance")
 			emit_signal("level_exit")
 			_enable_process(false)
-
-
-func _physics_process(delta):
-	if player_node != null:
+		
 		timer = timer + delta
 		if timer >= TRIGGER_TIMER:
 			print("Calling for exit level ... Time")
@@ -35,16 +31,15 @@ func _physics_process(delta):
 			_enable_process(false)
 
 
+func _on_open_exits():
+	# This exists to deal with timing issue created when the same level is loaded
+	# twice in a row.
+	watch_for_player = true
+
 func _on_Level_Exit_body_entered(body):
-	if player_node == null and ready:
-		if overlaps_body(body):
-			player_node = body
-			print("Body Entered ... ", body.global_position)
-			print("Self position ... ", self.global_position)
-			print(self)
-			print("Ready: ", ready)
-			#print("Collision Position: ", $CollisionShape2D.global_position)
-			_enable_process()
+	if watch_for_player and player_node == null:
+		player_node = body
+		_enable_process()
 
 
 func _on_Level_Exit_body_exited(body):

@@ -3,8 +3,8 @@ extends Node2D
 # TODO: Do these *really* need to be Export variables.
 export var dungeon_name : String = "Level"
 export var engineer_name : String = ""
-export var max_timer : float = 0.0
-export var timer_autostart : bool = true
+export var dungeon_max_timer : float = 0.0
+export var dungeon_timer_autostart : bool = true
 export var tile_break_time : float = 1.0 setget _set_tile_break_time
 export var tile_break_variance : float = 0.2 setget _set_tile_break_variance
 

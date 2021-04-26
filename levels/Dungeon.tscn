@@ -8,6 +8,7 @@
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 1 )
+dungeon_timer_autostart = false
 is_last_level = true
 player_container_node_path = NodePath("Player_Container")
 camera_container_node_path = NodePath("Camera_Container")
@@ -45,4 +46,3 @@ format = 1
 [node name="Triggers" type="Node2D" parent="."]
 
 [node name="Player_Start" parent="." instance=ExtResource( 3 )]
-map_editor_mode = false

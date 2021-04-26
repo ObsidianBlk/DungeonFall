@@ -161,6 +161,7 @@ func storeMapData(filePath : String, data):
 		var status = file.open(dir.get_current_dir() + "/" + filename, File.WRITE)
 		if status == OK:
 			file.store_buffer("DFMAP".to_ascii())
+			print("Storing Version: ", data.version)
 			file.store_buffer(PoolByteArray(data.version))
 			var val = data.name.to_utf8()
 			file.store_16(val.size())
@@ -183,6 +184,12 @@ func storeMapData(filePath : String, data):
 			mapData.append_array(val)
 			mapData.append_array(_Var2Bytes(data.map.player_start.x))
 			mapData.append_array(_Var2Bytes(data.map.player_start.y))
+			
+			if data.map.timer_autostart:
+				mapData.append(1)
+			else:
+				mapData.append(0)
+			mapData.append_array(_Var2Bytes(data.map.max_timer))
 			
 			var bytes = _Var2Bytes(data.map.tile_break_time)
 			mapData.append_array(bytes)
@@ -233,9 +240,13 @@ func readMapData(filePath : String, headerOnly : bool = false):
 			print("READ MAP ERROR: ID does not match 'DFMAP'.")
 			return null
 		data.version = Array(file.get_buffer(3))
-		if data.version[0] != 0 or data.version[1] != 1 or data.version[2] != 0:
+		if data.version[0] != 0 or data.version[1] != 1:
 			print("READ MAP ERROR: Version mismatch.")
 			return null
+		elif data.version[2] < 0 || data.version[2] > 1:
+			print("READ MAP ERROR: Version mismatch.")
+			return null
+		print("Loading version: ", data.version)
 		var size = file.get_16()
 		data.name = file.get_buffer(size).get_string_from_utf8()
 		
@@ -277,6 +288,12 @@ func readMapData(filePath : String, headerOnly : bool = false):
 
 		res = _Bytes2Var(mapData, res.offset)
 		data.map.player_start.y = res.value
+		
+		if data.version[2] == 1:
+			#print("Loading autostart information")
+			data.map.timer_autostart = mapData[res.offset]
+			res = _Bytes2Var(mapData, res.offset+1)
+			data.map.max_timer = res.value
 		
 		res = _Bytes2Var(mapData, res.offset)
 		data.map.tile_break_time = res.value

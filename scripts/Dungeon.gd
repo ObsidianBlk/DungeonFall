@@ -1,10 +1,10 @@
 extends Node2D
 
-
 signal end_of_run
 signal level_exit(next_level_info)
 signal play_timer_changed(tim_val)
 signal level_timer_changed(time_val)
+signal open_exits
 signal point_update(point_val)
 
 # Map configuration options
@@ -29,6 +29,7 @@ export var player_start_path : NodePath = ""
 
 
 var ready = false
+var started_exit_areas = false
 var map_data = null
 
 var start_pos = null
@@ -84,8 +85,9 @@ func _ready():
 		emit_signal("level_timer_changed", 0)
 	timer_started = dungeon_timer_autostart
 
+
 func _physics_process(delta):
-	if player_node == null:
+	if player_node == null or camera_node == null:
 		return
 
 	if timer_started:
@@ -108,8 +110,10 @@ func _physics_process(delta):
 	elif start_pos != null:
 		if start_pos != player_node.global_position or player_node.inair:
 			timer_started = true
-			emit_signal("level_started")
-
+	
+	if not started_exit_areas and start_pos != player_node.global_position:
+		started_exit_areas = true
+		emit_signal("open_exits")
 
 func _swap_to_container(container : Node2D, obj : Node2D):
 	var parent = obj.get_parent()
@@ -141,13 +145,14 @@ func attach_player(player : Node2D):
 	var player_start = get_node(player_start_path)
 	
 	if container != null and player_start != null:
-		player_node = player
 		start_pos = player_start.global_position
 		_swap_to_container(container, player)
 		player.global_position = start_pos
 		player.map_node_path = self.get_path()
 		dungeonCTRL.set_player(player)
+		player_node = player
 		_connect_camera_to_player()
+
 
 func detach_player_to(container : Node2D):
 	if player_node == null:

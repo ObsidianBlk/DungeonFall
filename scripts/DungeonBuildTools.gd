@@ -315,10 +315,12 @@ func generateMapData():
 	var data = {
 		"name": parent_node.dungeon_name,
 		"engineer": parent_node.engineer_name,
-		"version": [0,1,0],
+		"version": [0,1,1],
 		"map":{
 			"tileset_name": tileset_def.name,
 			"player_start": player_start.position,
+			"timer_autostart": parent_node.dungeon_timer_autostart,
+			"max_timer": parent_node.dungeon_max_timer,
 			"tile_break_time": parent_node.tile_break_time,
 			"tile_break_variance": parent_node.tile_break_variance,
 			"floors": [],
@@ -362,8 +364,9 @@ func buildMapFromData(data):
 		return
 	if data.version.size() != 3:
 		return
-	if data.version[0] != 0 or data.version[1] != 1 or data.version[2] != 0:
-		return
+	if data.version[0] != 0 or data.version[1] != 1:
+		if data.version[2] < 0 || data.version[2] > 1:
+			return
 	
 	if not TilesetStore.has_tileset(data.map.tileset_name):
 		# TODO: Tell user there was an issue.
@@ -376,6 +379,14 @@ func buildMapFromData(data):
 	
 	# Position the player start.
 	parent_node.position_player_start_to(data.map.player_start)
+	
+	if data.version[2] == 1:
+		parent_node.dungeon_timer_autostart = data.map.timer_autostart
+		parent_node.dungeon_max_timer = data.map.max_timer
+	else:
+		parent_node.dungeon_timer_autostart = false
+		parent_node.dungeon_max_timer = 0
+	
 	parent_node.tile_break_time = data.map.tile_break_time
 	parent_node.tile_break_variance = data.map.tile_break_variance
 	
@@ -391,7 +402,6 @@ func buildMapFromData(data):
 	
 	
 	dungeon_exits = []
-	print("Adding dungeon exits")
 	var trigger_node = get_parent().get_node("Triggers")
 	for i in range(0, data.map.exits.size()):
 		dungeon_exits.append(data.map.exits[i])
@@ -418,8 +428,8 @@ func buildMapFromData(data):
 				a.set_script(load("res://objects/level_exit/Level Exit.gd"))
 				a.connect("body_entered", a, "_on_Level_Exit_body_entered")
 				a.connect("level_exit", get_parent(), "exit_level")
+				parent_node.connect("open_exits", a, "_on_open_exits")
 				trigger_node.add_child(a)
-				a._initialize()
 			else:
 				print("WARNING: Failed to create exit trigger shape.")
 	

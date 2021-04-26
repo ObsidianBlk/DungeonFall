@@ -44,13 +44,7 @@ visible = false
 
 [node name="Player" parent="Perma_Objects" instance=ExtResource( 2 )]
 position = Vector2( 71.7173, 75.7264 )
-map_node_path = NodePath("")
 units_per_second = 6
-max_hp = 100.0
-footprint = 2
-jump_height_time = 0.5
-jump_position_delta = 6.0
-facing = 0
 
 [node name="Camera" parent="Perma_Objects" instance=ExtResource( 3 )]
 
@@ -710,18 +704,19 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 8.36018
 margin_top = 8.36018
-margin_right = 518.436
+margin_right = 518.435
 margin_bottom = 567.436
 Allow_Dungeon_Deletion = false
+
 [connection signal="dead" from="Perma_Objects/Player" to="." method="_on_player_death"]
 [connection signal="pressed" from="CanvasLayer/UI/LevelTransition/CenterContainer/Info/BTN_NextLevel" to="." method="_on_continue_to_level"]
 [connection signal="pressed" from="CanvasLayer/UI/LevelTransition/CenterContainer/Info/BTN_NextLevel" to="CanvasLayer/UI/LevelTransition" method="_on_change_visible" binds= [ false ]]
 [connection signal="pressed" from="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/RunCompletion" method="_on_change_visible" binds= [ true ]]
 [connection signal="pressed" from="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/LastLevelResults" method="_on_change_visible" binds= [ false ]]
-[connection signal="pressed" from="CanvasLayer/UI/RunCompletion/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/MainMenu" method="_on_change_visible" binds= [ true ]]
 [connection signal="pressed" from="CanvasLayer/UI/RunCompletion/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/RunCompletion" method="_on_change_visible" binds= [ false ]]
-[connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Start" to="CanvasLayer/UI/MainMenu" method="_on_change_visible" binds= [ false ]]
+[connection signal="pressed" from="CanvasLayer/UI/RunCompletion/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/MainMenu" method="_on_change_visible" binds= [ true ]]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Start" to="." method="_on_start"]
+[connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Start" to="CanvasLayer/UI/MainMenu" method="_on_change_visible" binds= [ false ]]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Editor" to="." method="_on_open_editor"]
 [connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Quit" to="." method="_on_quit"]
 [connection signal="pressed" from="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Resume" to="." method="_on_game_resume"]

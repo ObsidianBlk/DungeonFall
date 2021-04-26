@@ -1,0 +1,170 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/UI/MapEditor/DungeonSettingsUI.gd" type="Script" id=5]
+
+[node name="DungeonSettingsUI" type="Panel"]
+margin_right = 1240.0
+margin_bottom = 821.0
+theme = ExtResource( 1 )
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Margins" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="Margins"]
+margin_right = 1220.0
+margin_bottom = 801.0
+custom_constants/vseparation = 0
+custom_constants/hseparation = 20
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Left Column" type="VBoxContainer" parent="Margins/GridContainer"]
+margin_right = 393.0
+margin_bottom = 801.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="DungeonName" type="HBoxContainer" parent="Margins/GridContainer/Left Column"]
+margin_right = 393.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Margins/GridContainer/Left Column/DungeonName"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 29.0
+text = "Dungeon Name: "
+
+[node name="Value" type="LineEdit" parent="Margins/GridContainer/Left Column/DungeonName"]
+margin_left = 124.0
+margin_right = 393.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+max_length = 255
+placeholder_text = "Enter name"
+
+[node name="EngineerName" type="HBoxContainer" parent="Margins/GridContainer/Left Column"]
+margin_top = 41.0
+margin_right = 393.0
+margin_bottom = 78.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Margins/GridContainer/Left Column/EngineerName"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 29.0
+text = "Engineer Name:  "
+
+[node name="Value" type="LineEdit" parent="Margins/GridContainer/Left Column/EngineerName"]
+margin_left = 124.0
+margin_right = 393.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+max_length = 255
+placeholder_text = "Enter name"
+
+[node name="Center Column" type="VBoxContainer" parent="Margins/GridContainer"]
+margin_left = 413.0
+margin_right = 806.0
+margin_bottom = 801.0
+size_flags_horizontal = 3
+
+[node name="AutoTimer" type="HBoxContainer" parent="Margins/GridContainer/Center Column"]
+margin_right = 393.0
+margin_bottom = 50.0
+
+[node name="Check" type="CheckBox" parent="Margins/GridContainer/Center Column/AutoTimer"]
+margin_right = 393.0
+margin_bottom = 50.2487
+size_flags_horizontal = 3
+text = "Auto-Start Level Timer"
+
+[node name="Right Column" type="VBoxContainer" parent="Margins/GridContainer"]
+margin_left = 826.0
+margin_right = 1219.0
+margin_bottom = 801.0
+size_flags_horizontal = 3
+
+[node name="BreakTime" type="VBoxContainer" parent="Margins/GridContainer/Right Column"]
+margin_right = 393.0
+margin_bottom = 46.0
+
+[node name="Label" type="Label" parent="Margins/GridContainer/Right Column/BreakTime"]
+margin_right = 393.0
+margin_bottom = 21.0
+text = "Tile Break Time:"
+
+[node name="Slider" type="HBoxContainer" parent="Margins/GridContainer/Right Column/BreakTime"]
+margin_top = 25.0
+margin_right = 393.0
+margin_bottom = 46.0
+
+[node name="Value" type="HSlider" parent="Margins/GridContainer/Right Column/BreakTime/Slider"]
+margin_right = 300.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 2.0
+step = 0.1
+value = 1.0
+
+[node name="Label" type="Label" parent="Margins/GridContainer/Right Column/BreakTime/Slider"]
+margin_left = 304.0
+margin_right = 393.0
+margin_bottom = 21.0
+text = "1.0 second(s)"
+
+[node name="BreakVariance" type="VBoxContainer" parent="Margins/GridContainer/Right Column"]
+margin_top = 50.0
+margin_right = 393.0
+margin_bottom = 96.0
+
+[node name="Label" type="Label" parent="Margins/GridContainer/Right Column/BreakVariance"]
+margin_right = 393.0
+margin_bottom = 21.0
+text = "Tile Break Variance:"
+
+[node name="Slider" type="HBoxContainer" parent="Margins/GridContainer/Right Column/BreakVariance"]
+margin_top = 25.0
+margin_right = 393.0
+margin_bottom = 46.0
+
+[node name="Value" type="HSlider" parent="Margins/GridContainer/Right Column/BreakVariance/Slider"]
+margin_right = 297.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.1
+
+[node name="Label" type="Label" parent="Margins/GridContainer/Right Column/BreakVariance/Slider"]
+margin_left = 301.0
+margin_right = 393.0
+margin_bottom = 21.0
+text = "0.0 second(s)"
+
+[connection signal="text_changed" from="Margins/GridContainer/Left Column/DungeonName/Value" to="." method="_on_DungeonName_text_changed"]
+[connection signal="text_changed" from="Margins/GridContainer/Left Column/EngineerName/Value" to="." method="_on_Engineername_text_changed"]
+[connection signal="toggled" from="Margins/GridContainer/Center Column/AutoTimer/Check" to="." method="_on_AutoTimer_toggled"]
+[connection signal="value_changed" from="Margins/GridContainer/Right Column/BreakTime/Slider/Value" to="." method="_on_BreakTime_value_changed"]
+[connection signal="value_changed" from="Margins/GridContainer/Right Column/BreakVariance/Slider/Value" to="." method="_on_BreakVariance_value_changed"]

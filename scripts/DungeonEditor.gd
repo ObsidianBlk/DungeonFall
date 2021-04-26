@@ -191,6 +191,8 @@ func _on_db_value_changed(name : String, val):
 			dungeonlevel_node.tile_break_time = val
 		"tile_break_variance":
 			dungeonlevel_node.tile_break_variance = val
+		"auto_start_timer":
+			dungeonlevel_node.dungeon_timer_autostart = val
 
 func _on_active_floor_type(type : String):
 	if flooreditor_node == null:
