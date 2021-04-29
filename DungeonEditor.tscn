@@ -157,18 +157,21 @@ margin_bottom = 125.0
 [node name="BTN_NewDungeon" type="Button" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_right = 82.6343
 margin_bottom = 82.2487
+hint_tooltip = "New Dungeon"
 icon = SubResource( 1 )
 
 [node name="BTN_LoadDungeon" type="Button" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 86.0
 margin_right = 168.634
 margin_bottom = 82.2487
+hint_tooltip = "Load Dungeon"
 icon = SubResource( 2 )
 
 [node name="BTN_SaveDungeon" type="Button" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 172.0
 margin_right = 254.634
 margin_bottom = 82.2487
+hint_tooltip = "Save Dungeon"
 icon = SubResource( 3 )
 
 [node name="FloorTools" type="VBoxContainer" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer"]
@@ -213,6 +216,7 @@ margin_bottom = 136.0
 [node name="BTN_Breakable" type="Button" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs"]
 margin_right = 82.6343
 margin_bottom = 82.2487
+hint_tooltip = "Place Breakable Tiles"
 toggle_mode = true
 shortcut_in_tooltip = false
 pressed = true
@@ -222,6 +226,7 @@ icon = SubResource( 4 )
 margin_left = 86.0
 margin_right = 168.634
 margin_bottom = 82.2487
+hint_tooltip = "Place Safe Tiles"
 focus_mode = 0
 toggle_mode = true
 enabled_focus_mode = 0
@@ -231,6 +236,7 @@ icon = SubResource( 5 )
 margin_left = 172.0
 margin_right = 254.634
 margin_bottom = 82.2487
+hint_tooltip = "Place Dungeon Exit(s)"
 focus_mode = 0
 toggle_mode = true
 enabled_focus_mode = 0
@@ -240,6 +246,7 @@ icon = SubResource( 6 )
 margin_left = 258.0
 margin_right = 340.634
 margin_bottom = 82.2487
+hint_tooltip = "Place Player Start"
 toggle_mode = true
 icon = SubResource( 7 )
 
@@ -247,6 +254,7 @@ icon = SubResource( 7 )
 margin_left = 344.0
 margin_right = 426.634
 margin_bottom = 82.2487
+hint_tooltip = "Dungeon Properties"
 toggle_mode = true
 icon = SubResource( 8 )
 
@@ -314,6 +322,7 @@ margin_top = 8.36018
 margin_right = -8.56409
 margin_bottom = -8.56409
 
+[connection signal="pressed" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/BTN_NewDungeon" to="." method="_on_newdungeon_pressed"]
 [connection signal="pressed" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/BTN_LoadDungeon" to="." method="_on_rquestdungeonload_pressed"]
 [connection signal="pressed" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/BTN_SaveDungeon" to="." method="_on_save_dungeon"]
 [connection signal="active_floor_type" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" to="." method="_on_active_floor_type"]

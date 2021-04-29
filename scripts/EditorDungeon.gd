@@ -3,7 +3,7 @@ extends Node2D
 # TODO: Do these *really* need to be Export variables.
 export var dungeon_name : String = "Level"
 export var engineer_name : String = ""
-export var dungeon_max_timer : float = 0.0
+export var dungeon_collapse_timer : float = 0.0
 export var dungeon_timer_autostart : bool = true
 export var tile_break_time : float = 1.0 setget _set_tile_break_time
 export var tile_break_variance : float = 0.2 setget _set_tile_break_variance
@@ -90,6 +90,10 @@ func get_camera_position():
 	if camera_node == null:
 		return Vector2.ZERO
 	return camera_node.position
+
+func set_camera_position_to(pos : Vector2):
+	if camera_node != null:
+		camera_node.position = pos
 
 func move_camera(relative : Vector2):
 	if camera_node != null:
@@ -214,6 +218,17 @@ func set_ghost_tile(x: int, y: int, tile_id):
 func clear_ghost_tiles():
 	DungeonBT_node.clear_ghost_tiles()
 
+func clearMapData():
+	DungeonBT_node.reset()
+	position_player_start_to(Vector2(0, 8))
+	position_tracker_to(Vector2(0,8))
+	set_camera_position_to(Vector2(0, 8))
+	dungeon_name = ""
+	engineer_name = ""
+	dungeon_collapse_timer = 0.0
+	dungeon_timer_autostart = true
+	tile_break_time = 1.0
+	tile_break_variance = 0.2
 
 func generateMapData():
 	return DungeonBT_node.generateMapData()

@@ -92,7 +92,7 @@ func unload_level():
 		level.disconnect("level_exit", self, "_on_level_exit")
 		level.disconnect("point_update", self, "_on_point_update")
 		level.disconnect("play_timer_changed", self, "_on_play_timer_changed")
-		if level.dungeon_max_timer > 0.0:
+		if level.dungeon_collapse_timer > 0.0:
 			level.disconnect("level_timer_changed", self, "_on_level_timer_changed")
 		level.detach_player_to($Perma_Objects)
 		level.detach_camera_to($Perma_Objects)
@@ -125,7 +125,7 @@ func load_level(res_path : String, new_level : bool = true):
 		level.connect("level_exit", self, "_on_level_exit")
 		level.connect("point_update", self, "_on_point_update")
 		level.connect("play_timer_changed", self, "_on_play_timer_changed")
-		if level.dungeon_max_timer > 0.0:
+		if level.dungeon_collapse_timer > 0.0:
 			emit_signal("level_time_visible", true)
 			level.connect("level_timer_changed", self, "_on_level_timer_changed")
 		else:

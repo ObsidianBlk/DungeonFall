@@ -60,6 +60,7 @@ margin_bottom = 37.0
 size_flags_horizontal = 3
 max_length = 255
 placeholder_text = "Enter name"
+caret_blink = true
 
 [node name="EngineerName" type="HBoxContainer" parent="Margins/GridContainer/Left Column"]
 margin_top = 41.0
@@ -83,6 +84,7 @@ margin_bottom = 37.0
 size_flags_horizontal = 3
 max_length = 255
 placeholder_text = "Enter name"
+caret_blink = true
 
 [node name="Center Column" type="VBoxContainer" parent="Margins/GridContainer"]
 margin_left = 413.0
@@ -99,6 +101,23 @@ margin_right = 393.0
 margin_bottom = 50.2487
 size_flags_horizontal = 3
 text = "Auto-Start Level Timer"
+
+[node name="CollapseTimer" type="VBoxContainer" parent="Margins/GridContainer/Center Column"]
+margin_top = 54.0
+margin_right = 393.0
+margin_bottom = 116.0
+
+[node name="Label" type="Label" parent="Margins/GridContainer/Center Column/CollapseTimer"]
+margin_right = 393.0
+margin_bottom = 21.0
+text = "Dungeon Collapse Timer:"
+
+[node name="Value" type="LineEdit" parent="Margins/GridContainer/Center Column/CollapseTimer"]
+margin_top = 25.0
+margin_right = 393.0
+margin_bottom = 62.0
+placeholder_text = "Collapse Time in Seconds"
+caret_blink = true
 
 [node name="Right Column" type="VBoxContainer" parent="Margins/GridContainer"]
 margin_left = 826.0
@@ -166,5 +185,7 @@ text = "0.0 second(s)"
 [connection signal="text_changed" from="Margins/GridContainer/Left Column/DungeonName/Value" to="." method="_on_DungeonName_text_changed"]
 [connection signal="text_changed" from="Margins/GridContainer/Left Column/EngineerName/Value" to="." method="_on_Engineername_text_changed"]
 [connection signal="toggled" from="Margins/GridContainer/Center Column/AutoTimer/Check" to="." method="_on_AutoTimer_toggled"]
+[connection signal="focus_exited" from="Margins/GridContainer/Center Column/CollapseTimer/Value" to="." method="_on_CollapseTimer_focus_exited"]
+[connection signal="text_changed" from="Margins/GridContainer/Center Column/CollapseTimer/Value" to="." method="_on_CollapseTimer_text_changed"]
 [connection signal="value_changed" from="Margins/GridContainer/Right Column/BreakTime/Slider/Value" to="." method="_on_BreakTime_value_changed"]
 [connection signal="value_changed" from="Margins/GridContainer/Right Column/BreakVariance/Slider/Value" to="." method="_on_BreakVariance_value_changed"]

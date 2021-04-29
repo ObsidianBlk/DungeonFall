@@ -10,7 +10,7 @@ signal point_update(point_val)
 # Map configuration options
 export var dungeon_name : String = "Level"
 export var engineer_name : String = ""
-export var dungeon_max_timer : float = 0.0
+export var dungeon_collapse_timer : float = 0.0
 export var dungeon_timer_autostart : bool = true
 export var tile_break_time : float = 1.0 setget _set_tile_break_time
 export var tile_break_variance : float = 0.2 setget _set_tile_break_variance
@@ -79,8 +79,8 @@ func _ready():
 	dungeonCTRL.connect("pickup", self, "_on_pickup")
 	emit_signal("point_update", points)
 	emit_signal("play_timer_changed", play_timer)
-	if dungeon_max_timer > 0.0:
-		emit_signal("level_timer_changed", dungeon_max_timer - play_timer)
+	if dungeon_collapse_timer > 0.0:
+		emit_signal("level_timer_changed", dungeon_collapse_timer - play_timer)
 	else:
 		emit_signal("level_timer_changed", 0)
 	timer_started = dungeon_timer_autostart
@@ -96,17 +96,17 @@ func _physics_process(delta):
 		if new_play_timer != last_play_timer:
 			last_play_timer = new_play_timer
 			emit_signal("play_timer_changed", play_timer)
-		if dungeon_max_timer > 0.0 and not collpased:
-			if dungeon_max_timer - play_timer <= 0.0:
+		if dungeon_collapse_timer > 0.0 and not collpased:
+			if dungeon_collapse_timer - play_timer <= 0.0:
 				collpased = true
 				emit_signal("level_timer_changed", 0.0)
 				#print("Collapse the floors!")
 				dungeonCTRL._collapse_level()
 			else:
-				var new_dungeon_timer = str(dungeon_max_timer - play_timer).pad_decimals(2)
+				var new_dungeon_timer = str(dungeon_collapse_timer - play_timer).pad_decimals(2)
 				if new_dungeon_timer != last_dungeon_timer:
 					last_dungeon_timer = new_dungeon_timer
-					emit_signal("level_timer_changed", dungeon_max_timer - play_timer)
+					emit_signal("level_timer_changed", dungeon_collapse_timer - play_timer)
 	elif start_pos != null:
 		if start_pos != player_node.global_position or player_node.inair:
 			timer_started = true

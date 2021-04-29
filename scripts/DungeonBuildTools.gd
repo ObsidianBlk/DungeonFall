@@ -103,6 +103,12 @@ func reset_rng():
 	RNG = RandomNumberGenerator.new()
 	RNG.seed = map_seed
 
+func reset():
+	reset_rng()
+	clearTileMaps()
+	dungeon_exits = []
+
+
 func set_tileset_definition(def):
 	if not TilesetStore.has_tileset(def.name):
 		return
@@ -320,7 +326,7 @@ func generateMapData():
 			"tileset_name": tileset_def.name,
 			"player_start": player_start.position,
 			"timer_autostart": parent_node.dungeon_timer_autostart,
-			"max_timer": parent_node.dungeon_max_timer,
+			"collapse_timer": parent_node.dungeon_collapse_timer,
 			"tile_break_time": parent_node.tile_break_time,
 			"tile_break_variance": parent_node.tile_break_variance,
 			"floors": [],
@@ -382,10 +388,10 @@ func buildMapFromData(data):
 	
 	if data.version[2] == 1:
 		parent_node.dungeon_timer_autostart = data.map.timer_autostart
-		parent_node.dungeon_max_timer = data.map.max_timer
+		parent_node.dungeon_collapse_timer = data.map.collapse_timer
 	else:
 		parent_node.dungeon_timer_autostart = false
-		parent_node.dungeon_max_timer = 0
+		parent_node.dungeon_collapse_timer = 0
 	
 	parent_node.tile_break_time = data.map.tile_break_time
 	parent_node.tile_break_variance = data.map.tile_break_variance

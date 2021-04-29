@@ -56,6 +56,8 @@ func _ready():
 
 		tileset_def = TilesetStore.get_definition()
 		TilesetStore.connect("tileset_activated", self, "_on_tileset_activated")
+		
+		_newDungeon()
 
 
 func _mousepos_to_vp(pos : Vector2, campos : Vector2):
@@ -145,6 +147,17 @@ func reset_repeater():
 	repeater_update_step = 0.0
 
 
+func _newDungeon():
+	_unlistenDB()
+	dungeonlevel_node.clearMapData()
+	DB.set_value("dungeon_name", dungeonlevel_node.dungeon_name)
+	DB.set_value("engineer_name", dungeonlevel_node.engineer_name)
+	DB.set_value("tile_break_time", dungeonlevel_node.tile_break_time)
+	DB.set_value("tile_break_variance", dungeonlevel_node.tile_break_variance)
+	DB.set_value("timer_autostart", dungeonlevel_node.dungeon_timer_autostart)
+	DB.set_value("collapse_timer", dungeonlevel_node.dungeon_collapse_timer)
+	_listenDB()
+
 func _loadDungeon(path):
 	# TODO: This is just place holder (and a quickie test).
 	var data = Io.readMapData(path)
@@ -155,6 +168,8 @@ func _loadDungeon(path):
 		DB.set_value("engineer_name", data.engineer)
 		DB.set_value("tile_break_time", data.map.tile_break_time)
 		DB.set_value("tile_break_variance", data.map.tile_break_variance)
+		DB.set_value("timer_autostart", data.map.timer_autostart)
+		DB.set_value("collapse_timer", data.map.collapse_timer)
 		_listenDB()
 
 
@@ -191,8 +206,10 @@ func _on_db_value_changed(name : String, val):
 			dungeonlevel_node.tile_break_time = val
 		"tile_break_variance":
 			dungeonlevel_node.tile_break_variance = val
-		"auto_start_timer":
+		"timer_autostart":
 			dungeonlevel_node.dungeon_timer_autostart = val
+		"collapse_timer":
+			dungeonlevel_node.dungeon_collapse_timer = val
 
 func _on_active_floor_type(type : String):
 	if flooreditor_node == null:
@@ -277,3 +294,10 @@ func _on_loaddungeonfresh_dungeon(path):
 	dungeonload_node.visible = false
 	# TODO: Check if any changes have been made to existing map... if any.
 	_loadDungeon(path)
+
+
+func _on_newdungeon_pressed():
+	_newDungeon()
+
+
+

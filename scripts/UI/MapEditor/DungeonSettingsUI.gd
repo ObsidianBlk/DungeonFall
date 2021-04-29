@@ -7,6 +7,8 @@ const BREAK_LABEL_POSTFIX = " second(s)"
 export var db_name : String = ""
 
 var DB = null
+var float_regex = null
+var CollapseTimerText = ""
 
 
 onready var DungeonName_node = $"Margins/GridContainer/Left Column/DungeonName/Value"
@@ -18,12 +20,16 @@ onready var BreakVariance_node = $"Margins/GridContainer/Right Column/BreakVaria
 onready var BreakVarianceLabel_node = $"Margins/GridContainer/Right Column/BreakVariance/Slider/Label"
 
 onready var AutoTimer_node = $"Margins/GridContainer/Center Column/AutoTimer/Check"
+onready var CollapseTimer_node = $"Margins/GridContainer/Center Column/CollapseTimer/Value"
+
 
 func _ready():
 	if db_name != "":
 		MemDB.connect("database_added", self, "_on_db_added")
 		if MemDB.has_db(db_name):
 			_SetDB(db_name)
+	float_regex = RegEx.new()
+	float_regex.compile("([0-9]*[.])?[0-9]+")
 
 func _update_break_variance_limits(val):
 	if BreakVariance_node.value > val:
@@ -31,6 +37,11 @@ func _update_break_variance_limits(val):
 		BreakVarianceLabel_node.text = String(val).pad_decimals(1) + BREAK_LABEL_POSTFIX
 		_set_value("tile_break_variance", val)
 	BreakVariance_node.max_value = val
+
+func _is_valid_float(val : String):
+	if val != "." and not val.ends_with(".") and not val.is_valid_float():
+		return false
+	return true
 
 func _SetDB(name : String):
 	if DB != null:
@@ -67,9 +78,14 @@ func _on_db_value_changed(name : String, val):
 			if typeof(val) == TYPE_REAL:
 				BreakVariance_node.value = val
 				BreakVarianceLabel_node.text = String(val).pad_decimals(1) + BREAK_LABEL_POSTFIX
-		"auto_start_timer":
+		"timer_autostart":
 			if typeof(val) == TYPE_BOOL:
 				AutoTimer_node.pressed = val
+		"collapse_timer":
+			if typeof(val) == TYPE_REAL:
+				CollapseTimerText = String(val)
+				if CollapseTimer_node.text != CollapseTimerText:
+					CollapseTimer_node.text = CollapseTimerText
 
 func _on_DungeonName_text_changed(new_text):
 	_set_value("dungeon_name", new_text)
@@ -87,5 +103,23 @@ func _on_BreakVariance_value_changed(value):
 	_set_value("tile_break_variance", value)
 
 func _on_AutoTimer_toggled(button_pressed):
-	_set_value("auto_start_timer", button_pressed)
+	_set_value("timer_autostart", button_pressed)
 
+func _on_CollapseTimer_text_changed(new_text):
+	if new_text != "" and not _is_valid_float(new_text):
+		CollapseTimer_node.text = CollapseTimerText
+	else:
+		CollapseTimerText = new_text
+
+func _on_CollapseTimer_focus_exited():
+	if CollapseTimerText != ".":
+		if CollapseTimerText.ends_with("."):
+			CollapseTimerText += "0"
+		_set_value("collapse_timer", float(CollapseTimerText))
+	else:
+		var val = DB.get_value("collapse_timer")
+		if val != null:
+			CollapseTimerText = String(val)
+		else:
+			CollapseTimerText = ""
+		CollapseTimer_node.text = CollapseTimerText
