@@ -58,10 +58,9 @@ func _Bytes2Var(ba : PoolByteArray, offset = 0):
 	return {"offset":offset + size, "value" : v}
 
 
-func _GetDungeonPathTree(dungeonBasePath : String = ""):
+func _GetDungeonPathTree(dungeonBasePath : String = "", data = {}):
 	if dungeonBasePath == "":
 		dungeonBasePath = "user://" + DUNGEON_PATH
-	var data = {}
 	
 	var dir = Directory.new()
 	if dir.open(dungeonBasePath) == OK:
@@ -90,10 +89,9 @@ func _GetDungeonPathTree(dungeonBasePath : String = ""):
 	return data
 
 # NOTE: This method is recursive.
-func _GetAvailableMaps(mapBasePath : String = ""):
+func _GetAvailableMaps(mapBasePath : String = "", maps = []):
 	if mapBasePath == "":
 		mapBasePath = "user://" + DUNGEON_PATH
-	var maps = []
 	
 	var dir = Directory.new()
 	if dir.open(mapBasePath) == OK:
@@ -122,7 +120,10 @@ func getAvailableMaps():
 
 # NOTE: This is a non-recursive wrapper for the _GetDungeonPathTree() method.
 func getDungeonPathTree():
-	return _GetDungeonPathTree()
+	var tree = _GetDungeonPathTree("res://levels/dungeons")
+	if not tree:
+		tree = {}
+	return _GetDungeonPathTree("", tree)
 
 
 func storeDungeonData(data):
@@ -230,10 +231,11 @@ func storeMapData(filePath : String, data):
 
 
 func readMapData(filePath : String, headerOnly : bool = false):
+	var isRoyal = filePath.begins_with("res://")
 	var file = File.new()
 	var status = file.open(filePath, File.READ)
 	if status == OK:
-		var data = {}
+		var data = {"isRoyal": isRoyal}
 		var id = file.get_buffer(5)
 		if id.get_string_from_ascii() != "DFMAP":
 			print("READ MAP ERROR: ID does not match 'DFMAP'.")
@@ -293,6 +295,9 @@ func readMapData(filePath : String, headerOnly : bool = false):
 				data.map.timer_autostart = true
 			res = _Bytes2Var(mapData, res.offset+1)
 			data.map.collapse_timer = res.value
+		else:
+			data.map.timer_autostart = false
+			data.map.collapse_timer = 0.0
 		
 		res = _Bytes2Var(mapData, res.offset)
 		data.map.tile_break_time = res.value

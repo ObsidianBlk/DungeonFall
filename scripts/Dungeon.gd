@@ -29,6 +29,7 @@ export var player_start_path : NodePath = ""
 
 
 var ready = false
+var isRoyal = false
 var started_exit_areas = false
 var map_data = null
 

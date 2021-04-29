@@ -380,6 +380,7 @@ func buildMapFromData(data):
 		return # <--- Yes? No? Oh for the love of...
 	TilesetStore.activate_tileset(data.map.tileset_name)
 	
+	parent_node.isRoyal = data.isRoyal
 	parent_node.dungeon_name = data.name
 	parent_node.engineer_name = data.engineer
 	

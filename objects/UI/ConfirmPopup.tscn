@@ -67,5 +67,6 @@ margin_right = 578.0
 margin_bottom = 39.2487
 size_flags_horizontal = 3
 text = "Cancel"
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/BTN_Confirm" to="." method="_on_confirm_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/BTN_Cancel" to="." method="_on_cancel_pressed"]

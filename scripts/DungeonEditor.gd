@@ -65,10 +65,11 @@ func _mousepos_to_vp(pos : Vector2, campos : Vector2):
 	var offset = campos - (vp_port.size * 0.5)
 	return (pos * scale) + offset
 
-func _ShowConfirmPopup(text : String, method : String, binds : Array = []):
+func _ShowConfirmPopup(text : String, confirm_only : bool, method : String, binds : Array = []):
 	if method == "" or confirmpopup_node.visible:
 		return false
 	confirmpopup_node.text = text
+	confirmpopup_node.confirm_only = confirm_only
 	confirmpopup_node.connect("confirm", self, method, binds)
 	confirmpopup_node.popup()
 	return true
@@ -96,7 +97,7 @@ func _unhandled_input(event):
 			map_dragging = false
 	else:
 		if event.is_action_pressed("ui_cancel"):
-			if not _ShowConfirmPopup("Exit Dungeon Editor?", "_on_editor_quit"):
+			if not _ShowConfirmPopup("Exit Dungeon Editor?", false, "_on_editor_quit"):
 				_on_ConfirmPopup_cancel()
 			#generalUI.visible = not generalUI.visible
 			#get_tree().paused = generalUI.visible
@@ -248,16 +249,25 @@ func _on_player_start(button_pressed):
 
 
 func _on_save_dungeon():
-	var dungeonData = dungeonlevel_node.generateMapData()
-	if dungeonData:
-		if Io.storeDungeonData(dungeonData):
-			print("Dungeon successfully saved!")
+	if not dungeonlevel_node.isRoyal:
+		if dungeonlevel_node.dungeon_name != "":
+			var dungeonData = dungeonlevel_node.generateMapData()
+			if dungeonData:
+				if Io.storeDungeonData(dungeonData):
+					_ShowConfirmPopup("Dungeon '" + dungeonData.name + "' successfully scribed!", true, "_on_ConfirmPopup_cancel")
+				else:
+					_ShowConfirmPopup("Failed to scribe dungeon '" + dungeonData.name + "'.", true, "_on_ConfirmPopup_cancel")
 		else:
-			print("Failed to save dungeon data.")
+			_ShowConfirmPopup("Dungeon cannot be scribed without a name!", true, "_on_ConfirmPopup_cancel")
+	else:
+		_ShowConfirmPopup("Cannot save a royal dungeon. Only the scribe masters can do that.", true, "_on_ConfirmPopup_cancel")
 
 
 func _on_requestdelete_dungeon(name : String, path : String):
-	_ShowConfirmPopup("Delete dungeon '" + name + "'?", "_on_delete_dungeon", [name, path])
+	if path.begins_with("res://"):
+		_ShowConfirmPopup("The dungeon '" + name + "' is part of the royal registry. You cannot remove it!", true, "_on_ConfirmPopup_cancel")
+	else:
+		_ShowConfirmPopup("Delete dungeon '" + name + "'?", false, "_on_delete_dungeon", [name, path])
 
 
 func _on_delete_dungeon(name : String, path: String):

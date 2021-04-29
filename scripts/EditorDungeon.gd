@@ -8,6 +8,7 @@ export var dungeon_timer_autostart : bool = true
 export var tile_break_time : float = 1.0 setget _set_tile_break_time
 export var tile_break_variance : float = 0.2 setget _set_tile_break_variance
 
+var isRoyal = false
 var camera_node = null
 var cell = Vector2(16.0, 16.0)
 
@@ -219,6 +220,7 @@ func clear_ghost_tiles():
 	DungeonBT_node.clear_ghost_tiles()
 
 func clearMapData():
+	isRoyal = false
 	DungeonBT_node.reset()
 	position_player_start_to(Vector2(0, 8))
 	position_tracker_to(Vector2(0,8))
@@ -231,7 +233,9 @@ func clearMapData():
 	tile_break_variance = 0.2
 
 func generateMapData():
-	return DungeonBT_node.generateMapData()
+	if not isRoyal:
+		return DungeonBT_node.generateMapData()
+	return null
 
 func buildMapFromData(data):
 	DungeonBT_node.buildMapFromData(data)
