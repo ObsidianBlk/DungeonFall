@@ -4,6 +4,9 @@ signal value_changed(name, val)
 
 var _SrcGroup = ""
 
+func _exit_tree():
+	queue_free()
+
 func init(group : String):
 	if _SrcGroup == "" and group != "":
 		_SrcGroup = group

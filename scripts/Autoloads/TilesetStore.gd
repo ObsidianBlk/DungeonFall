@@ -100,7 +100,7 @@ func _find_tilesets(path : String, is_user_path : bool = false):
 		while file_name != "":
 			if dir.current_is_dir():
 				if dir.file_exists(file_name + "/def.json"): # We have a tileset folder
-					_load_tileset_def(dir.get_current_dir() + file_name + "/", "def.json")
+					_load_tileset_def(dir.get_current_dir() + "/" + file_name + "/", "def.json")
 				elif is_user_path:
 					_find_tilesets(dir.get_current_dir() + file_name)
 			file_name = dir.get_next()
