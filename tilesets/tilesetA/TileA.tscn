@@ -208,38 +208,29 @@ tracks/15/keys = {
 script = ExtResource( 2 )
 
 [node name="A" type="Sprite" parent="."]
-visible = false
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 16, 16 )
 
 [node name="Fallables" type="Node2D" parent="."]
-modulate = Color( 1, 1, 1, 0.862745 )
+visible = false
 
 [node name="S1" type="Sprite" parent="Fallables"]
-rotation = -0.638791
-scale = Vector2( 0.7, 0.7 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 16, 0, 16, 16 )
 
 [node name="S2" type="Sprite" parent="Fallables"]
-rotation = -0.390372
-scale = Vector2( 0.590909, 0.590909 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 32, 0, 16, 16 )
 
 [node name="S3" type="Sprite" parent="Fallables"]
-rotation = 0.106465
-scale = Vector2( 0.871429, 0.871429 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 48, 0, 16, 16 )
 
 [node name="S4" type="Sprite" parent="Fallables"]
-rotation = 0.825541
-scale = Vector2( 0.7625, 0.7625 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 64, 0, 16, 16 )

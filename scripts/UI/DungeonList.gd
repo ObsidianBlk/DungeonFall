@@ -70,6 +70,7 @@ func _on_dungeon_selected():
 	var item = tree_node.get_selected()
 	if item:
 		selected_dungeon = item.get_metadata(0)
+		emit_signal("dungeon_selected")
 		if selected_dungeon:
 			btn_load.disabled = false
 			btn_delete.disabled = false

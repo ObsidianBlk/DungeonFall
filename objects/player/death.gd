@@ -19,7 +19,7 @@ func pause():
 	# TODO: Pause animation
 	.pause()
 
-func handle_physics(delta):
+func handle_physics(_delta):
 	if check_for_revive and host.alive:
 		check_for_revive = false
 		emit_signal("finished", "idle")

@@ -7,12 +7,12 @@ signal finished(next_state)
 var host = null
 var paused = false
 
-func enter(host : Node):
-	self.host = host
+func enter(_host : Node):
+	host = _host
 
-func resume(host : Node = null):
-	if host != null: # Only change the host if given an actual Node.
-		self.host = host
+func resume(_host : Node = null):
+	if _host != null: # Only change the host if given an actual Node.
+		host = _host
 	paused = false
 
 func exit():
@@ -21,11 +21,11 @@ func exit():
 func pause():
 	paused = true
 
-func handle_input(event):
+func handle_input(_event):
 	pass
 
-func handle_update(delta):
+func handle_update(_delta):
 	pass
 
-func handle_physics(delta):
+func handle_physics(_delta):
 	pass

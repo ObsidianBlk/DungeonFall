@@ -85,6 +85,7 @@ func _ready():
 	else:
 		emit_signal("level_timer_changed", 0)
 	timer_started = dungeon_timer_autostart
+	
 
 
 func _physics_process(delta):
@@ -203,7 +204,6 @@ func position_player_start_to(pos : Vector2):
 
 func is_over_pit(pos : Vector2, footprint : int = 0):
 	return dungeonCTRL._is_over_pit(pos, footprint)
-
 
 func exit_level():
 	if is_last_level:

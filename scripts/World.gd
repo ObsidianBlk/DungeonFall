@@ -23,7 +23,7 @@ var in_game_pause_state = false
 #var TEST_LEVEL = "res://levels/test_level/Test_Level.tscn"
 #var FIRST_LEVEL = "res://levels/Run_Set_A/Level1.tscn"
 var FIRST_LEVEL = "user://maps/MyMap.dfm"
-var scene = null
+#var scene = null
 var level = null
 var cur_level_info = {
 	"src":FIRST_LEVEL,
@@ -101,7 +101,6 @@ func unload_level():
 		level = null
 
 func load_level(res_path : String, new_level : bool = true):
-	print("Loading map: ", res_path, " - New Level: ", new_level)
 	var scene = load(DUNGEON_SCENE)
 	
 	if scene != null:

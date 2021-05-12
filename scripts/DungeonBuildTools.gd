@@ -15,7 +15,7 @@ onready var parent_node = get_parent()
 onready var floors_map = get_parent().get_node("Floors")
 onready var walls_map = get_parent().get_node("Walls")
 onready var doors_map = get_parent().get_node("Doors")
-onready var ghost_map = get_parent().get_node("Ghost")
+var ghost_map = null
 
 
 func _ready():
@@ -26,6 +26,9 @@ func _ready():
 	
 	reset_rng()
 	tileset_def = TilesetStore.get_definition()
+	
+	if parent_node.has_node("Ghost"):
+		ghost_map = parent_node.get_node("Ghost")
 
 
 func _set_tilemaps_tileset(res : Resource):
@@ -209,7 +212,7 @@ func clearTileMaps():
 
 func set_floor_at_pos(pos : Vector2, floor_tile, wall_tile : int = -1):
 	pos = floors_map.world_to_map(pos)
-	return set_floor(floor(pos.x), floor(pos.y), floor_tile, wall_tile)
+	return set_floor(int(floor(pos.x)), int(floor(pos.y)), floor_tile, wall_tile)
 
 func set_floor(x : int, y : int, floor_tile, wall_tile : int = -1, no_exit_info = false):
 	if not is_valid():
@@ -268,7 +271,7 @@ func set_floor(x : int, y : int, floor_tile, wall_tile : int = -1, no_exit_info 
 
 func get_floor_at_pos(pos : Vector2):
 	pos = floors_map.world_to_map(pos)
-	return get_floor(floor(pos.x), floor(pos.y))
+	return get_floor(int(floor(pos.x)), int(floor(pos.y)))
 
 func get_floor(x : int, y : int):
 	if not is_valid():
@@ -278,7 +281,7 @@ func get_floor(x : int, y : int):
 
 func set_ghost_tile_at_pos(pos: Vector2, tile_id):
 	pos = ghost_map.world_to_map(pos)
-	return set_ghost_tile(floor(pos.x), floor(pos.y), tile_id)
+	return set_ghost_tile(int(floor(pos.x)), int(floor(pos.y)), tile_id)
 
 func set_ghost_tile(x: int, y: int, tile_id):
 	if not is_valid():

@@ -19,7 +19,7 @@ func _Int2ByteArray(v : int, byteCount = 8):
 		return v
 	
 	var pool = PoolByteArray()
-	for i in range(0, byteCount):
+	for _i in range(0, byteCount):
 		pool.append(v)
 		v = v >> 8
 	return pool
@@ -311,7 +311,7 @@ func readMapData(filePath : String, headerOnly : bool = false):
 		size = res.value
 		
 		data.map.floors = []
-		for i in range(0, size):
+		for _i in range(0, size):
 			res = _ByteArray2Int(mapData, 4, res.offset)
 			var x = res.value
 			
@@ -328,7 +328,7 @@ func readMapData(filePath : String, headerOnly : bool = false):
 		size = res.value
 		
 		data.map.walls = []
-		for i in range(0, size):
+		for _i in range(0, size):
 			res = _ByteArray2Int(mapData, 4, res.offset)
 			var x = res.value
 			
@@ -345,7 +345,7 @@ func readMapData(filePath : String, headerOnly : bool = false):
 		size = res.value
 		
 		data.map.exits = []
-		for i in range(0, size):
+		for _i in range(0, size):
 			res = _Bytes2Var(mapData, res.offset)
 			var x = res.value
 			

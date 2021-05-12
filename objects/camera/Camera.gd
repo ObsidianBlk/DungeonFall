@@ -27,7 +27,7 @@ func _ready():
 	ready = true
 	_set_target_node_path(target_node_path, true)
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if target_node != null and not ignore_target:
 		move_to(target_node.global_position)
 		#var tpos = target_node.global_position
