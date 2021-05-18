@@ -1,15 +1,33 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/graphics/floor_gold.png" type="Texture" id=1]
+[ext_resource path="res://assets/graphics/objects/Coin.png" type="Texture" id=1]
 [ext_resource path="res://objects/gold/Gold.gd" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
+
+[sub_resource type="Animation" id=2]
+resource_name = "roll"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 25 ]
+}
 
 [node name="Gold" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
+hframes = 26
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 0
@@ -17,4 +35,9 @@ collision_mask = 256
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "roll"
+anims/roll = SubResource( 2 )
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_pickup"]

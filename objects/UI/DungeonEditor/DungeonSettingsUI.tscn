@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=1]
+[ext_resource path="res://themes/fonts/satansminions_26_df.tres" type="DynamicFont" id=2]
 [ext_resource path="res://scripts/UI/MapEditor/DungeonSettingsUI.gd" type="Script" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=1]
 
 [node name="DungeonSettingsUI" type="Panel"]
 margin_right = 1240.0
@@ -92,31 +95,111 @@ margin_right = 806.0
 margin_bottom = 801.0
 size_flags_horizontal = 3
 
-[node name="AutoTimer" type="HBoxContainer" parent="Margins/GridContainer/Center Column"]
+[node name="DungeonTimers" type="VBoxContainer" parent="Margins/GridContainer/Center Column"]
 margin_right = 393.0
-margin_bottom = 50.0
+margin_bottom = 155.0
 
-[node name="Check" type="CheckBox" parent="Margins/GridContainer/Center Column/AutoTimer"]
+[node name="Label" type="Label" parent="Margins/GridContainer/Center Column/DungeonTimers"]
+margin_right = 393.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.984314, 0.819608, 0.384314, 1 )
+custom_colors/font_color_shadow = Color( 0.67451, 0.196078, 0.196078, 1 )
+text = "Dungeon Timers"
+
+[node name="HSeparator" type="HSeparator" parent="Margins/GridContainer/Center Column/DungeonTimers"]
+margin_top = 31.0
+margin_right = 393.0
+margin_bottom = 35.0
+
+[node name="AutoTimer" type="HBoxContainer" parent="Margins/GridContainer/Center Column/DungeonTimers"]
+margin_top = 39.0
+margin_right = 393.0
+margin_bottom = 89.0
+
+[node name="Check" type="CheckBox" parent="Margins/GridContainer/Center Column/DungeonTimers/AutoTimer"]
 margin_right = 393.0
 margin_bottom = 50.2487
 size_flags_horizontal = 3
 text = "Auto-Start Level Timer"
+flat = true
 
-[node name="CollapseTimer" type="VBoxContainer" parent="Margins/GridContainer/Center Column"]
-margin_top = 54.0
+[node name="CollapseTimer" type="VBoxContainer" parent="Margins/GridContainer/Center Column/DungeonTimers"]
+margin_top = 93.0
 margin_right = 393.0
-margin_bottom = 116.0
+margin_bottom = 155.0
 
-[node name="Label" type="Label" parent="Margins/GridContainer/Center Column/CollapseTimer"]
+[node name="Label" type="Label" parent="Margins/GridContainer/Center Column/DungeonTimers/CollapseTimer"]
 margin_right = 393.0
 margin_bottom = 21.0
 text = "Dungeon Collapse Timer:"
 
-[node name="Value" type="LineEdit" parent="Margins/GridContainer/Center Column/CollapseTimer"]
+[node name="Value" type="LineEdit" parent="Margins/GridContainer/Center Column/DungeonTimers/CollapseTimer"]
 margin_top = 25.0
 margin_right = 393.0
 margin_bottom = 62.0
 placeholder_text = "Collapse Time in Seconds"
+caret_blink = true
+
+[node name="HSeparator" type="HSeparator" parent="Margins/GridContainer/Center Column"]
+margin_top = 159.0
+margin_right = 393.0
+margin_bottom = 179.0
+custom_styles/separator = SubResource( 1 )
+custom_constants/separation = 20
+
+[node name="GoldRandomizer" type="VBoxContainer" parent="Margins/GridContainer/Center Column"]
+margin_top = 183.0
+margin_right = 393.0
+margin_bottom = 350.0
+
+[node name="Label2" type="Label" parent="Margins/GridContainer/Center Column/GoldRandomizer"]
+margin_right = 393.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.984314, 0.819608, 0.384314, 1 )
+custom_colors/font_color_shadow = Color( 0.67451, 0.196078, 0.196078, 1 )
+text = "Random Gold"
+
+[node name="HSeparator2" type="HSeparator" parent="Margins/GridContainer/Center Column/GoldRandomizer"]
+margin_top = 31.0
+margin_right = 393.0
+margin_bottom = 35.0
+
+[node name="GoldSeed" type="VBoxContainer" parent="Margins/GridContainer/Center Column/GoldRandomizer"]
+margin_top = 39.0
+margin_right = 393.0
+margin_bottom = 101.0
+
+[node name="Label" type="Label" parent="Margins/GridContainer/Center Column/GoldRandomizer/GoldSeed"]
+margin_right = 393.0
+margin_bottom = 21.0
+text = "Gold Seed:"
+
+[node name="Value" type="LineEdit" parent="Margins/GridContainer/Center Column/GoldRandomizer/GoldSeed"]
+margin_top = 25.0
+margin_right = 393.0
+margin_bottom = 62.0
+placeholder_text = "Enter Seed"
+
+[node name="GoldAmount" type="VBoxContainer" parent="Margins/GridContainer/Center Column/GoldRandomizer"]
+margin_top = 105.0
+margin_right = 393.0
+margin_bottom = 167.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Margins/GridContainer/Center Column/GoldRandomizer/GoldAmount"]
+margin_right = 393.0
+margin_bottom = 21.0
+text = "Gold Amount:"
+
+[node name="Value" type="LineEdit" parent="Margins/GridContainer/Center Column/GoldRandomizer/GoldAmount"]
+margin_top = 25.0
+margin_right = 393.0
+margin_bottom = 62.0
+placeholder_text = "Number of Gold Coins to Generate"
 caret_blink = true
 
 [node name="Right Column" type="VBoxContainer" parent="Margins/GridContainer"]
@@ -184,8 +267,11 @@ text = "0.0 second(s)"
 
 [connection signal="text_changed" from="Margins/GridContainer/Left Column/DungeonName/Value" to="." method="_on_DungeonName_text_changed"]
 [connection signal="text_changed" from="Margins/GridContainer/Left Column/EngineerName/Value" to="." method="_on_Engineername_text_changed"]
-[connection signal="toggled" from="Margins/GridContainer/Center Column/AutoTimer/Check" to="." method="_on_AutoTimer_toggled"]
-[connection signal="focus_exited" from="Margins/GridContainer/Center Column/CollapseTimer/Value" to="." method="_on_CollapseTimer_focus_exited"]
-[connection signal="text_changed" from="Margins/GridContainer/Center Column/CollapseTimer/Value" to="." method="_on_CollapseTimer_text_changed"]
+[connection signal="toggled" from="Margins/GridContainer/Center Column/DungeonTimers/AutoTimer/Check" to="." method="_on_AutoTimer_toggled"]
+[connection signal="focus_exited" from="Margins/GridContainer/Center Column/DungeonTimers/CollapseTimer/Value" to="." method="_on_CollapseTimer_focus_exited"]
+[connection signal="text_changed" from="Margins/GridContainer/Center Column/DungeonTimers/CollapseTimer/Value" to="." method="_on_CollapseTimer_text_changed"]
+[connection signal="text_changed" from="Margins/GridContainer/Center Column/GoldRandomizer/GoldSeed/Value" to="." method="_on_GoldSeed_text_changed"]
+[connection signal="focus_exited" from="Margins/GridContainer/Center Column/GoldRandomizer/GoldAmount/Value" to="." method="_on_GoldAmount_focus_exited"]
+[connection signal="text_changed" from="Margins/GridContainer/Center Column/GoldRandomizer/GoldAmount/Value" to="." method="_on_GoldAmount_text_changed"]
 [connection signal="value_changed" from="Margins/GridContainer/Right Column/BreakTime/Slider/Value" to="." method="_on_BreakTime_value_changed"]
 [connection signal="value_changed" from="Margins/GridContainer/Right Column/BreakVariance/Slider/Value" to="." method="_on_BreakVariance_value_changed"]

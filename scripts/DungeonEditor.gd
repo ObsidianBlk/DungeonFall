@@ -157,6 +157,8 @@ func _newDungeon():
 	DB.set_value("tile_break_variance", dungeonlevel_node.tile_break_variance)
 	DB.set_value("timer_autostart", dungeonlevel_node.dungeon_timer_autostart)
 	DB.set_value("collapse_timer", dungeonlevel_node.dungeon_collapse_timer)
+	DB.set_value("gold_amount", dungeonlevel_node.gold_amount)
+	DB.set_value("gold_seed", dungeonlevel_node.gold_seed)
 	_listenDB()
 
 func _loadDungeon(path):
@@ -171,6 +173,8 @@ func _loadDungeon(path):
 		DB.set_value("tile_break_variance", data.map.tile_break_variance)
 		DB.set_value("timer_autostart", data.map.timer_autostart)
 		DB.set_value("collapse_timer", data.map.collapse_timer)
+		DB.set_value("gold_amount", data.map.gold_amount)
+		DB.set_value("gold_seed", data.map.gold_seed)
 		_listenDB()
 
 
@@ -211,6 +215,10 @@ func _on_db_value_changed(name : String, val):
 			dungeonlevel_node.dungeon_timer_autostart = val
 		"collapse_timer":
 			dungeonlevel_node.dungeon_collapse_timer = val
+		"gold_amount":
+			dungeonlevel_node.gold_amount = val
+		"gold_seed":
+			dungeonlevel_node.gold_seed = val
 
 func _on_active_floor_type(type : String):
 	if flooreditor_node == null:

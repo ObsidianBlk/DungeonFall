@@ -324,7 +324,7 @@ func generateMapData():
 	var data = {
 		"name": parent_node.dungeon_name,
 		"engineer": parent_node.engineer_name,
-		"version": [0,1,1],
+		"version": [0,1,2],
 		"map":{
 			"tileset_name": tileset_def.name,
 			"player_start": player_start.position,
@@ -332,6 +332,8 @@ func generateMapData():
 			"collapse_timer": parent_node.dungeon_collapse_timer,
 			"tile_break_time": parent_node.tile_break_time,
 			"tile_break_variance": parent_node.tile_break_variance,
+			"gold_amount": parent_node.gold_amount,
+			"gold_seed": parent_node.gold_seed,
 			"floors": [],
 			"walls": [],
 			"exits": null
@@ -374,7 +376,7 @@ func buildMapFromData(data):
 	if data.version.size() != 3:
 		return
 	if data.version[0] != 0 or data.version[1] != 1:
-		if data.version[2] < 0 || data.version[2] > 1:
+		if data.version[2] < 0 || data.version[2] > 2:
 			return
 	
 	if not TilesetStore.has_tileset(data.map.tileset_name):
@@ -390,7 +392,7 @@ func buildMapFromData(data):
 	# Position the player start.
 	parent_node.position_player_start_to(data.map.player_start)
 	
-	if data.version[2] == 1:
+	if data.version[2] >= 1:
 		parent_node.dungeon_timer_autostart = data.map.timer_autostart
 		parent_node.dungeon_collapse_timer = data.map.collapse_timer
 	else:
@@ -399,6 +401,13 @@ func buildMapFromData(data):
 	
 	parent_node.tile_break_time = data.map.tile_break_time
 	parent_node.tile_break_variance = data.map.tile_break_variance
+	
+	if data.version[2] >= 2:
+		parent_node.gold_amount = data.map.gold_amount
+		parent_node.gold_seed = data.map.gold_seed
+	else:
+		parent_node.gold_amount = 0
+		parent_node.gold_seed = ""
 	
 	
 	floors_map.clear()

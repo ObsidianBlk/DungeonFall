@@ -195,6 +195,13 @@ func storeMapData(filePath : String, data):
 			mapData.append_array(bytes)
 			mapData.append_array(_Var2Bytes(data.map.tile_break_variance))
 			
+			mapData.append_array(_Int2ByteArray(data.map.gold_amount, 2))
+			if data.map.gold_amount > 0:
+				val = data.map.gold_seed.to_utf8()
+				mapData.append_array(_Int2ByteArray(val.size(), 1))
+				if val.size() > 0:
+					mapData.append_array(val)
+			
 			mapData.append_array(_Int2ByteArray(data.map.floors.size(), 4))
 			for i in range(0, data.map.floors.size()):
 				mapData.append_array(_Int2ByteArray(data.map.floors[i].x, 4))
@@ -244,7 +251,7 @@ func readMapData(filePath : String, headerOnly : bool = false):
 		if data.version[0] != 0 or data.version[1] != 1:
 			print("READ MAP ERROR: Version mismatch.")
 			return null
-		elif data.version[2] < 0 || data.version[2] > 1:
+		elif data.version[2] < 0 || data.version[2] > 2:
 			print("READ MAP ERROR: Version mismatch.")
 			return null
 		var size = file.get_16()
@@ -289,7 +296,7 @@ func readMapData(filePath : String, headerOnly : bool = false):
 		res = _Bytes2Var(mapData, res.offset)
 		data.map.player_start.y = res.value
 		
-		if data.version[2] == 1:
+		if data.version[2] >= 1:
 			data.map.timer_autostart = false
 			if mapData[res.offset] == 1:
 				data.map.timer_autostart = true
@@ -304,6 +311,18 @@ func readMapData(filePath : String, headerOnly : bool = false):
 		
 		res = _Bytes2Var(mapData, res.offset)
 		data.map.tile_break_variance = res.value
+		
+		# ----- Loading Random Gold Info
+		data.map.gold_amount = 0
+		data.map.gold_seed = ""
+		if data.version[2] >= 2:
+			res = _ByteArray2Int(mapData, 2, res.offset)
+			data.map.gold_amount = res.value
+			if res.value > 0:
+				res = _ByteArray2Int(mapData, 1, res.offset)
+				if res.value > 0:
+					res = _Bytes2UTF8(mapData, res.value, res.offset)
+					data.map.gold_seed = res.value
 		
 		
 		# ----- Loading Floor tile data

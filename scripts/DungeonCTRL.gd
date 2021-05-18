@@ -121,11 +121,14 @@ func _set_collapsing_tile(mpos : Vector2, force : bool = false):
 	if not (key in collapsing_tiles):
 		var variance = RNG.randf_range(-(parent_node.tile_break_variance * 0.5), (parent_node.tile_break_variance * 0.5))
 		var collapse_time_max = parent_node.tile_break_time + variance
-		
+		var ttc = 0
+		if force:
+			ttc = collapse_time_max
+			
 		collapsing_tiles[key] = {
 			"pos": mpos,
 			"ctm": collapse_time_max,
-			"ttc": 0,
+			"ttc": ttc,
 			"force": force
 		}
 

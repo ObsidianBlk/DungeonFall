@@ -14,6 +14,8 @@ export var dungeon_collapse_timer : float = 0.0
 export var dungeon_timer_autostart : bool = true
 export var tile_break_time : float = 1.0 setget _set_tile_break_time
 export var tile_break_variance : float = 0.2 setget _set_tile_break_variance
+export var gold_amount : int = 0 setget _set_gold_amount
+export var gold_seed : String = ""
 
 # "Next" Map loading/selection/generation options
 export var is_last_level : bool = false
@@ -70,6 +72,9 @@ func _set_tile_break_variance(v):
 	if v < tile_break_variance:
 		tile_break_variance = v
 
+func _set_gold_amount(a):
+	if a >= 0:
+		gold_amount = a
 
 func _ready():
 	ready = true
