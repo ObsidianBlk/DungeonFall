@@ -20,9 +20,6 @@ onready var gold_container = get_parent().get_node("Gold_Container")
 
 func _ready():
 	RNG = RandomNumberGenerator.new()
-	if gold_container != null:
-		for child in gold_container.get_children():
-			child.connect("pickup", self, "_on_gold_pickup")
 
 func _process(_delta):
 	if floors_map != null and player != null and not player.inair:
@@ -173,6 +170,14 @@ func _is_over_pit(pos : Vector2, footprint : int = 0):
 
 func set_player(p : Node2D):
 	player = p
+
+
+func update_gold_container():
+	if gold_container:
+		for child in gold_container.get_children():
+			if not child.is_connected("pickup", self, "_on_gold_pickup"):
+				child.connect("pickup", self, "_on_gold_pickup")
+
 
 # -----------------------------------------------------------------------------
 # EVENT HANDLERS

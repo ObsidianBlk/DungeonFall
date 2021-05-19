@@ -1,6 +1,5 @@
 extends Control
 
-
 const BREAK_LABEL_POSTFIX = " second(s)"
 
 # The DB to connect to.
@@ -9,7 +8,6 @@ export var db_name : String = ""
 var DB = null
 var float_regex = null
 var CollapseTimerText = ""
-var GoldAmountText = ""
 
 
 onready var DungeonName_node = $"Margins/GridContainer/Left Column/DungeonName/Value"
@@ -23,7 +21,6 @@ onready var BreakVarianceLabel_node = $"Margins/GridContainer/Right Column/Break
 onready var AutoTimer_node = $"Margins/GridContainer/Center Column/DungeonTimers/AutoTimer/Check"
 onready var CollapseTimer_node = $"Margins/GridContainer/Center Column/DungeonTimers/CollapseTimer/Value"
 
-onready var GoldEnabled_node = $"Margins/GridContainer/Center Column/GoldRandomizer/RandGoldEnable"
 onready var GoldAmount_node = $"Margins/GridContainer/Center Column/GoldRandomizer/GoldAmount/Value"
 onready var GoldSeed_node = $"Margins/GridContainer/Center Column/GoldRandomizer/GoldSeed/Value"
 
@@ -42,6 +39,13 @@ func _update_break_variance_limits(val):
 		BreakVarianceLabel_node.text = String(val).pad_decimals(1) + BREAK_LABEL_POSTFIX
 		_set_value("tile_break_variance", val)
 	BreakVariance_node.max_value = val
+
+func _update_placeable_tiles(count):
+	count = max(1, count)
+	if GoldAmount_node.value > count:
+		GoldAmount_node.value = count
+		_set_value("gold_amount", count)
+	GoldAmount_node.max_value = count
 
 func _is_valid_float(val : String):
 	if val != "." and not val.ends_with(".") and not val.is_valid_float():
@@ -93,9 +97,7 @@ func _on_db_value_changed(name : String, val):
 					CollapseTimer_node.text = CollapseTimerText
 		"gold_amount":
 			if typeof(val) == TYPE_INT:
-				GoldAmountText = String(val)
-				if GoldAmount_node.text != GoldAmountText:
-					GoldAmount_node.text = GoldAmountText
+				GoldAmount_node.value = val
 		"gold_seed":
 			if typeof(val) == TYPE_STRING or typeof(val) == TYPE_INT:
 				var text = String(val)
@@ -140,19 +142,8 @@ func _on_CollapseTimer_focus_exited():
 		CollapseTimer_node.text = CollapseTimerText
 
 
-func _on_GoldAmount_text_changed(new_text : String):
-	if new_text != "" and not new_text.is_valid_integer():
-		GoldAmount_node.text = GoldAmountText
-	else:
-		GoldAmountText = new_text
-
-func _on_GoldAmount_focus_exited():
-	if GoldAmountText != "":
-		var val = int(GoldAmountText)
-		_set_value("gold_amount", val)
-		GoldAmount_node.text = String(val)
-
 func _on_GoldSeed_text_changed(new_text):
 	_set_value("gold_seed", new_text)
 
-
+func _on_GoldAmount_changed(value):
+	_set_value("gold_amount", value)

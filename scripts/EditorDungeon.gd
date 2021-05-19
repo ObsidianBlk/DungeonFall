@@ -1,5 +1,7 @@
 extends Node2D
 
+signal floor_changed(amount)
+
 # TODO: Do these *really* need to be Export variables.
 export var dungeon_name : String = "Level"
 export var engineer_name : String = ""
@@ -8,7 +10,7 @@ export var dungeon_timer_autostart : bool = true
 export var tile_break_time : float = 1.0 setget _set_tile_break_time
 export var tile_break_variance : float = 0.2 setget _set_tile_break_variance
 export var gold_amount : int = 0 setget _set_gold_amount
-export var gold_seed : String = ""
+export var gold_seed : String = "" setget _set_gold_seed
 
 var isRoyal = false
 var camera_node = null
@@ -43,13 +45,23 @@ func _set_tile_break_variance(v):
 
 
 func _set_gold_amount(a):
-	if a >= 0:
+	if a >= 0 and gold_amount != a:
 		gold_amount = a
+		regen_gold()
+
+func _set_gold_seed(s):
+	if s != gold_seed:
+		gold_seed = s
+		regen_gold()
+
 
 func _ready():
-	pass
+	DungeonBT_node.connect("floor_changed", self, "_on_floor_changed")
 	#TilesetStore.connect("tileset_activated", self, "_on_tileset_activated")
 	#set_tileset_name(TilesetStore.get_active_tileset_name())
+
+func _on_floor_changed():
+	emit_signal("floor_changed", DungeonBT_node.get_floor_count())
 
 
 func player_start_to_tracker():
@@ -237,6 +249,12 @@ func clearMapData():
 	dungeon_timer_autostart = true
 	tile_break_time = 1.0
 	tile_break_variance = 0.2
+	gold_amount = 0
+	gold_seed = ""
+	emit_signal("floor_changed", 0)
+
+func regen_gold():
+	DungeonBT_node.generate_dungeon_gold()
 
 func generateMapData():
 	if not isRoyal:
@@ -245,3 +263,4 @@ func generateMapData():
 
 func buildMapFromData(data):
 	DungeonBT_node.buildMapFromData(data)
+	emit_signal("floor_changed", DungeonBT_node.get_floor_count())

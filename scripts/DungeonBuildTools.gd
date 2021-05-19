@@ -1,6 +1,8 @@
 tool
 extends Node2D
 
+signal floor_changed
+
 export var map_seed : int = 0
 export var clear_on_new_tileset : bool = true
 
@@ -16,6 +18,7 @@ onready var floors_map = get_parent().get_node("Floors")
 onready var walls_map = get_parent().get_node("Walls")
 onready var doors_map = get_parent().get_node("Doors")
 var ghost_map = null
+var gold_container_node = null
 
 
 func _ready():
@@ -29,6 +32,8 @@ func _ready():
 	
 	if parent_node.has_node("Ghost"):
 		ghost_map = parent_node.get_node("Ghost")
+	if parent_node.has_node("Gold_Container"):
+		gold_container_node = parent_node.get_node("Gold_Container")
 
 
 func _set_tilemaps_tileset(res : Resource):
@@ -156,6 +161,8 @@ func is_tile_exit(tile_id):
 			if _IDMatch(ei, tile_id):
 				if ei == tile_id:
 					return true
+			if typeof(ei) == TYPE_STRING:
+				return TilesetStore.is_tile_partof_meta(tileset_def, ei, tile_id)
 	return false
 
 func is_tile_placeable(tile_id):
@@ -217,6 +224,7 @@ func set_floor_at_pos(pos : Vector2, floor_tile, wall_tile : int = -1):
 func set_floor(x : int, y : int, floor_tile, wall_tile : int = -1, no_exit_info = false):
 	if not is_valid():
 		return false
+	var emit_update = false
 		
 	if typeof(floor_tile) == TYPE_STRING:
 		if floor_tile != "" and not (is_tile_breakable(floor_tile) or is_tile_safe(floor_tile) or is_tile_exit(floor_tile)):
@@ -243,8 +251,10 @@ func set_floor(x : int, y : int, floor_tile, wall_tile : int = -1, no_exit_info 
 					var tileid = tiles[(ty*floor(size.x))+tx];
 					if tileid >= 0:
 						floors_map.set_cell(x + tx, y + ty, tileid)
+						emit_update = true
 					else:
 						floors_map.set_cell(x + tx, y + ty, -1)
+						emit_update = true
 			var einfo = TilesetStore.get_meta_exit_info(tileset_def, floor_tile, x, y)
 			_removeExitIfOverlap(einfo)
 			if is_tile_exit(floor_tile):
@@ -254,6 +264,7 @@ func set_floor(x : int, y : int, floor_tile, wall_tile : int = -1, no_exit_info 
 			print("ERROR: Failed to set meta tile '", floor_tile, "'. Size does not match given tiles.")
 	else:
 		floors_map.set_cell(x, y, floor_tile)
+		emit_update = true
 		var einfo = {
 			"position": Vector2(
 				(x * tileset_def.size) + (floors_map.cell_size.x * 0.5),
@@ -266,6 +277,8 @@ func set_floor(x : int, y : int, floor_tile, wall_tile : int = -1, no_exit_info 
 		if no_exit_info == false and is_tile_exit(floor_tile):
 			dungeon_exits.append(einfo)
 	
+	if emit_update:
+		emit_signal("floor_changed")
 	_recalculate_walls(wall_tile)
 	return true
 
@@ -277,6 +290,9 @@ func get_floor(x : int, y : int):
 	if not is_valid():
 		return -1
 	return floors_map.get_cell(x, y)
+
+func get_floor_count():
+	return floors_map.get_used_cells().size()
 
 
 func set_ghost_tile_at_pos(pos: Vector2, tile_id):
@@ -314,6 +330,52 @@ func set_ghost_tile(x: int, y: int, tile_id):
 func clear_ghost_tiles():
 	ghost_map.clear()
 
+func clear_dungeon_gold():
+	if gold_container_node == null:
+		return
+	for child in gold_container_node.get_children():
+		#print(child.get_signal_connection_list("pickup"))
+		gold_container_node.remove_child(child)
+		child.queue_free()
+
+func generate_dungeon_gold():
+	if gold_container_node == null:
+		return
+	if parent_node.gold_amount <= 0 or parent_node.gold_seed == "":
+		clear_dungeon_gold()
+		return
+	
+	var ucl = floors_map.get_used_cells()
+	if ucl.size() <= 0:
+		return
+	
+	var gobj = load("res://objects/gold/Gold.tscn")
+	if gobj:
+		var grng = RandomNumberGenerator.new()
+		grng.seed = parent_node.gold_seed.hash()
+		
+		clear_dungeon_gold()
+		
+		for _i in range(0, parent_node.gold_amount):
+			var pos = null
+			for _j in range(0, 100): # NOTE: May never loop near this much!
+				var tindex = grng.randi_range(0, ucl.size()-1)
+				var tpos = ucl[tindex]
+				ucl.remove(tindex)
+				
+				var tid = floors_map.get_cell(tpos.x, tpos.y)
+				if not is_tile_exit(tid):
+					pos = floors_map.map_to_world(tpos)
+					pos += floors_map.cell_size * 0.5
+					break
+			#var pos = floors_map.map_to_world(
+			if pos != null:
+				var gld = gobj.instance()
+				if gld:
+					gld.position = pos
+					gold_container_node.add_child(gld)
+			if ucl.size() <= 0:
+				break
 
 
 func generateMapData():
@@ -452,6 +514,12 @@ func buildMapFromData(data):
 			else:
 				print("WARNING: Failed to create exit trigger shape.")
 	
+	
+	# ----
+	# Generating "proceedural" gold placement
+	if data.version[2] >= 2 and data.map.gold_amount > 0 and gold_container_node != null:
+		generate_dungeon_gold()
+
 
 
 # -----------------------------------------------------------------------------

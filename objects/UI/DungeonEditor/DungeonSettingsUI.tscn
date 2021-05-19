@@ -151,7 +151,7 @@ custom_constants/separation = 20
 [node name="GoldRandomizer" type="VBoxContainer" parent="Margins/GridContainer/Center Column"]
 margin_top = 183.0
 margin_right = 393.0
-margin_bottom = 350.0
+margin_bottom = 329.0
 
 [node name="Label2" type="Label" parent="Margins/GridContainer/Center Column/GoldRandomizer"]
 margin_right = 393.0
@@ -185,7 +185,7 @@ placeholder_text = "Enter Seed"
 [node name="GoldAmount" type="VBoxContainer" parent="Margins/GridContainer/Center Column/GoldRandomizer"]
 margin_top = 105.0
 margin_right = 393.0
-margin_bottom = 167.0
+margin_bottom = 146.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -195,12 +195,11 @@ margin_right = 393.0
 margin_bottom = 21.0
 text = "Gold Amount:"
 
-[node name="Value" type="LineEdit" parent="Margins/GridContainer/Center Column/GoldRandomizer/GoldAmount"]
+[node name="Value" type="HSlider" parent="Margins/GridContainer/Center Column/GoldRandomizer/GoldAmount"]
 margin_top = 25.0
 margin_right = 393.0
-margin_bottom = 62.0
-placeholder_text = "Number of Gold Coins to Generate"
-caret_blink = true
+margin_bottom = 41.0
+max_value = 1.0
 
 [node name="Right Column" type="VBoxContainer" parent="Margins/GridContainer"]
 margin_left = 826.0
@@ -271,7 +270,6 @@ text = "0.0 second(s)"
 [connection signal="focus_exited" from="Margins/GridContainer/Center Column/DungeonTimers/CollapseTimer/Value" to="." method="_on_CollapseTimer_focus_exited"]
 [connection signal="text_changed" from="Margins/GridContainer/Center Column/DungeonTimers/CollapseTimer/Value" to="." method="_on_CollapseTimer_text_changed"]
 [connection signal="text_changed" from="Margins/GridContainer/Center Column/GoldRandomizer/GoldSeed/Value" to="." method="_on_GoldSeed_text_changed"]
-[connection signal="focus_exited" from="Margins/GridContainer/Center Column/GoldRandomizer/GoldAmount/Value" to="." method="_on_GoldAmount_focus_exited"]
-[connection signal="text_changed" from="Margins/GridContainer/Center Column/GoldRandomizer/GoldAmount/Value" to="." method="_on_GoldAmount_text_changed"]
+[connection signal="value_changed" from="Margins/GridContainer/Center Column/GoldRandomizer/GoldAmount/Value" to="." method="_on_GoldAmount_changed"]
 [connection signal="value_changed" from="Margins/GridContainer/Right Column/BreakTime/Slider/Value" to="." method="_on_BreakTime_value_changed"]
 [connection signal="value_changed" from="Margins/GridContainer/Right Column/BreakVariance/Slider/Value" to="." method="_on_BreakVariance_value_changed"]

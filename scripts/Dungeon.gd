@@ -79,7 +79,7 @@ func _set_gold_amount(a):
 func _ready():
 	ready = true
 	if map_data != null:
-		dungeonBT_node.buildMapFromData(map_data)
+		_build_from_data(map_data)
 		map_data = null
 	
 	dungeonCTRL.connect("pickup", self, "_on_pickup")
@@ -132,11 +132,16 @@ func _connect_camera_to_player():
 		camera_node.target_node_path = player_node.get_path()
 
 
+func _build_from_data(data):
+	dungeonBT_node.buildMapFromData(data)
+	dungeonCTRL.update_gold_container()
+
+
 func load_user_level(path : String):
 	var data = Io.readMapData(path)
 	if data:
 		if ready:
-			dungeonBT_node.buildMapFromData(data)
+			_build_from_data(data)
 		else:
 			map_data = data
 		return true

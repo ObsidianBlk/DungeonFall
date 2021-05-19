@@ -57,6 +57,7 @@ func _ready():
 		tileset_def = TilesetStore.get_definition()
 		TilesetStore.connect("tileset_activated", self, "_on_tileset_activated")
 		
+		dungeonlevel_node.connect("floor_changed", dungeonSettingsUI, "_update_placeable_tiles")
 		_newDungeon()
 
 

@@ -61,6 +61,14 @@ func get_meta_tiles(def, meta_name):
 		return def.metas[meta_name].tiles
 	return []
 
+func is_tile_partof_meta(def, meta_name, tile_id):
+	var tiles = get_meta_tiles(def, meta_name)
+	if tiles.size() > 0:
+		for _i in range(0, tiles.size()):
+			if tiles[_i] == tile_id:
+				return true
+	return false
+
 func get_meta_exit_info(def, meta_name, x=0, y=0):
 	if meta_tile_exists(def, meta_name):
 		if def.metas[meta_name].has("exit"):
