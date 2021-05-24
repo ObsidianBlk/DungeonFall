@@ -42,6 +42,7 @@ config/icon="res://icon.png"
 TilesetStore="*res://scripts/Autoloads/TilesetStore.gd"
 Io="*res://scripts/Autoloads/io.gd"
 MemDB="*res://scripts/Autoloads/MemDB.gd"
+Entity="*res://scripts/Autoloads/Entity.gd"
 
 [display]
 
