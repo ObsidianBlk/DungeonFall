@@ -7,7 +7,7 @@ const REPEATER_UPDATE_STEP = 0.25
 
 const DB_NAME = "Editor"
 
-enum EDITOR_MODE {NONE, FLOORS, PLAYER_START}
+enum EDITOR_MODE {NONE, FLOORS, PLAYER_START, PLACEABLES}
 
 var DB = null
 
@@ -35,6 +35,7 @@ onready var vp_container = $DungeonView
 onready var vp_port = $DungeonView/Port
 
 onready var dungeonSettingsUI = $CanvasLayer/DungeonSettingsUI
+onready var placeablesUI = $CanvasLayer/Placeables
 #onready var generalUI = $CanvasLayer/GeneralUI
 
 func _ready():
@@ -97,8 +98,18 @@ func _unhandled_input(event):
 		elif event.is_action_released("MapEditor_MouseMapDrag"):
 			map_dragging = false
 	else:
+		if event.is_action_pressed("MapEditor_Placeables"):
+			if editor_mode != EDITOR_MODE.PLACEABLES:
+				editor_mode = EDITOR_MODE.PLACEABLES
+				placeablesUI.popup_centered()
 		if event.is_action_pressed("ui_cancel"):
-			if not _ShowConfirmPopup("Exit Dungeon Editor?", false, "_on_editor_quit"):
+			if dungeonSettingsUI.visible:
+				dungeonSettingsUI.hide()
+			elif editor_mode == EDITOR_MODE.PLACEABLES:
+				editor_mode = EDITOR_MODE.FLOORS
+				if placeablesUI.visible:
+					placeablesUI.hide()
+			elif not _ShowConfirmPopup("Exit Dungeon Editor?", false, "_on_editor_quit"):
 				_on_ConfirmPopup_cancel()
 			#generalUI.visible = not generalUI.visible
 			#get_tree().paused = generalUI.visible

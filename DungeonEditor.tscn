@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scripts/DungeonEditor.gd" type="Script" id=1]
 [ext_resource path="res://objects/camera/Camera.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://scripts/DungeonEditor_Floors.gd" type="Script" id=7]
 [ext_resource path="res://scripts/DungeonEditor_PlayerStart.gd" type="Script" id=8]
 [ext_resource path="res://objects/UI/DungeonEditor/DungeonSettingsUI.tscn" type="PackedScene" id=9]
+[ext_resource path="res://objects/UI/DungeonEditor/UI_Placeables.tscn" type="PackedScene" id=10]
 [ext_resource path="res://objects/UI/ConfirmPopup.tscn" type="PackedScene" id=11]
 [ext_resource path="res://assets/graphics/editor/Editor_Button_Icons.png" type="Texture" id=12]
 [ext_resource path="res://objects/UI/DungeonList.tscn" type="PackedScene" id=13]
@@ -322,17 +323,23 @@ margin_top = 8.36018
 margin_right = -8.56409
 margin_bottom = -8.56409
 
+[node name="Placeables" parent="CanvasLayer" instance=ExtResource( 10 )]
+margin_left = 15.1019
+margin_top = 183.111
+margin_right = -1612.9
+margin_bottom = -485.889
+
 [connection signal="pressed" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/BTN_NewDungeon" to="." method="_on_newdungeon_pressed"]
 [connection signal="pressed" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/BTN_LoadDungeon" to="." method="_on_rquestdungeonload_pressed"]
 [connection signal="pressed" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/BTN_SaveDungeon" to="." method="_on_save_dungeon"]
 [connection signal="active_floor_type" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" to="." method="_on_active_floor_type"]
 [connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/Top/RandBox/Check" to="." method="_on_random_floor"]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" method="_on_floor_btn_toggle" binds= [ "B" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/VBoxContainer/FloorList" method="_on_floor_btn_toggle" binds= [ "B" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" method="_on_floor_btn_toggle" binds= [ "S" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" method="_on_floor_btn_toggle" binds= [ "B" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/VBoxContainer/FloorList" method="_on_floor_btn_toggle" binds= [ "S" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" method="_on_floor_btn_toggle" binds= [ "E" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" method="_on_floor_btn_toggle" binds= [ "S" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/VBoxContainer/FloorList" method="_on_floor_btn_toggle" binds= [ "E" ]]
+[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" method="_on_floor_btn_toggle" binds= [ "E" ]]
 [connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Player_Start" to="." method="_on_player_start"]
 [connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_MapSettings" to="." method="_on_map_settings_toggled"]
 [connection signal="tile_selected" from="CanvasLayer/EditorUI/VBoxContainer/FloorList" to="." method="_on_tile_selected"]
