@@ -114,6 +114,7 @@ func reset_rng():
 func reset():
 	reset_rng()
 	clearTileMaps()
+	clear_dungeon_gold()
 	dungeon_exits = []
 
 

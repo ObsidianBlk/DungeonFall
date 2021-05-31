@@ -1,0 +1,191 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=1]
+[ext_resource path="res://assets/graphics/editor/Editor_Button_Icons.png" type="Texture" id=2]
+[ext_resource path="res://scripts/UI/MapEditor/UI_Toolbar.gd" type="Script" id=3]
+[ext_resource path="res://scripts/UI/MapEditor/TilesetSelection.gd" type="Script" id=4]
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 1
+atlas = ExtResource( 2 )
+region = Rect2( 320, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 1
+atlas = ExtResource( 2 )
+region = Rect2( 448, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 1
+atlas = ExtResource( 2 )
+region = Rect2( 384, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 1
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 1
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 1
+atlas = ExtResource( 2 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=7]
+flags = 1
+atlas = ExtResource( 2 )
+region = Rect2( 192, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=8]
+flags = 1
+atlas = ExtResource( 2 )
+region = Rect2( 256, 0, 64, 64 )
+
+[node name="UI_Toolbar" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -963.669
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBC" type="HBoxContainer" parent="."]
+margin_left = 15.2862
+margin_top = 15.5567
+margin_right = 1904.58
+margin_bottom = 99.5567
+
+[node name="IOCtrls" type="HBoxContainer" parent="HBC"]
+margin_right = 260.0
+margin_bottom = 84.0
+
+[node name="BTN_NewDngn" type="Button" parent="HBC/IOCtrls"]
+margin_right = 84.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 84, 84 )
+hint_tooltip = "New Dungeon"
+icon = SubResource( 1 )
+
+[node name="BTN_LoadDngn" type="Button" parent="HBC/IOCtrls"]
+margin_left = 88.0
+margin_right = 172.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 84, 84 )
+hint_tooltip = "Load Dungeon"
+icon = SubResource( 2 )
+
+[node name="BTN_SaveDngn" type="Button" parent="HBC/IOCtrls"]
+margin_left = 176.0
+margin_right = 260.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 84, 84 )
+hint_tooltip = "Save Dungeon"
+icon = SubResource( 3 )
+
+[node name="VSeparator" type="VSeparator" parent="HBC"]
+margin_left = 264.0
+margin_right = 278.0
+margin_bottom = 84.0
+custom_constants/separation = 14
+
+[node name="DngnTileset" type="VBoxContainer" parent="HBC"]
+margin_left = 282.0
+margin_right = 803.0
+margin_bottom = 84.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBC/DngnTileset"]
+margin_right = 521.0
+margin_bottom = 21.0
+text = "Dungeon Tileset:"
+
+[node name="TilesetSelection" type="MenuButton" parent="HBC/DngnTileset"]
+margin_top = 25.0
+margin_right = 521.0
+margin_bottom = 63.0921
+text = "Tileset TBS"
+flat = false
+align = 0
+script = ExtResource( 4 )
+
+[node name="VSeparator2" type="VSeparator" parent="HBC"]
+margin_left = 807.0
+margin_right = 821.0
+margin_bottom = 84.0
+custom_constants/separation = 14
+
+[node name="DrawTools" type="HBoxContainer" parent="HBC"]
+margin_left = 825.0
+margin_right = 1346.0
+margin_bottom = 84.0
+size_flags_horizontal = 3
+
+[node name="BTN_FloorBreakable" type="Button" parent="HBC/DrawTools"]
+margin_right = 84.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 84, 84 )
+hint_tooltip = "Breakable Floors"
+toggle_mode = true
+pressed = true
+icon = SubResource( 4 )
+
+[node name="BTN_FloorSafe" type="Button" parent="HBC/DrawTools"]
+margin_left = 88.0
+margin_right = 172.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 84, 84 )
+hint_tooltip = "Safe Floors"
+toggle_mode = true
+icon = SubResource( 5 )
+
+[node name="BTN_FloorExit" type="Button" parent="HBC/DrawTools"]
+margin_left = 176.0
+margin_right = 260.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 84, 84 )
+hint_tooltip = "Exit Floors"
+toggle_mode = true
+icon = SubResource( 6 )
+
+[node name="BTN_PlayerStart" type="Button" parent="HBC/DrawTools"]
+margin_left = 264.0
+margin_right = 348.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 84, 84 )
+hint_tooltip = "Set Player Start Position"
+toggle_mode = true
+icon = SubResource( 7 )
+
+[node name="VSeparator3" type="VSeparator" parent="HBC"]
+margin_left = 1350.0
+margin_right = 1364.0
+margin_bottom = 84.0
+custom_constants/separation = 14
+
+[node name="DetailingTools" type="HBoxContainer" parent="HBC"]
+margin_left = 1368.0
+margin_right = 1889.0
+margin_bottom = 84.0
+size_flags_horizontal = 3
+
+[node name="BTN_DngnSettings" type="Button" parent="HBC/DetailingTools"]
+margin_right = 84.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 84, 84 )
+hint_tooltip = "Configure Dungeon"
+icon = SubResource( 8 )
+
+[connection signal="pressed" from="HBC/IOCtrls/BTN_NewDngn" to="." method="_on_BTN_NewDngn_pressed"]
+[connection signal="pressed" from="HBC/IOCtrls/BTN_LoadDngn" to="." method="_on_BTN_LoadDngn_pressed"]
+[connection signal="pressed" from="HBC/IOCtrls/BTN_SaveDngn" to="." method="_on_BTN_SaveDngn_pressed"]
+[connection signal="toggled" from="HBC/DrawTools/BTN_FloorBreakable" to="." method="_on_DrawTool_selected" binds= [ "B" ]]
+[connection signal="toggled" from="HBC/DrawTools/BTN_FloorSafe" to="." method="_on_DrawTool_selected" binds= [ "S" ]]
+[connection signal="toggled" from="HBC/DrawTools/BTN_FloorExit" to="." method="_on_DrawTool_selected" binds= [ "E" ]]
+[connection signal="toggled" from="HBC/DrawTools/BTN_PlayerStart" to="." method="_on_PlayerStart_selected"]
+[connection signal="pressed" from="HBC/DetailingTools/BTN_DngnSettings" to="." method="_on_BTN_DngnSettings_pressed"]

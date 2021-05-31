@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=64 format=2]
+[gd_resource type="Theme" load_steps=70 format=2]
 
 [ext_resource path="res://assets/graphics/ui/UI_Button_Disabled.png" type="Texture" id=1]
 [ext_resource path="res://assets/graphics/ui/UI_Button_Hover.png" type="Texture" id=2]
@@ -142,6 +142,45 @@ margin_left = 8.0
 margin_right = 8.0
 margin_top = 8.0
 margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id=38]
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 32, 32 )
+margin_left = 9.12436
+margin_right = 9.12436
+margin_top = 8.22478
+margin_bottom = 9.25288
+
+[sub_resource type="StyleBoxTexture" id=39]
+texture = ExtResource( 2 )
+region_rect = Rect2( 0, 0, 32, 32 )
+margin_left = 8.99585
+margin_right = 9.25288
+margin_top = 6.2971
+margin_bottom = 7.19668
+
+[sub_resource type="StyleBoxTexture" id=40]
+texture = ExtResource( 2 )
+region_rect = Rect2( 0, 6.67434, 32, 25.3257 )
+margin_left = 9.25288
+margin_right = 8.99585
+margin_bottom = 6.81115
+
+[sub_resource type="StyleBoxTexture" id=41]
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 32, 32 )
+margin_left = 8.99585
+margin_right = 9.25288
+margin_top = 8.22478
+margin_bottom = 8.86734
+
+[sub_resource type="StyleBoxTexture" id=42]
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 32, 32 )
+margin_left = 8.99585
+margin_right = 9.25288
+margin_top = 8.09627
+margin_bottom = 9.12436
 
 [sub_resource type="StyleBoxTexture" id=16]
 texture = ExtResource( 10 )
@@ -299,6 +338,11 @@ margin_right = 2.44173
 margin_top = 2.18471
 margin_bottom = 2.31322
 
+[sub_resource type="StyleBoxFlat" id=37]
+border_width_top = 20
+corner_detail = 20
+expand_margin_top = 20.0
+
 [resource]
 default_font = ExtResource( 5 )
 Button/colors/font_color = Color( 0.882353, 0.811765, 0.623529, 1 )
@@ -376,11 +420,11 @@ MenuButton/colors/font_color_hover = Color( 0.988235, 0.890196, 0.623529, 1 )
 MenuButton/colors/font_color_pressed = Color( 0.984314, 0.819608, 0.384314, 1 )
 MenuButton/constants/hseparation = 3
 MenuButton/fonts/font = null
-MenuButton/styles/disabled = null
-MenuButton/styles/focus = null
-MenuButton/styles/hover = null
-MenuButton/styles/normal = null
-MenuButton/styles/pressed = null
+MenuButton/styles/disabled = SubResource( 38 )
+MenuButton/styles/focus = SubResource( 39 )
+MenuButton/styles/hover = SubResource( 40 )
+MenuButton/styles/normal = SubResource( 41 )
+MenuButton/styles/pressed = SubResource( 42 )
 Panel/styles/panel = SubResource( 16 )
 PanelContainer/styles/panel = SubResource( 17 )
 PopupDialog/styles/panel = SubResource( 18 )
@@ -466,3 +510,12 @@ VSlider/icons/tick = null
 VSlider/styles/grabber_area = SubResource( 34 )
 VSlider/styles/grabber_area_highlight = SubResource( 35 )
 VSlider/styles/slider = SubResource( 36 )
+WindowDialog/colors/title_color = Color( 0, 0, 0, 1 )
+WindowDialog/constants/close_h_ofs = 18
+WindowDialog/constants/close_v_ofs = 18
+WindowDialog/constants/scaleborder_size = 4
+WindowDialog/constants/title_height = 20
+WindowDialog/fonts/title_font = null
+WindowDialog/icons/close = null
+WindowDialog/icons/close_highlight = null
+WindowDialog/styles/panel = SubResource( 37 )

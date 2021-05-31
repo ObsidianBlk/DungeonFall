@@ -1,50 +1,15 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scripts/DungeonEditor.gd" type="Script" id=1]
 [ext_resource path="res://objects/camera/Camera.tscn" type="PackedScene" id=2]
 [ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=3]
-[ext_resource path="res://scripts/UI/MapEditor/TilesetSelection.gd" type="Script" id=4]
-[ext_resource path="res://scripts/UI/MapEditor/FloorTools.gd" type="Script" id=5]
-[ext_resource path="res://scripts/UI/MapEditor/FloorList.gd" type="Script" id=6]
 [ext_resource path="res://scripts/DungeonEditor_Floors.gd" type="Script" id=7]
 [ext_resource path="res://scripts/DungeonEditor_PlayerStart.gd" type="Script" id=8]
 [ext_resource path="res://objects/UI/DungeonEditor/DungeonSettingsUI.tscn" type="PackedScene" id=9]
 [ext_resource path="res://objects/UI/DungeonEditor/UI_Placeables.tscn" type="PackedScene" id=10]
 [ext_resource path="res://objects/UI/ConfirmPopup.tscn" type="PackedScene" id=11]
-[ext_resource path="res://assets/graphics/editor/Editor_Button_Icons.png" type="Texture" id=12]
 [ext_resource path="res://objects/UI/DungeonList.tscn" type="PackedScene" id=13]
-
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 12 )
-region = Rect2( 320, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 12 )
-region = Rect2( 448, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 12 )
-region = Rect2( 384, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 12 )
-region = Rect2( 0, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 12 )
-region = Rect2( 64, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 12 )
-region = Rect2( 128, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 12 )
-region = Rect2( 192, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 12 )
-region = Rect2( 256, 0, 64, 64 )
+[ext_resource path="res://objects/UI/DungeonEditor/UI_Toolbar.tscn" type="PackedScene" id=14]
 
 [node name="DungeonEditor" type="Node2D"]
 pause_mode = 2
@@ -110,187 +75,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/EditorUI"]
+[node name="UI_Toolbar" parent="CanvasLayer/EditorUI" instance=ExtResource( 14 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 1910.0
-margin_bottom = 236.0
+margin_bottom = 126.331
 size_flags_vertical = 0
-custom_constants/separation = 10
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/EditorUI/VBoxContainer"]
-margin_right = 1900.0
-margin_bottom = 168.331
-size_flags_vertical = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer"]
-margin_left = 15.2862
-margin_top = 15.5567
-margin_right = 1884.58
-margin_bottom = 151.557
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer"]
-margin_right = 932.0
-margin_bottom = 136.0
-size_flags_horizontal = 3
-
-[node name="TilesetSelection" type="MenuButton" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer"]
-margin_right = 932.0
-margin_bottom = 39.2487
-size_flags_horizontal = 3
-size_flags_vertical = 0
-text = "Text to see"
-clip_text = true
-align = 0
-script = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer"]
-margin_top = 43.0
-margin_right = 932.0
-margin_bottom = 125.0
-
-[node name="BTN_NewDungeon" type="Button" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_right = 82.6343
-margin_bottom = 82.2487
-hint_tooltip = "New Dungeon"
-icon = SubResource( 1 )
-
-[node name="BTN_LoadDungeon" type="Button" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 86.0
-margin_right = 168.634
-margin_bottom = 82.2487
-hint_tooltip = "Load Dungeon"
-icon = SubResource( 2 )
-
-[node name="BTN_SaveDungeon" type="Button" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 172.0
-margin_right = 254.634
-margin_bottom = 82.2487
-hint_tooltip = "Save Dungeon"
-icon = SubResource( 3 )
-
-[node name="FloorTools" type="VBoxContainer" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer"]
-margin_left = 936.0
-margin_right = 1869.0
-margin_bottom = 136.0
-size_flags_horizontal = 3
-script = ExtResource( 5 )
-
-[node name="Top" type="HBoxContainer" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools"]
-margin_right = 933.0
-margin_bottom = 50.0
-
-[node name="Label" type="Label" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/Top"]
-margin_top = 14.0
-margin_right = 44.0
-margin_bottom = 35.0
-text = "Floors:"
-
-[node name="RandBox" type="HBoxContainer" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/Top"]
-margin_left = 48.0
-margin_right = 182.0
-margin_bottom = 50.0
-
-[node name="Check" type="CheckBox" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/Top/RandBox"]
-margin_right = 50.6343
-margin_bottom = 50.2487
-flat = true
-
-[node name="Label" type="Label" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/Top/RandBox"]
-margin_left = 54.0
-margin_top = 14.0
-margin_right = 134.0
-margin_bottom = 35.0
-text = "( Random )"
-
-[node name="CTRLs" type="HBoxContainer" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools"]
-margin_top = 54.0
-margin_right = 933.0
-margin_bottom = 136.0
-
-[node name="BTN_Breakable" type="Button" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs"]
-margin_right = 82.6343
-margin_bottom = 82.2487
-hint_tooltip = "Place Breakable Tiles"
-toggle_mode = true
-shortcut_in_tooltip = false
-pressed = true
-icon = SubResource( 4 )
-
-[node name="BTN_Safe" type="Button" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs"]
-margin_left = 86.0
-margin_right = 168.634
-margin_bottom = 82.2487
-hint_tooltip = "Place Safe Tiles"
-focus_mode = 0
-toggle_mode = true
-enabled_focus_mode = 0
-icon = SubResource( 5 )
-
-[node name="BTN_Ends" type="Button" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs"]
-margin_left = 172.0
-margin_right = 254.634
-margin_bottom = 82.2487
-hint_tooltip = "Place Dungeon Exit(s)"
-focus_mode = 0
-toggle_mode = true
-enabled_focus_mode = 0
-icon = SubResource( 6 )
-
-[node name="BTN_Player_Start" type="Button" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs"]
-margin_left = 258.0
-margin_right = 340.634
-margin_bottom = 82.2487
-hint_tooltip = "Place Player Start"
-toggle_mode = true
-icon = SubResource( 7 )
-
-[node name="BTN_MapSettings" type="Button" parent="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs"]
-margin_left = 344.0
-margin_right = 426.634
-margin_bottom = 82.2487
-hint_tooltip = "Dungeon Properties"
-toggle_mode = true
-icon = SubResource( 8 )
-
-[node name="FloorList" type="PanelContainer" parent="CanvasLayer/EditorUI/VBoxContainer"]
-margin_top = 178.0
-margin_right = 46.7077
-margin_bottom = 226.331
-mouse_filter = 1
-size_flags_horizontal = 0
-size_flags_vertical = 3
-script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Margins" type="MarginContainer" parent="CanvasLayer/EditorUI/VBoxContainer/FloorList"]
-margin_left = 15.2862
-margin_top = 15.5567
-margin_right = 31.2862
-margin_bottom = 31.5567
-mouse_filter = 1
-custom_constants/margin_right = 8
-custom_constants/margin_top = 8
-custom_constants/margin_left = 8
-custom_constants/margin_bottom = 8
-
-[node name="Scroll" type="ScrollContainer" parent="CanvasLayer/EditorUI/VBoxContainer/FloorList/Margins"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 8.0
-margin_bottom = 8.0
-mouse_filter = 1
-
-[node name="Tiles" type="VBoxContainer" parent="CanvasLayer/EditorUI/VBoxContainer/FloorList/Margins/Scroll"]
-custom_constants/separation = 24
 
 [node name="DungeonSettingsUI" parent="CanvasLayer" instance=ExtResource( 9 )]
 visible = false
@@ -329,21 +121,14 @@ margin_top = 183.111
 margin_right = -1612.9
 margin_bottom = -485.889
 
-[connection signal="pressed" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/BTN_NewDungeon" to="." method="_on_newdungeon_pressed"]
-[connection signal="pressed" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/BTN_LoadDungeon" to="." method="_on_rquestdungeonload_pressed"]
-[connection signal="pressed" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/HBoxContainer/BTN_SaveDungeon" to="." method="_on_save_dungeon"]
-[connection signal="active_floor_type" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" to="." method="_on_active_floor_type"]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/Top/RandBox/Check" to="." method="_on_random_floor"]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/VBoxContainer/FloorList" method="_on_floor_btn_toggle" binds= [ "B" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Breakable" to="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" method="_on_floor_btn_toggle" binds= [ "B" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/VBoxContainer/FloorList" method="_on_floor_btn_toggle" binds= [ "S" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Safe" to="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" method="_on_floor_btn_toggle" binds= [ "S" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/VBoxContainer/FloorList" method="_on_floor_btn_toggle" binds= [ "E" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Ends" to="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools" method="_on_floor_btn_toggle" binds= [ "E" ]]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_Player_Start" to="." method="_on_player_start"]
-[connection signal="toggled" from="CanvasLayer/EditorUI/VBoxContainer/PanelContainer/HBoxContainer/FloorTools/CTRLs/BTN_MapSettings" to="." method="_on_map_settings_toggled"]
-[connection signal="tile_selected" from="CanvasLayer/EditorUI/VBoxContainer/FloorList" to="." method="_on_tile_selected"]
+[connection signal="dungeon_settings_pressed" from="CanvasLayer/EditorUI/UI_Toolbar" to="." method="_on_dungeon_settings_pressed"]
+[connection signal="floortool_selected" from="CanvasLayer/EditorUI/UI_Toolbar" to="." method="_on_active_floor_type"]
+[connection signal="load_dungeon_pressed" from="CanvasLayer/EditorUI/UI_Toolbar" to="." method="_on_rquestdungeonload_pressed"]
+[connection signal="new_dungeon_pressed" from="CanvasLayer/EditorUI/UI_Toolbar" to="." method="_on_newdungeon_pressed"]
+[connection signal="playerstart_selected" from="CanvasLayer/EditorUI/UI_Toolbar" to="." method="_on_player_start_selected"]
+[connection signal="save_dungeon_pressed" from="CanvasLayer/EditorUI/UI_Toolbar" to="." method="_on_save_dungeon"]
 [connection signal="cancel" from="CanvasLayer/ConfirmPopup" to="." method="_on_ConfirmPopup_cancel"]
 [connection signal="cancel" from="CanvasLayer/DungeonLoadPopup/DungeonList" to="." method="_on_dungeonload_cancel"]
 [connection signal="delete_dungeon" from="CanvasLayer/DungeonLoadPopup/DungeonList" to="." method="_on_requestdelete_dungeon"]
 [connection signal="load_dungeon" from="CanvasLayer/DungeonLoadPopup/DungeonList" to="." method="_on_loaddungeonfresh_dungeon"]
+[connection signal="popup_hide" from="CanvasLayer/Placeables" to="." method="_on_Placeables_hide"]

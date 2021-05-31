@@ -29,7 +29,7 @@ onready var flooreditor_node = $FloorEditor
 onready var playerstarteditor_node = $PlayerStartEditor
 
 onready var camera = $Perma_Objects/Camera
-onready var floorList_node = $CanvasLayer/EditorUI/VBoxContainer/FloorList
+#onready var floorList_node = $CanvasLayer/EditorUI/VBoxContainer/FloorList
 
 onready var vp_container = $DungeonView
 onready var vp_port = $DungeonView/Port
@@ -106,7 +106,6 @@ func _unhandled_input(event):
 			if dungeonSettingsUI.visible:
 				dungeonSettingsUI.hide()
 			elif editor_mode == EDITOR_MODE.PLACEABLES:
-				editor_mode = EDITOR_MODE.FLOORS
 				if placeablesUI.visible:
 					placeablesUI.hide()
 			elif not _ShowConfirmPopup("Exit Dungeon Editor?", false, "_on_editor_quit"):
@@ -259,14 +258,12 @@ func _on_random_floor(button_pressed):
 	if flooreditor_node == null:
 		return
 	flooreditor_node.set_random_tile(button_pressed)
-	floorList_node.visible = not flooreditor_node.is_random_tiles()
+	#floorList_node.visible = not flooreditor_node.is_random_tiles()
 
 
-func _on_player_start(button_pressed):
-	if button_pressed:
-		editor_mode = EDITOR_MODE.PLAYER_START
-		dungeonlevel_node.clear_ghost_tiles()
-
+func _on_player_start_selected():
+	editor_mode = EDITOR_MODE.PLAYER_START
+	dungeonlevel_node.clear_ghost_tiles()
 
 func _on_save_dungeon():
 	if not dungeonlevel_node.isRoyal:
@@ -296,8 +293,8 @@ func _on_delete_dungeon(name : String, path: String):
 	dungeonload_node.visible = false
 
 
-func _on_map_settings_toggled(button_pressed):
-	dungeonSettingsUI.visible = button_pressed
+func _on_dungeon_settings_pressed():
+	dungeonSettingsUI.visible = true
 
 func _on_ConfirmPopup_cancel():
 	if not confirmpopup_node.visible:
@@ -330,4 +327,5 @@ func _on_newdungeon_pressed():
 	_newDungeon()
 
 
-
+func _on_Placeables_hide():
+	editor_mode = EDITOR_MODE.FLOORS

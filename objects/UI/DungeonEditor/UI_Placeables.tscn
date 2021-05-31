@@ -3,7 +3,7 @@
 [ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/UI/MapEditor/UI_Placeables.gd" type="Script" id=2]
 
-[node name="Placeables" type="PopupDialog"]
+[node name="UI_Placeables" type="WindowDialog"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -1628.0
@@ -14,16 +14,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="vbox" type="VBoxContainer" parent="."]
+[node name="MC" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tabs" type="TabContainer" parent="vbox"]
-margin_right = 292.0
-margin_bottom = 411.0
+[node name="vbox" type="VBoxContainer" parent="MC"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 284.0
+margin_bottom = 403.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tabs" type="TabContainer" parent="MC/vbox"]
+margin_right = 276.0
+margin_bottom = 352.0
 size_flags_vertical = 3
 custom_constants/side_margin = 27
 tab_align = 0
@@ -31,7 +44,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Pickups" type="Tabs" parent="vbox/Tabs"]
+[node name="Pickups" type="Tabs" parent="MC/vbox/Tabs"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 3.36453
@@ -40,7 +53,7 @@ margin_right = -3.37121
 margin_bottom = -3.74339
 tab_align = 0
 
-[node name="MC" type="MarginContainer" parent="vbox/Tabs/Pickups"]
+[node name="MC" type="MarginContainer" parent="MC/vbox/Tabs/Pickups"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/margin_right = 6
@@ -49,33 +62,33 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Cols" type="HBoxContainer" parent="vbox/Tabs/Pickups/MC"]
+[node name="Cols" type="HBoxContainer" parent="MC/vbox/Tabs/Pickups/MC"]
 margin_left = 6.0
-margin_right = 279.0
-margin_bottom = 374.0
+margin_right = 263.0
+margin_bottom = 315.0
 custom_constants/separation = 10
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Left" type="VBoxContainer" parent="vbox/Tabs/Pickups/MC/Cols"]
-margin_right = 131.0
-margin_bottom = 374.0
+[node name="Left" type="VBoxContainer" parent="MC/vbox/Tabs/Pickups/MC/Cols"]
+margin_right = 123.0
+margin_bottom = 315.0
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Right" type="VBoxContainer" parent="vbox/Tabs/Pickups/MC/Cols"]
-margin_left = 141.0
-margin_right = 273.0
-margin_bottom = 374.0
+[node name="Right" type="VBoxContainer" parent="MC/vbox/Tabs/Pickups/MC/Cols"]
+margin_left = 133.0
+margin_right = 257.0
+margin_bottom = 315.0
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Traps" type="Tabs" parent="vbox/Tabs"]
+[node name="Traps" type="Tabs" parent="MC/vbox/Tabs"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -85,7 +98,7 @@ margin_right = -3.37121
 margin_bottom = -3.74339
 tab_align = 0
 
-[node name="MC" type="MarginContainer" parent="vbox/Tabs/Traps"]
+[node name="MC" type="MarginContainer" parent="MC/vbox/Tabs/Traps"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/margin_right = 6
@@ -94,16 +107,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Cols" type="HBoxContainer" parent="vbox/Tabs/Traps/MC"]
+[node name="Cols" type="HBoxContainer" parent="MC/vbox/Tabs/Traps/MC"]
 margin_left = 6.0
-margin_right = 279.0
-margin_bottom = 374.0
+margin_right = 263.0
+margin_bottom = 315.0
 custom_constants/separation = 10
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Left" type="VBoxContainer" parent="vbox/Tabs/Traps/MC/Cols"]
+[node name="Left" type="VBoxContainer" parent="MC/vbox/Tabs/Traps/MC/Cols"]
 margin_right = 131.0
 margin_bottom = 374.0
 size_flags_horizontal = 3
@@ -111,7 +124,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Right" type="VBoxContainer" parent="vbox/Tabs/Traps/MC/Cols"]
+[node name="Right" type="VBoxContainer" parent="MC/vbox/Tabs/Traps/MC/Cols"]
 margin_left = 141.0
 margin_right = 273.0
 margin_bottom = 374.0
@@ -120,7 +133,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Monsters" type="Tabs" parent="vbox/Tabs"]
+[node name="Monsters" type="Tabs" parent="MC/vbox/Tabs"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -130,7 +143,7 @@ margin_right = -3.37121
 margin_bottom = -3.74339
 tab_align = 0
 
-[node name="MC" type="MarginContainer" parent="vbox/Tabs/Monsters"]
+[node name="MC" type="MarginContainer" parent="MC/vbox/Tabs/Monsters"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/margin_right = 6
@@ -139,16 +152,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Cols" type="HBoxContainer" parent="vbox/Tabs/Monsters/MC"]
+[node name="Cols" type="HBoxContainer" parent="MC/vbox/Tabs/Monsters/MC"]
 margin_left = 6.0
-margin_right = 279.0
-margin_bottom = 374.0
+margin_right = 263.0
+margin_bottom = 315.0
 custom_constants/separation = 10
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Left" type="VBoxContainer" parent="vbox/Tabs/Monsters/MC/Cols"]
+[node name="Left" type="VBoxContainer" parent="MC/vbox/Tabs/Monsters/MC/Cols"]
 margin_right = 131.0
 margin_bottom = 374.0
 size_flags_horizontal = 3
@@ -156,7 +169,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Right" type="VBoxContainer" parent="vbox/Tabs/Monsters/MC/Cols"]
+[node name="Right" type="VBoxContainer" parent="MC/vbox/Tabs/Monsters/MC/Cols"]
 margin_left = 141.0
 margin_right = 273.0
 margin_bottom = 374.0
@@ -164,3 +177,11 @@ size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="BTN_Close" type="Button" parent="MC/vbox"]
+margin_top = 356.0
+margin_right = 276.0
+margin_bottom = 395.249
+text = "Close"
+
+[connection signal="pressed" from="MC/vbox/BTN_Close" to="." method="_on_Close_pressed"]

@@ -1,9 +1,9 @@
 extends Control
 
 
-onready var tab_pickups = $vbox/Tabs/Pickups
-onready var tab_traps = $vbox/Tabs/Traps
-onready var tab_monsters = $vbox/Tabs/Monsters
+onready var tab_pickups = $MC/vbox/Tabs/Pickups
+onready var tab_traps = $MC/vbox/Tabs/Traps
+onready var tab_monsters = $MC/vbox/Tabs/Monsters
 
 
 func _add_entity_btns(tab : Control, entity_type : String) -> void:
@@ -50,5 +50,7 @@ func _on_btn_pressed(entity_name : String) -> void:
 	hide()
 
 
+func _on_Close_pressed():
+	hide()
 
 
