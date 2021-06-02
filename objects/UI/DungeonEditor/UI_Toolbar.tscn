@@ -6,42 +6,34 @@
 [ext_resource path="res://scripts/UI/MapEditor/TilesetSelection.gd" type="Script" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
-flags = 1
 atlas = ExtResource( 2 )
 region = Rect2( 320, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=2]
-flags = 1
 atlas = ExtResource( 2 )
 region = Rect2( 448, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=3]
-flags = 1
 atlas = ExtResource( 2 )
 region = Rect2( 384, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=4]
-flags = 1
 atlas = ExtResource( 2 )
 region = Rect2( 0, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=5]
-flags = 1
 atlas = ExtResource( 2 )
 region = Rect2( 64, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=6]
-flags = 1
 atlas = ExtResource( 2 )
 region = Rect2( 128, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=7]
-flags = 1
 atlas = ExtResource( 2 )
 region = Rect2( 192, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=8]
-flags = 1
 atlas = ExtResource( 2 )
 region = Rect2( 256, 0, 64, 64 )
 
@@ -59,7 +51,7 @@ __meta__ = {
 margin_left = 15.2862
 margin_top = 15.5567
 margin_right = 1904.58
-margin_bottom = 99.5567
+margin_bottom = 99.5568
 
 [node name="IOCtrls" type="HBoxContainer" parent="HBC"]
 margin_right = 260.0
@@ -70,6 +62,10 @@ margin_right = 84.0
 margin_bottom = 84.0
 rect_min_size = Vector2( 84, 84 )
 hint_tooltip = "New Dungeon"
+focus_neighbour_left = NodePath("../../DetailingTools/BTN_DngnSettings")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath("../BTN_LoadDngn")
+focus_neighbour_bottom = NodePath(".")
 icon = SubResource( 1 )
 
 [node name="BTN_LoadDngn" type="Button" parent="HBC/IOCtrls"]
@@ -78,6 +74,10 @@ margin_right = 172.0
 margin_bottom = 84.0
 rect_min_size = Vector2( 84, 84 )
 hint_tooltip = "Load Dungeon"
+focus_neighbour_left = NodePath("../BTN_NewDngn")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath("../BTN_SaveDngn")
+focus_neighbour_bottom = NodePath(".")
 icon = SubResource( 2 )
 
 [node name="BTN_SaveDngn" type="Button" parent="HBC/IOCtrls"]
@@ -86,6 +86,10 @@ margin_right = 260.0
 margin_bottom = 84.0
 rect_min_size = Vector2( 84, 84 )
 hint_tooltip = "Save Dungeon"
+focus_neighbour_left = NodePath("../BTN_LoadDngn")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath("../../DngnTileset/TilesetSelection")
+focus_neighbour_bottom = NodePath(".")
 icon = SubResource( 3 )
 
 [node name="VSeparator" type="VSeparator" parent="HBC"]
@@ -109,6 +113,9 @@ text = "Dungeon Tileset:"
 margin_top = 25.0
 margin_right = 521.0
 margin_bottom = 63.0921
+focus_neighbour_left = NodePath("../../IOCtrls/BTN_SaveDngn")
+focus_neighbour_right = NodePath("../../DrawTools/BTN_FloorBreakable")
+focus_mode = 2
 text = "Tileset TBS"
 flat = false
 align = 0
@@ -131,6 +138,10 @@ margin_right = 84.0
 margin_bottom = 84.0
 rect_min_size = Vector2( 84, 84 )
 hint_tooltip = "Breakable Floors"
+focus_neighbour_left = NodePath("../../DngnTileset/TilesetSelection")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath("../BTN_FloorSafe")
+focus_neighbour_bottom = NodePath(".")
 toggle_mode = true
 pressed = true
 icon = SubResource( 4 )
@@ -141,6 +152,10 @@ margin_right = 172.0
 margin_bottom = 84.0
 rect_min_size = Vector2( 84, 84 )
 hint_tooltip = "Safe Floors"
+focus_neighbour_left = NodePath("../BTN_FloorBreakable")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath("../BTN_FloorExit")
+focus_neighbour_bottom = NodePath(".")
 toggle_mode = true
 icon = SubResource( 5 )
 
@@ -150,6 +165,10 @@ margin_right = 260.0
 margin_bottom = 84.0
 rect_min_size = Vector2( 84, 84 )
 hint_tooltip = "Exit Floors"
+focus_neighbour_left = NodePath("../BTN_FloorSafe")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath("../BTN_PlayerStart")
+focus_neighbour_bottom = NodePath(".")
 toggle_mode = true
 icon = SubResource( 6 )
 
@@ -159,6 +178,10 @@ margin_right = 348.0
 margin_bottom = 84.0
 rect_min_size = Vector2( 84, 84 )
 hint_tooltip = "Set Player Start Position"
+focus_neighbour_left = NodePath("../BTN_FloorExit")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath("../../DetailingTools/BTN_DngnSettings")
+focus_neighbour_bottom = NodePath(".")
 toggle_mode = true
 icon = SubResource( 7 )
 
@@ -179,6 +202,10 @@ margin_right = 84.0
 margin_bottom = 84.0
 rect_min_size = Vector2( 84, 84 )
 hint_tooltip = "Configure Dungeon"
+focus_neighbour_left = NodePath("../../DrawTools/BTN_PlayerStart")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath("../../IOCtrls/BTN_NewDngn")
+focus_neighbour_bottom = NodePath(".")
 icon = SubResource( 8 )
 
 [connection signal="pressed" from="HBC/IOCtrls/BTN_NewDngn" to="." method="_on_BTN_NewDngn_pressed"]

@@ -25,6 +25,31 @@ func _ready():
 func get_current_tool():
 	return _curtool
 
+func set_focus():
+	if _curtool != "B":
+		btn_breakable.grab_focus()
+	else:
+		btn_safe.grab_focus()
+
+func drop_focus():
+	var fctl = get_focus_owner()
+	if fctl:
+		fctl.release_focus()
+
+func in_focus():
+	var ctl = btn_breakable
+	for _i in range(0, 100):
+		if ctl.has_focus():
+			return true
+		if ctl.focus_neighbour_right == null:
+			break
+		var nctl = ctl.get_node(ctl.focus_neighbour_right)
+		if nctl == ctl or nctl == btn_breakable:
+			break
+		ctl = nctl
+	return false
+	
+
 func _unselect_cur_drawtool_btn():
 	match _curtool:
 		"B":

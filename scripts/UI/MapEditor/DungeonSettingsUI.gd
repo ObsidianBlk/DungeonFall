@@ -32,6 +32,7 @@ func _ready():
 			_SetDB(db_name)
 	float_regex = RegEx.new()
 	float_regex.compile("([0-9]*[.])?[0-9]+")
+	DungeonName_node.grab_focus()
 
 func _update_break_variance_limits(val):
 	if BreakVariance_node.value > val:
@@ -147,3 +148,9 @@ func _on_GoldSeed_text_changed(new_text):
 
 func _on_GoldAmount_changed(value):
 	_set_value("gold_amount", value)
+
+
+func _on_popup_hide():
+	var fctl = get_focus_owner()
+	if fctl:
+		fctl.release_focus()

@@ -63,8 +63,6 @@ layer = 2
 pause_mode = 1
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.94043
-margin_right = 4.94043
 mouse_filter = 2
 theme = ExtResource( 3 )
 custom_constants/margin_right = 10
@@ -85,7 +83,6 @@ margin_bottom = 126.331
 size_flags_vertical = 0
 
 [node name="DungeonSettingsUI" parent="CanvasLayer" instance=ExtResource( 9 )]
-visible = false
 margin_left = 670.595
 margin_top = 209.881
 margin_right = 1910.59

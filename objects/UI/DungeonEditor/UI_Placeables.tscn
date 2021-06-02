@@ -9,6 +9,8 @@ anchor_bottom = 1.0
 margin_right = -1628.0
 margin_bottom = -669.0
 theme = ExtResource( 1 )
+popup_exclusive = true
+window_title = "Placeables"
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false

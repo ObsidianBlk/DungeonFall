@@ -6,29 +6,30 @@
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
-[node name="DungeonSettingsUI" type="Panel"]
+[node name="DungeonSettingsUI" type="WindowDialog"]
 margin_right = 1240.0
 margin_bottom = 821.0
 theme = ExtResource( 1 )
+popup_exclusive = true
+window_title = "Dungeon Config"
 script = ExtResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Margins" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 10.0
-margin_right = -10.0
-margin_bottom = -10.0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 16
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 16
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="GridContainer" type="GridContainer" parent="Margins"]
-margin_right = 1220.0
-margin_bottom = 801.0
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 1224.0
+margin_bottom = 805.0
 custom_constants/vseparation = 0
 custom_constants/hseparation = 20
 columns = 3
@@ -37,13 +38,13 @@ __meta__ = {
 }
 
 [node name="Left Column" type="VBoxContainer" parent="Margins/GridContainer"]
-margin_right = 393.0
-margin_bottom = 801.0
+margin_right = 389.0
+margin_bottom = 789.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="DungeonName" type="HBoxContainer" parent="Margins/GridContainer/Left Column"]
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 37.0
 size_flags_horizontal = 3
 __meta__ = {
@@ -58,7 +59,7 @@ text = "Dungeon Name: "
 
 [node name="Value" type="LineEdit" parent="Margins/GridContainer/Left Column/DungeonName"]
 margin_left = 124.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 37.0
 size_flags_horizontal = 3
 max_length = 255
@@ -67,7 +68,7 @@ caret_blink = true
 
 [node name="EngineerName" type="HBoxContainer" parent="Margins/GridContainer/Left Column"]
 margin_top = 41.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 78.0
 size_flags_horizontal = 3
 __meta__ = {
@@ -82,7 +83,7 @@ text = "Engineer Name:  "
 
 [node name="Value" type="LineEdit" parent="Margins/GridContainer/Left Column/EngineerName"]
 margin_left = 124.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 37.0
 size_flags_horizontal = 3
 max_length = 255
@@ -90,17 +91,17 @@ placeholder_text = "Enter name"
 caret_blink = true
 
 [node name="Center Column" type="VBoxContainer" parent="Margins/GridContainer"]
-margin_left = 413.0
-margin_right = 806.0
-margin_bottom = 801.0
+margin_left = 409.0
+margin_right = 798.0
+margin_bottom = 789.0
 size_flags_horizontal = 3
 
 [node name="DungeonTimers" type="VBoxContainer" parent="Margins/GridContainer/Center Column"]
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 155.0
 
 [node name="Label" type="Label" parent="Margins/GridContainer/Center Column/DungeonTimers"]
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 27.0
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0.984314, 0.819608, 0.384314, 1 )
@@ -109,16 +110,16 @@ text = "Dungeon Timers"
 
 [node name="HSeparator" type="HSeparator" parent="Margins/GridContainer/Center Column/DungeonTimers"]
 margin_top = 31.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 35.0
 
 [node name="AutoTimer" type="HBoxContainer" parent="Margins/GridContainer/Center Column/DungeonTimers"]
 margin_top = 39.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 89.0
 
 [node name="Check" type="CheckBox" parent="Margins/GridContainer/Center Column/DungeonTimers/AutoTimer"]
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 50.2487
 size_flags_horizontal = 3
 text = "Auto-Start Level Timer"
@@ -126,35 +127,35 @@ flat = true
 
 [node name="CollapseTimer" type="VBoxContainer" parent="Margins/GridContainer/Center Column/DungeonTimers"]
 margin_top = 93.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 155.0
 
 [node name="Label" type="Label" parent="Margins/GridContainer/Center Column/DungeonTimers/CollapseTimer"]
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 21.0
 text = "Dungeon Collapse Timer:"
 
 [node name="Value" type="LineEdit" parent="Margins/GridContainer/Center Column/DungeonTimers/CollapseTimer"]
 margin_top = 25.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 62.0
 placeholder_text = "Collapse Time in Seconds"
 caret_blink = true
 
 [node name="HSeparator" type="HSeparator" parent="Margins/GridContainer/Center Column"]
 margin_top = 159.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 179.0
 custom_styles/separator = SubResource( 1 )
 custom_constants/separation = 20
 
 [node name="GoldRandomizer" type="VBoxContainer" parent="Margins/GridContainer/Center Column"]
 margin_top = 183.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 329.0
 
 [node name="Label2" type="Label" parent="Margins/GridContainer/Center Column/GoldRandomizer"]
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 27.0
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0.984314, 0.819608, 0.384314, 1 )
@@ -163,66 +164,67 @@ text = "Random Gold"
 
 [node name="HSeparator2" type="HSeparator" parent="Margins/GridContainer/Center Column/GoldRandomizer"]
 margin_top = 31.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 35.0
 
 [node name="GoldSeed" type="VBoxContainer" parent="Margins/GridContainer/Center Column/GoldRandomizer"]
 margin_top = 39.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 101.0
 
 [node name="Label" type="Label" parent="Margins/GridContainer/Center Column/GoldRandomizer/GoldSeed"]
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 21.0
 text = "Gold Seed:"
 
 [node name="Value" type="LineEdit" parent="Margins/GridContainer/Center Column/GoldRandomizer/GoldSeed"]
 margin_top = 25.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 62.0
 placeholder_text = "Enter Seed"
+caret_blink = true
 
 [node name="GoldAmount" type="VBoxContainer" parent="Margins/GridContainer/Center Column/GoldRandomizer"]
 margin_top = 105.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 146.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="Margins/GridContainer/Center Column/GoldRandomizer/GoldAmount"]
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 21.0
 text = "Gold Amount:"
 
 [node name="Value" type="HSlider" parent="Margins/GridContainer/Center Column/GoldRandomizer/GoldAmount"]
 margin_top = 25.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 41.0
 max_value = 1.0
 
 [node name="Right Column" type="VBoxContainer" parent="Margins/GridContainer"]
-margin_left = 826.0
-margin_right = 1219.0
-margin_bottom = 801.0
+margin_left = 818.0
+margin_right = 1207.0
+margin_bottom = 789.0
 size_flags_horizontal = 3
 
 [node name="BreakTime" type="VBoxContainer" parent="Margins/GridContainer/Right Column"]
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 46.0
 
 [node name="Label" type="Label" parent="Margins/GridContainer/Right Column/BreakTime"]
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 21.0
 text = "Tile Break Time:"
 
 [node name="Slider" type="HBoxContainer" parent="Margins/GridContainer/Right Column/BreakTime"]
 margin_top = 25.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 46.0
 
 [node name="Value" type="HSlider" parent="Margins/GridContainer/Right Column/BreakTime/Slider"]
-margin_right = 300.0
+margin_right = 296.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
 min_value = 0.1
@@ -231,39 +233,40 @@ step = 0.1
 value = 1.0
 
 [node name="Label" type="Label" parent="Margins/GridContainer/Right Column/BreakTime/Slider"]
-margin_left = 304.0
-margin_right = 393.0
+margin_left = 300.0
+margin_right = 389.0
 margin_bottom = 21.0
 text = "1.0 second(s)"
 
 [node name="BreakVariance" type="VBoxContainer" parent="Margins/GridContainer/Right Column"]
 margin_top = 50.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 96.0
 
 [node name="Label" type="Label" parent="Margins/GridContainer/Right Column/BreakVariance"]
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 21.0
 text = "Tile Break Variance:"
 
 [node name="Slider" type="HBoxContainer" parent="Margins/GridContainer/Right Column/BreakVariance"]
 margin_top = 25.0
-margin_right = 393.0
+margin_right = 389.0
 margin_bottom = 46.0
 
 [node name="Value" type="HSlider" parent="Margins/GridContainer/Right Column/BreakVariance/Slider"]
-margin_right = 297.0
+margin_right = 293.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
 max_value = 1.0
 step = 0.1
 
 [node name="Label" type="Label" parent="Margins/GridContainer/Right Column/BreakVariance/Slider"]
-margin_left = 301.0
-margin_right = 393.0
+margin_left = 297.0
+margin_right = 389.0
 margin_bottom = 21.0
 text = "0.0 second(s)"
 
+[connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
 [connection signal="text_changed" from="Margins/GridContainer/Left Column/DungeonName/Value" to="." method="_on_DungeonName_text_changed"]
 [connection signal="text_changed" from="Margins/GridContainer/Left Column/EngineerName/Value" to="." method="_on_Engineername_text_changed"]
 [connection signal="toggled" from="Margins/GridContainer/Center Column/DungeonTimers/AutoTimer/Check" to="." method="_on_AutoTimer_toggled"]

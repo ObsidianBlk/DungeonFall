@@ -34,6 +34,7 @@ onready var camera = $Perma_Objects/Camera
 onready var vp_container = $DungeonView
 onready var vp_port = $DungeonView/Port
 
+onready var toolbarUI = $CanvasLayer/EditorUI/UI_Toolbar
 onready var dungeonSettingsUI = $CanvasLayer/DungeonSettingsUI
 onready var placeablesUI = $CanvasLayer/Placeables
 #onready var generalUI = $CanvasLayer/GeneralUI
@@ -77,6 +78,7 @@ func _ShowConfirmPopup(text : String, confirm_only : bool, method : String, bind
 	return true
 
 func _unhandled_input(event):
+	var ctrlInFocus = toolbarUI.get_focus_owner() != null
 	if event is InputEventMouseMotion:
 		dungeonlevel_node.enable_camera_tracking(false)
 		var campos = dungeonlevel_node.get_camera_position()
@@ -102,6 +104,11 @@ func _unhandled_input(event):
 			if editor_mode != EDITOR_MODE.PLACEABLES:
 				editor_mode = EDITOR_MODE.PLACEABLES
 				placeablesUI.popup_centered()
+		if event.is_action_pressed("MapEditor_DeviceMode_Toggle"):
+			if not ctrlInFocus:
+				toolbarUI.set_focus()
+			elif toolbarUI.in_focus():
+				toolbarUI.drop_focus()
 		if event.is_action_pressed("ui_cancel"):
 			if dungeonSettingsUI.visible:
 				dungeonSettingsUI.hide()
@@ -113,31 +120,33 @@ func _unhandled_input(event):
 			#generalUI.visible = not generalUI.visible
 			#get_tree().paused = generalUI.visible
 		
-		if event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right"):
-			dungeonlevel_node.enable_camera_tracking(true)
-			if event.is_action_pressed("ui_left"):
-				tracker_motion.x -= 1
-			if event.is_action_pressed("ui_right"):
-				tracker_motion.x += 1
-			repeater_update_step = 0.0
-		if event.is_action_released("ui_left") or event.is_action_released("ui_right"):
-			tracker_motion.x = 0
-		
-		if event.is_action_pressed("ui_up") or event.is_action_pressed("ui_down"):
-			dungeonlevel_node.enable_camera_tracking(true)
-			if event.is_action_pressed("ui_up"):
-				tracker_motion.y -= 1
-			if event.is_action_pressed("ui_down"):
-				tracker_motion.y += 1
-			repeater_update_step = 0.0
-		if event.is_action_released("ui_up") or event.is_action_released("ui_down"):
-			tracker_motion.y = 0
+		if not ctrlInFocus: # Only handle below if NO Control has input focus.
+			if event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right"):
+				dungeonlevel_node.enable_camera_tracking(true)
+				if event.is_action_pressed("ui_left"):
+					tracker_motion.x -= 1
+				if event.is_action_pressed("ui_right"):
+					tracker_motion.x += 1
+				repeater_update_step = 0.0
+			if event.is_action_released("ui_left") or event.is_action_released("ui_right"):
+				tracker_motion.x = 0
+			
+			if event.is_action_pressed("ui_up") or event.is_action_pressed("ui_down"):
+				dungeonlevel_node.enable_camera_tracking(true)
+				if event.is_action_pressed("ui_up"):
+					tracker_motion.y -= 1
+				if event.is_action_pressed("ui_down"):
+					tracker_motion.y += 1
+				repeater_update_step = 0.0
+			if event.is_action_released("ui_up") or event.is_action_released("ui_down"):
+				tracker_motion.y = 0
 	
-	match(editor_mode):
-		EDITOR_MODE.FLOORS:
-			flooreditor_node._handleInput(event)
-		EDITOR_MODE.PLAYER_START:
-			playerstarteditor_node._handleInput(event)
+	if not ctrlInFocus: # Only handle below if NO Control has input focus.
+		match(editor_mode):
+			EDITOR_MODE.FLOORS:
+				flooreditor_node._handleInput(event)
+			EDITOR_MODE.PLAYER_START:
+				playerstarteditor_node._handleInput(event)
 
 
 func _process(delta):
@@ -294,7 +303,7 @@ func _on_delete_dungeon(name : String, path: String):
 
 
 func _on_dungeon_settings_pressed():
-	dungeonSettingsUI.visible = true
+	dungeonSettingsUI.popup_centered()
 
 func _on_ConfirmPopup_cancel():
 	if not confirmpopup_node.visible:
