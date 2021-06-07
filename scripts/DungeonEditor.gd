@@ -104,23 +104,21 @@ func _unhandled_input(event):
 			if editor_mode != EDITOR_MODE.PLACEABLES:
 				editor_mode = EDITOR_MODE.PLACEABLES
 				placeablesUI.popup_centered()
-		if event.is_action_pressed("MapEditor_DeviceMode_Toggle"):
-			if not ctrlInFocus:
-				toolbarUI.set_focus()
-			elif toolbarUI.in_focus():
-				toolbarUI.drop_focus()
 		if event.is_action_pressed("ui_cancel"):
 			if dungeonSettingsUI.visible:
 				dungeonSettingsUI.hide()
-			elif editor_mode == EDITOR_MODE.PLACEABLES:
-				if placeablesUI.visible:
-					placeablesUI.hide()
+			elif placeablesUI.visible:
+				placeablesUI.hide()
+			elif ctrlInFocus and toolbarUI.in_focus():
+				_release_gamepad_ctrl()
 			elif not _ShowConfirmPopup("Exit Dungeon Editor?", false, "_on_editor_quit"):
 				_on_ConfirmPopup_cancel()
 			#generalUI.visible = not generalUI.visible
 			#get_tree().paused = generalUI.visible
 		
 		if not ctrlInFocus: # Only handle below if NO Control has input focus.
+			if event.is_action_pressed("ui_focus_next") or event.is_action_pressed("ui_focus_prev"):
+				_grab_gamepad_ctrl()
 			if event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right"):
 				dungeonlevel_node.enable_camera_tracking(true)
 				if event.is_action_pressed("ui_left"):
@@ -166,6 +164,16 @@ func _process(delta):
 
 func reset_repeater():
 	repeater_update_step = 0.0
+
+
+func _grab_gamepad_ctrl():
+	if toolbarUI.get_focus_owner() == null:
+		toolbarUI.grab_focus()
+
+func _release_gamepad_ctrl():
+	var ui_node = toolbarUI.get_focus_owner()
+	if ui_node:
+		ui_node.release_focus()
 
 
 func _newDungeon():

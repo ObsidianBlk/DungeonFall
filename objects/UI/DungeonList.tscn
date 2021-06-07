@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=1]
 [ext_resource path="res://scripts/UI/DungeonList.gd" type="Script" id=2]
+[ext_resource path="res://scripts/UI/Tree.gd" type="Script" id=3]
 
 [node name="DungeonList" type="MarginContainer"]
 anchor_right = 1.0
@@ -28,8 +29,15 @@ custom_constants/separation = 10
 [node name="Tree" type="Tree" parent="VBoxContainer"]
 margin_right = 1900.0
 margin_bottom = 1011.0
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath(".")
+focus_next = NodePath("../HBoxContainer/HBoxContainer/BTN_Cancel")
+focus_previous = NodePath("../HBoxContainer/HBoxContainer/BTN_LoadDungeon")
 size_flags_vertical = 3
 hide_root = true
+script = ExtResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 1021.0
@@ -40,6 +48,12 @@ custom_constants/separation = 10
 [node name="BTN_Reload" type="Button" parent="VBoxContainer/HBoxContainer"]
 margin_right = 28.6343
 margin_bottom = 39.2487
+focus_neighbour_left = NodePath("../HBoxContainer/BTN_LoadDungeon")
+focus_neighbour_top = NodePath("../../Tree")
+focus_neighbour_right = NodePath("../HBoxContainer/BTN_Cancel")
+focus_neighbour_bottom = NodePath(".")
+focus_next = NodePath("../HBoxContainer/BTN_LoadDungeon")
+focus_previous = NodePath("../HBoxContainer/BTN_Cancel")
 text = "R"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
@@ -52,6 +66,12 @@ custom_constants/separation = 10
 [node name="BTN_LoadDungeon" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
 margin_right = 614.0
 margin_bottom = 39.2487
+focus_neighbour_left = NodePath("../../BTN_Reload")
+focus_neighbour_top = NodePath("../../../Tree")
+focus_neighbour_right = NodePath("../BTN_DeleteDungeon")
+focus_neighbour_bottom = NodePath(".")
+focus_next = NodePath("../BTN_DeleteDungeon")
+focus_previous = NodePath("../../BTN_Reload")
 size_flags_horizontal = 3
 disabled = true
 text = "LOAD"
@@ -60,6 +80,12 @@ text = "LOAD"
 margin_left = 624.0
 margin_right = 1238.0
 margin_bottom = 39.2487
+focus_neighbour_left = NodePath("../BTN_LoadDungeon")
+focus_neighbour_top = NodePath("../../../Tree")
+focus_neighbour_right = NodePath("../BTN_Cancel")
+focus_neighbour_bottom = NodePath(".")
+focus_next = NodePath("../BTN_Cancel")
+focus_previous = NodePath("../BTN_LoadDungeon")
 size_flags_horizontal = 3
 disabled = true
 text = "DELETE"
@@ -68,9 +94,18 @@ text = "DELETE"
 margin_left = 1248.0
 margin_right = 1862.0
 margin_bottom = 39.2487
+focus_neighbour_left = NodePath("../BTN_DeleteDungeon")
+focus_neighbour_top = NodePath("../../../Tree")
+focus_neighbour_right = NodePath("../../BTN_Reload")
+focus_neighbour_bottom = NodePath(".")
+focus_next = NodePath("../../BTN_Reload")
+focus_previous = NodePath("../BTN_DeleteDungeon")
 size_flags_horizontal = 3
 text = "Cancel"
+
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="focus_entered" from="VBoxContainer/Tree" to="VBoxContainer/Tree" method="_on_focus_entered"]
+[connection signal="item_activated" from="VBoxContainer/Tree" to="." method="_on_LoadDungeon_pressed"]
 [connection signal="item_selected" from="VBoxContainer/Tree" to="." method="_on_dungeon_selected"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/BTN_Reload" to="." method="_on_Reload_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/BTN_LoadDungeon" to="." method="_on_LoadDungeon_pressed"]

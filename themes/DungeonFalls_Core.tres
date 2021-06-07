@@ -340,15 +340,15 @@ margin_right = 2.44173
 margin_top = 2.18471
 margin_bottom = 2.31322
 
-[sub_resource type="AtlasTexture" id=43]
+[sub_resource type="AtlasTexture" id=42]
 atlas = ExtResource( 29 )
 region = Rect2( 0, 0, 16, 16 )
 
-[sub_resource type="AtlasTexture" id=44]
+[sub_resource type="AtlasTexture" id=43]
 atlas = ExtResource( 29 )
 region = Rect2( 16, 0, 16, 16 )
 
-[sub_resource type="StyleBoxTexture" id=42]
+[sub_resource type="StyleBoxTexture" id=44]
 texture = ExtResource( 28 )
 region_rect = Rect2( 0, 0, 64, 96.1781 )
 margin_left = 9.39883
@@ -508,6 +508,42 @@ TextEdit/styles/completion = null
 TextEdit/styles/focus = SubResource( 31 )
 TextEdit/styles/normal = SubResource( 32 )
 TextEdit/styles/read_only = SubResource( 33 )
+Tree/colors/custom_button_font_highlight = Color( 0.94, 0.94, 0.94, 1 )
+Tree/colors/drop_position_color = Color( 1, 0.3, 0.2, 1 )
+Tree/colors/font_color = Color( 0.69, 0.69, 0.69, 1 )
+Tree/colors/font_color_selected = Color( 1, 1, 1, 1 )
+Tree/colors/guide_color = Color( 0, 0, 0, 0.1 )
+Tree/colors/relationship_line_color = Color( 0.27, 0.27, 0.27, 1 )
+Tree/colors/title_button_color = Color( 0.88, 0.88, 0.88, 1 )
+Tree/constants/button_margin = 4
+Tree/constants/draw_guides = 1
+Tree/constants/draw_relationship_lines = 0
+Tree/constants/hseparation = 4
+Tree/constants/item_margin = 12
+Tree/constants/scroll_border = 4
+Tree/constants/scroll_speed = 12
+Tree/constants/vseparation = 4
+Tree/fonts/font = null
+Tree/fonts/title_button_font = null
+Tree/icons/arrow = null
+Tree/icons/arrow_collapsed = null
+Tree/icons/checked = null
+Tree/icons/select_arrow = null
+Tree/icons/unchecked = null
+Tree/icons/updown = null
+Tree/styles/bg = null
+Tree/styles/bg_focus = null
+Tree/styles/button_pressed = null
+Tree/styles/cursor = null
+Tree/styles/cursor_unfocused = null
+Tree/styles/custom_button = null
+Tree/styles/custom_button_hover = null
+Tree/styles/custom_button_pressed = null
+Tree/styles/selected = null
+Tree/styles/selected_focus = null
+Tree/styles/title_button_hover = null
+Tree/styles/title_button_normal = null
+Tree/styles/title_button_pressed = null
 VScrollBar/icons/decrement = null
 VScrollBar/icons/decrement_highlight = null
 VScrollBar/icons/increment = null
@@ -532,6 +568,6 @@ WindowDialog/constants/close_v_ofs = 28
 WindowDialog/constants/scaleborder_size = 0
 WindowDialog/constants/title_height = 42
 WindowDialog/fonts/title_font = null
-WindowDialog/icons/close = SubResource( 43 )
-WindowDialog/icons/close_highlight = SubResource( 44 )
-WindowDialog/styles/panel = SubResource( 42 )
+WindowDialog/icons/close = SubResource( 42 )
+WindowDialog/icons/close_highlight = SubResource( 43 )
+WindowDialog/styles/panel = SubResource( 44 )

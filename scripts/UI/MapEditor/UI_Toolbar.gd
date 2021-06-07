@@ -25,16 +25,8 @@ func _ready():
 func get_current_tool():
 	return _curtool
 
-func set_focus():
-	if _curtool != "B":
-		btn_breakable.grab_focus()
-	else:
-		btn_safe.grab_focus()
-
-func drop_focus():
-	var fctl = get_focus_owner()
-	if fctl:
-		fctl.release_focus()
+func grab_focus():
+	btn_breakable.grab_focus()
 
 func in_focus():
 	var ctl = btn_breakable
