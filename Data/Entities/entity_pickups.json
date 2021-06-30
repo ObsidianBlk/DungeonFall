@@ -1,0 +1,9 @@
+{
+  "Coin" : {
+    "desc" : "An singular coin. Oooo... shiney",
+    "obj-src" : "res://objects/gold/Gold.gd",
+    "icon-src" : "res://assets/graphics/objects/Coin.png",
+    "icon-region" : {"x": 0, "y": 0, "w": 16, "h": 16},
+    "type" : ["pickup"]
+  }
+}

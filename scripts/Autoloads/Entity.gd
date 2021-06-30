@@ -1,27 +1,124 @@
 extends Node
 
-var _Entity = {
-	"Coin" : {
-		"desc" : "An singular coin. Oooo... shiney",
-		"obj-src" : "res://objects/gold/Gold.gd",
-		"obj" : null,
-		"icon-src" : "res://assets/graphics/objects/Coin.png",
-		"icon-region" : {"x": 0, "y": 0, "w": 16, "h": 16},
-		"type" : ["pickup"]
-	}
-}
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+const ENTITY_DEF_PREFIX = "entity_"
+const ENTITY_DEF_EXT = ".json"
 
-var _Type = {}
-var _LoadedEntities = []
+
+# ---------------------------------------------------------------------------
+# Variables
+# ---------------------------------------------------------------------------
+var _Entity : Dictionary = {}
+var _Type : Dictionary = {}
+var _LoadedEntities : Array = []
+
+# ---------------------------------------------------------------------------
+# Method Overrides
+# ---------------------------------------------------------------------------
 
 func _ready():
-	for key in _Entity:
-		var item = _Entity[key]
-		for type in item["type"]:
-			if not type in _Type:
-				_Type[type] = []
-			_Type[type].append(key)
+	_load_entities("res://Data/Entities")
 
+# ---------------------------------------------------------------------------
+# Private Methods
+# ---------------------------------------------------------------------------
+
+func _dict_has_keys(d : Dictionary, keyval : Array) -> bool:
+	for kv in keyval:
+		var key = kv[0]
+		var type = kv[1]
+		if not (key in d):
+			return false
+		if typeof(d[key]) != type:
+			return false
+	return true
+
+func _file_exists(filepath : String) -> bool:
+	var dir : Directory = Directory.new()
+	return dir.file_exists(filepath)
+
+func _load_entities(entdef_path : String, depth : int = 4) -> void:
+	var file : File = File.new()
+	var dir : Directory = Directory.new()
+	if dir.open(entdef_path) == OK:
+		dir.list_dir_begin()
+		var filename : String = dir.get_next()
+		while filename != "":
+			if filename != "." and filename != "..":
+				if dir.current_is_dir():
+					if depth > 0 and not filename.begins_with("_"):
+						_load_entities(entdef_path + "/" + filename, depth - 1)
+				elif filename.begins_with(ENTITY_DEF_PREFIX) and filename.ends_with(ENTITY_DEF_EXT):
+					file.open(entdef_path + "/" + filename, File.READ)
+					var jsondict : Dictionary = parse_json(file.get_as_text())
+					if jsondict:
+						_validate_entities_dict(jsondict)
+					file.close()
+			filename = dir.get_next()
+		dir.list_dir_end()
+
+
+func _validate_entities_dict(data : Dictionary) -> void:
+	print("Validating Entity")
+	for entkey in data:
+		if not (entkey in _Entity):
+			var newent = {
+				"desc" : "",
+				"obj-src" : "",
+				"obj" : null,
+				"icon-src" : "",
+				"icon-region" : {},
+				"type" : []
+			}
+			var res = _dict_has_keys(data[entkey], [
+				["desc", TYPE_STRING],
+				["obj-src", TYPE_STRING],
+				["icon-src", TYPE_STRING],
+				["icon-region", TYPE_DICTIONARY], #{"x": 0, "y": 0, "w": 16, "h": 16},
+				["type", TYPE_ARRAY] #["pickup"]
+			])
+			if res:
+				var obj_exists = _file_exists(data[entkey]["obj-src"])
+				if not obj_exists:
+					print("[WARNING] Entity '", entkey, "' object source not found.")
+				var icon_exists = _file_exists(data[entkey]["icon-src"])
+				if not icon_exists:
+					print("[WARNING] Entity '", entkey, "' icon source not found.")
+				res = _dict_has_keys(data[entkey]["icon-region"], [
+					["x", TYPE_REAL],
+					["y", TYPE_REAL],
+					["w", TYPE_REAL],
+					["h", TYPE_REAL]
+				])
+				if obj_exists and icon_exists and res:
+					newent.desc = data[entkey].desc
+					newent["obj-src"] = data[entkey]["obj-src"]
+					newent["icon-src"] = data[entkey]["icon-src"]
+					newent["icon-region"] = data[entkey]["icon-region"]
+					for type_name in data[entkey].type:
+						if typeof(type_name) == TYPE_STRING and type_name != "":
+							type_name = type_name.to_lower()
+							newent.type.append(type_name)
+							if not (type_name in _Type):
+								_Type[type_name] = []
+							_Type[type_name].append(entkey)
+					if newent.type.size() > 0:
+						_Entity[entkey] = newent
+					else:
+						print("[WARNING] Entity '", entkey, "' missing type information.")
+				else:
+					print("[WARNING] Entity '", entkey, "' icon region invalid.")
+		else:
+			print("[WARNING] Entity with name '", entkey, "' already stored in system. Skipping.")
+
+# ---------------------------------------------------------------------------
+# Public Methods
+# ---------------------------------------------------------------------------
+
+func get_entity_types() -> Array:
+	return _Type.keys()
 
 func of_type(type_name : String) -> Array:
 	var elist = []
