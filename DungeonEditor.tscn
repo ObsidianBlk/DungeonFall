@@ -113,6 +113,7 @@ margin_right = -8.56409
 margin_bottom = -8.56409
 
 [node name="Placeables" parent="CanvasLayer" instance=ExtResource( 10 )]
+visible = false
 margin_left = 15.1019
 margin_top = 183.111
 margin_right = -1612.9
@@ -128,4 +129,5 @@ margin_bottom = -485.889
 [connection signal="cancel" from="CanvasLayer/DungeonLoadPopup/DungeonList" to="." method="_on_dungeonload_cancel"]
 [connection signal="delete_dungeon" from="CanvasLayer/DungeonLoadPopup/DungeonList" to="." method="_on_requestdelete_dungeon"]
 [connection signal="load_dungeon" from="CanvasLayer/DungeonLoadPopup/DungeonList" to="." method="_on_loaddungeonfresh_dungeon"]
+[connection signal="entity_selected" from="CanvasLayer/Placeables" to="." method="_on_entity_selected"]
 [connection signal="popup_hide" from="CanvasLayer/Placeables" to="." method="_on_Placeables_hide"]

@@ -346,3 +346,7 @@ func _on_newdungeon_pressed():
 
 func _on_Placeables_hide():
 	editor_mode = EDITOR_MODE.FLOORS
+
+
+func _on_entity_selected(entity_name : String) -> void:
+	editor_mode = EDITOR_MODE.PLACEABLES
