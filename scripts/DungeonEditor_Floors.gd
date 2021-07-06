@@ -1,6 +1,4 @@
-extends Node
-
-var dungeonlevel_node = null
+extends "res://scripts/DungeonEditor_Base.gd"
 
 var active_floor_type = "B"
 var floor_tile_id = -1
@@ -8,9 +6,6 @@ var rand_floor = false
 var active = false
 var clear = false
 
-
-func set_editordungeon_node(lenode : Node):
-	dungeonlevel_node = lenode
 
 func set_active_floor_type(type):
 	if type == "B" or type == "S" or type == "E":
@@ -33,6 +28,9 @@ func set_random_tile(enable : bool = true):
 
 func is_random_tiles():
 	return rand_floor
+
+func clear():
+	editordungeon_node.clear_ghost_tiles()
 
 func _handleInput(event):
 	if event is InputEventMouseButton:
@@ -62,7 +60,7 @@ func _handleInput(event):
 
 func _updateProcess(delta):
 	if active:
-		dungeonlevel_node.clear_ghost_tiles()
+		editordungeon_node.clear_ghost_tiles()
 		_updateFloor(clear)
 	else:
 		_updateGhost()
@@ -77,30 +75,30 @@ func _floorTileIDPlaceable():
 	return false
 
 func _updateFloor(clear : bool = false):
-	if dungeonlevel_node != null:
+	if editordungeon_node != null:
 		if clear:
-			dungeonlevel_node.clear_floor_at_tracker()
+			editordungeon_node.clear_floor_at_tracker()
 		elif rand_floor or not _floorTileIDPlaceable():
 			match(active_floor_type):
 				"B":
-					dungeonlevel_node.set_rand_breakable_floor_at_tracker()
+					editordungeon_node.set_rand_breakable_floor_at_tracker()
 				"S":
-					dungeonlevel_node.set_rand_safe_floor_at_tracker()
+					editordungeon_node.set_rand_safe_floor_at_tracker()
 				"E":
-					dungeonlevel_node.set_rand_exit_floor_at_tracker()
+					editordungeon_node.set_rand_exit_floor_at_tracker()
 		else:
-			dungeonlevel_node.set_floor_at_tracker(floor_tile_id)
+			editordungeon_node.set_floor_at_tracker(floor_tile_id)
 
 
 func _updateGhost():
-	if dungeonlevel_node != null:
+	if editordungeon_node != null:
 		if rand_floor or not _floorTileIDPlaceable():
 			match(active_floor_type):
 				"B":
-					dungeonlevel_node.set_ghost_rand_breakable_at_tracker()
+					editordungeon_node.set_ghost_rand_breakable_at_tracker()
 				"S":
-					dungeonlevel_node.set_ghost_rand_safe_at_tracker()
+					editordungeon_node.set_ghost_rand_safe_at_tracker()
 				"E":
-					dungeonlevel_node.set_ghost_rand_exit_at_tracker()
+					editordungeon_node.set_ghost_rand_exit_at_tracker()
 		else:
-			dungeonlevel_node.set_ghost_tile_at_tracker(floor_tile_id)
+			editordungeon_node.set_ghost_tile_at_tracker(floor_tile_id)

@@ -120,38 +120,49 @@ func _validate_entities_dict(data : Dictionary) -> void:
 func get_entity_types() -> Array:
 	return _Type.keys()
 
+func has(key : String) -> bool:
+	return key in _Entity
+
+func get(key : String) -> Dictionary:
+	if key in _Entity:
+		var item = _Entity[key]
+		var ir = null
+		if item["icon-region"]:
+			var reg = item["icon-region"]
+			ir = {
+				"x": reg.x,
+				"y": reg.y,
+				"w": reg.w,
+				"h": reg.h
+			}
+		return {
+			"name" : key,
+			"desc" : item.desc,
+			"obj-src" : item["obj-src"],
+			"obj" : item.obj,
+			"icon-src" : item["icon-src"],
+			"icon-region" : ir
+		}
+	return {"name": ""}
+
 func of_type(type_name : String) -> Array:
 	var elist = []
 	if type_name in _Type:
 		for key in _Type[type_name]:
-			if key in _Entity:
-				var item = _Entity[key]
-				var ir = null
-				if item["icon-region"]:
-					var reg = item["icon-region"]
-					ir = {
-						"x": reg.x,
-						"y": reg.y,
-						"w": reg.w,
-						"h": reg.h
-					}
-				elist.append({
-					"name" : key,
-					"desc" : item.desc,
-					"obj-src" : item["obj-src"],
-					"obj" : item.obj,
-					"icon-src" : item["icon-src"],
-					"icon-region" : ir
-				})
+			var ent = get(key)
+			if ent.name != "":
+				elist.append(ent)
 	return elist
 
 
 func get_object(key : String):
+	# Returns the entities instanciator
 	if key in _Entity:
 		var item = _Entity[key]
 		if item.obj == null:
 			item.obj = load(item["obj-src"])
 			if not item.obj:
+				# TODO: Maybe identify that loading failed the first time and don't keep trying
 				item.obj = null
 				print("ERROR: Failed to load _Entity '", key, "' object at '", item["obj-src"], "'.")
 			else:

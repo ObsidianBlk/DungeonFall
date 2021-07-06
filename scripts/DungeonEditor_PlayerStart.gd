@@ -1,9 +1,4 @@
-extends Node
-
-var editordungeon_node = null
-
-func set_editordungeon_node(lenode : Node):
-	editordungeon_node = lenode
+extends "res://scripts/DungeonEditor_Base.gd"
 
 
 func _handleInput(event):

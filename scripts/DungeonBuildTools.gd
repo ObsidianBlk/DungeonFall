@@ -339,6 +339,11 @@ func clear_dungeon_gold():
 		gold_container_node.remove_child(child)
 		child.queue_free()
 
+func insert_entity_at_position(pos : Vector2, entity_name : String) -> void:
+	var eobj = Entity.get_object(entity_name)
+	if eobj != null:
+		pass # TODO: Something... you know
+
 func generate_dungeon_gold():
 	if gold_container_node == null:
 		return
@@ -375,6 +380,7 @@ func generate_dungeon_gold():
 				if gld:
 					gld.position = pos
 					gold_container_node.add_child(gld)
+					gld.editor_mode = true
 			if ucl.size() <= 0:
 				break
 

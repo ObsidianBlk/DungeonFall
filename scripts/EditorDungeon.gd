@@ -86,6 +86,12 @@ func position_player_start_to(pos : Vector2):
 	pos = walls_node.world_to_map(pos)
 	position_player_start(pos.x, pos.y)
 
+func set_tracker_ghost_entity(entity_name : String) -> void:
+	tracker.ghost_entity = entity_name
+
+func clear_tracker_ghost_entity() -> void:
+	tracker.ghost_entity = "" # Don't look at me like that! :p
+
 func move_tracker(x, y):
 	if abs(x) > 0:
 		tracker.position.x += cell.x * floor(x)
@@ -236,6 +242,12 @@ func set_ghost_tile(x: int, y: int, tile_id):
 
 func clear_ghost_tiles():
 	DungeonBT_node.clear_ghost_tiles()
+
+func insert_entity_at_tracker(entity_name : String) -> void:
+	insert_entity_at_pos(tracker.position, entity_name)
+
+func insert_entity_at_pos(pos : Vector2, entity_name : String) -> void:
+	pass
 
 func clearMapData():
 	isRoyal = false

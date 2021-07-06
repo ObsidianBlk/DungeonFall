@@ -1,4 +1,6 @@
 extends Node2D
+class_name DungeonEditor
+
 
 const DEFAULT_TILESET_NAME = "Moldy Dungeon"
 const MAIN_WORLD_SCENE = "res://World.tscn"
@@ -7,7 +9,7 @@ const REPEATER_UPDATE_STEP = 0.25
 
 const DB_NAME = "Editor"
 
-enum EDITOR_MODE {NONE, FLOORS, PLAYER_START, PLACEABLES}
+enum EDITOR_MODE {NONE=0, FLOORS=1, PLAYER_START=2, PLACEABLES=3}
 
 var DB = null
 
@@ -25,8 +27,11 @@ var map_dragging = false
 onready var confirmpopup_node = $CanvasLayer/ConfirmPopup
 onready var dungeonload_node = $CanvasLayer/DungeonLoadPopup
 
+onready var noneditor_node = $NonEditor
 onready var flooreditor_node = $FloorEditor
 onready var playerstarteditor_node = $PlayerStartEditor
+onready var placeableeditor_node = $PlaceableEditor
+onready var active_editor_node = $NonEditor
 
 onready var camera = $Perma_Objects/Camera
 #onready var floorList_node = $CanvasLayer/EditorUI/VBoxContainer/FloorList
@@ -38,6 +43,21 @@ onready var toolbarUI = $CanvasLayer/EditorUI/UI_Toolbar
 onready var dungeonSettingsUI = $CanvasLayer/DungeonSettingsUI
 onready var placeablesUI = $CanvasLayer/Placeables
 #onready var generalUI = $CanvasLayer/GeneralUI
+
+func _set_editor_mode(m : int, force : bool = false) -> void:
+	if EDITOR_MODE.values().find(m) >= 0 and (editor_mode != m or force):
+		editor_mode = m
+		active_editor_node.clear()
+		match(m):
+			EDITOR_MODE.NONE:
+				active_editor_node = noneditor_node
+			EDITOR_MODE.FLOORS:
+				active_editor_node = flooreditor_node
+			EDITOR_MODE.PLAYER_START:
+				active_editor_node = playerstarteditor_node
+			EDITOR_MODE.PLACEABLES:
+				active_editor_node = placeableeditor_node
+
 
 func _ready():
 	MemDB.connect("database_added", self, "_on_db_added")
@@ -55,12 +75,14 @@ func _ready():
 		
 		flooreditor_node.set_editordungeon_node(dungeonlevel_node)
 		playerstarteditor_node.set_editordungeon_node(dungeonlevel_node)
+		placeableeditor_node.set_editordungeon_node(dungeonlevel_node)
 
 		tileset_def = TilesetStore.get_definition()
 		TilesetStore.connect("tileset_activated", self, "_on_tileset_activated")
 		
 		dungeonlevel_node.connect("floor_changed", dungeonSettingsUI, "_update_placeable_tiles")
 		_newDungeon()
+		_set_editor_mode(editor_mode, true)
 
 
 func _mousepos_to_vp(pos : Vector2, campos : Vector2):
@@ -77,9 +99,13 @@ func _ShowConfirmPopup(text : String, confirm_only : bool, method : String, bind
 	confirmpopup_node.popup()
 	return true
 
+
 func _unhandled_input(event):
 	var ctrlInFocus = toolbarUI.get_focus_owner() != null
 	if event is InputEventMouseMotion:
+		# Force UI to loose focus (aka drop gamepad)
+		_release_gamepad_ctrl()
+		# Ok... now handle mouse
 		dungeonlevel_node.enable_camera_tracking(false)
 		var campos = dungeonlevel_node.get_camera_position()
 		var mpos = _mousepos_to_vp(event.position, campos)
@@ -95,6 +121,7 @@ func _unhandled_input(event):
 		if editor_mode == EDITOR_MODE.FLOORS and dungeonlevel_node.get_tracker_position() != tpos:
 			repeater_update_step = 0.0
 	elif event is InputEventMouseButton:
+		_release_gamepad_ctrl()
 		if event.is_action_pressed("MapEditor_MouseMapDrag"):
 			map_dragging = true
 		elif event.is_action_released("MapEditor_MouseMapDrag"):
@@ -102,13 +129,15 @@ func _unhandled_input(event):
 	else:
 		if event.is_action_pressed("MapEditor_Placeables"):
 			if editor_mode != EDITOR_MODE.PLACEABLES:
-				editor_mode = EDITOR_MODE.PLACEABLES
+				_set_editor_mode(EDITOR_MODE.PLACEABLES)
 				placeablesUI.popup_centered()
 		if event.is_action_pressed("ui_cancel"):
 			if dungeonSettingsUI.visible:
 				dungeonSettingsUI.hide()
 			elif placeablesUI.visible:
 				placeablesUI.hide()
+			elif editor_mode != EDITOR_MODE.FLOORS:
+				_set_editor_mode(EDITOR_MODE.FLOORS)
 			elif ctrlInFocus and toolbarUI.in_focus():
 				_release_gamepad_ctrl()
 			elif not _ShowConfirmPopup("Exit Dungeon Editor?", false, "_on_editor_quit"):
@@ -140,11 +169,12 @@ func _unhandled_input(event):
 				tracker_motion.y = 0
 	
 	if not ctrlInFocus: # Only handle below if NO Control has input focus.
-		match(editor_mode):
-			EDITOR_MODE.FLOORS:
-				flooreditor_node._handleInput(event)
-			EDITOR_MODE.PLAYER_START:
-				playerstarteditor_node._handleInput(event)
+		active_editor_node._handleInput(event)
+#		match(editor_mode):
+#			EDITOR_MODE.FLOORS:
+#				flooreditor_node._handleInput(event)
+#			EDITOR_MODE.PLAYER_START:
+#				playerstarteditor_node._handleInput(event)
 
 
 func _process(delta):
@@ -154,9 +184,8 @@ func _process(delta):
 				tracker_motion.x,
 				tracker_motion.y
 			)
-		match(editor_mode):
-			EDITOR_MODE.FLOORS:
-				flooreditor_node._updateProcess(delta)
+		
+		active_editor_node._updateProcess(delta)
 		repeater_update_step += REPEATER_UPDATE_STEP
 	else:
 		repeater_update_step -= delta
@@ -251,7 +280,7 @@ func _on_db_value_changed(name : String, val):
 func _on_active_floor_type(type : String):
 	if flooreditor_node == null:
 		return
-	editor_mode = EDITOR_MODE.FLOORS
+	_set_editor_mode(EDITOR_MODE.FLOORS)
 	flooreditor_node.set_active_floor_type(type)
 
 
@@ -279,7 +308,7 @@ func _on_random_floor(button_pressed):
 
 
 func _on_player_start_selected():
-	editor_mode = EDITOR_MODE.PLAYER_START
+	_set_editor_mode(EDITOR_MODE.PLAYER_START)
 	dungeonlevel_node.clear_ghost_tiles()
 
 func _on_save_dungeon():
@@ -343,10 +372,9 @@ func _on_loaddungeonfresh_dungeon(path):
 func _on_newdungeon_pressed():
 	_newDungeon()
 
-
 func _on_Placeables_hide():
-	editor_mode = EDITOR_MODE.FLOORS
-
+	_set_editor_mode(EDITOR_MODE.FLOORS)
 
 func _on_entity_selected(entity_name : String) -> void:
-	editor_mode = EDITOR_MODE.PLACEABLES
+	_set_editor_mode(EDITOR_MODE.PLACEABLES)
+	placeableeditor_node.set_ghost_entity(entity_name)

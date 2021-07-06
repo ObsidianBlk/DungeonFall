@@ -53,6 +53,9 @@ map_editor_mode = true
 position = Vector2( 8, 8 )
 script = ExtResource( 8 )
 
+[node name="Sprite" type="Sprite" parent="Tracker"]
+self_modulate = Color( 1, 0.45098, 0.45098, 0.501961 )
+
 [node name="ExitTriggerView" type="Node2D" parent="."]
 script = ExtResource( 7 )
 
