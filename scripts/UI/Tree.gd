@@ -23,7 +23,6 @@ func _show_if_hidden(item):
 	if not _is_item_visible(item):
 		var p = item.get_parent()
 		if p:
-			print("Uncollapsing Parent")
 			p.collapsed = false
 
 func _first_selectable(item):

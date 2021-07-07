@@ -244,10 +244,16 @@ func clear_ghost_tiles():
 	DungeonBT_node.clear_ghost_tiles()
 
 func insert_entity_at_tracker(entity_name : String) -> void:
-	insert_entity_at_pos(tracker.position, entity_name)
+	DungeonBT_node.insert_entity_at_pos(tracker.position + (cell * 0.5), entity_name)
 
 func insert_entity_at_pos(pos : Vector2, entity_name : String) -> void:
-	pass
+	DungeonBT_node.insert_entity_at_pos(pos, entity_name)
+
+func remove_entity_at_tracker() -> void:
+	DungeonBT_node.remove_entity_at_pos(tracker.position + (cell * 0.5))
+
+func remove_entity_at_pos(pos : Vector2) -> void:
+	DungeonBT_node.remove_entity_at_pos(pos)
 
 func clearMapData():
 	isRoyal = false

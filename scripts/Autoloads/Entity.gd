@@ -61,7 +61,6 @@ func _load_entities(entdef_path : String, depth : int = 4) -> void:
 
 
 func _validate_entities_dict(data : Dictionary) -> void:
-	print("Validating Entity")
 	for entkey in data:
 		if not (entkey in _Entity):
 			var newent = {

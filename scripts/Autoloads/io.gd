@@ -202,6 +202,21 @@ func storeMapData(filePath : String, data):
 				if val.size() > 0:
 					mapData.append_array(val)
 			
+			if data.map.entities != null:
+				mapData.append_array(_Int2ByteArray(data.map.entities.size(), 2))
+				for ent in data.map.entities:
+					var name_buff = ent.name.to_utf8()
+					var name_size = min(255, name_buff.size())
+					if name_buff.size() > 255:
+						name_buff = name_buff.subarray(0, 254)
+					
+					mapData.append_array(_Int2ByteArray(name_size, 1))
+					mapData.append_array(name_buff)
+					mapData.append_array(_Var2Bytes(ent.position.x))
+					mapData.append_array(_Var2Bytes(ent.position.y))
+			else:
+				mapData.append_array(_Int2ByteArray(0, 2))
+			
 			mapData.append_array(_Int2ByteArray(data.map.floors.size(), 4))
 			for i in range(0, data.map.floors.size()):
 				mapData.append_array(_Int2ByteArray(data.map.floors[i].x, 4))
@@ -251,7 +266,7 @@ func readMapData(filePath : String, headerOnly : bool = false):
 		if data.version[0] != 0 or data.version[1] != 1:
 			print("READ MAP ERROR: Version mismatch.")
 			return null
-		elif data.version[2] < 0 || data.version[2] > 2:
+		elif data.version[2] < 0 || data.version[2] > 3:
 			print("READ MAP ERROR: Version mismatch.")
 			return null
 		var size = file.get_16()
@@ -324,6 +339,22 @@ func readMapData(filePath : String, headerOnly : bool = false):
 					res = _Bytes2UTF8(mapData, res.value, res.offset)
 					data.map.gold_seed = res.value
 		
+		# ------ Loading Entity Data (lord help me!)
+		data.map.entities = null
+		if data.version[2] >= 3:
+			res = _ByteArray2Int(mapData, 2, res.offset)
+			if res.value > 0:
+				data.map.entities = []
+				for _i in range(0, res.value):
+					var ent = {"name":"", "position":Vector2.ZERO}
+					res = _ByteArray2Int(mapData, 1, res.offset)
+					res = _Bytes2UTF8(mapData, res.value, res.offset)
+					ent.name = res.value
+					res = _Bytes2Var(mapData, res.offset)
+					ent.position.x = res.value
+					res = _Bytes2Var(mapData, res.offset)
+					ent.position.y = res.value
+					data.map.entities.append(ent)
 		
 		# ----- Loading Floor tile data
 		res = _ByteArray2Int(mapData, 4, res.offset)

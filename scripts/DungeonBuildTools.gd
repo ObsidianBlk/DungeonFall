@@ -3,6 +3,7 @@ extends Node2D
 
 signal floor_changed
 
+export var editor_mode : bool = false
 export var map_seed : int = 0
 export var clear_on_new_tileset : bool = true
 
@@ -12,11 +13,13 @@ var RNG = null
 
 var breakable_tile_resources = {}
 var dungeon_exits = []
+var placed_entities = {}
 
 onready var parent_node = get_parent()
 onready var floors_map = get_parent().get_node("Floors")
 onready var walls_map = get_parent().get_node("Walls")
 onready var doors_map = get_parent().get_node("Doors")
+onready var entity_container = get_parent().get_node("Entity_Container")
 var ghost_map = null
 var gold_container_node = null
 
@@ -32,8 +35,8 @@ func _ready():
 	
 	if parent_node.has_node("Ghost"):
 		ghost_map = parent_node.get_node("Ghost")
-	if parent_node.has_node("Gold_Container"):
-		gold_container_node = parent_node.get_node("Gold_Container")
+	if parent_node.has_node("Entity_Container"):
+		gold_container_node = parent_node.get_node("Entity_Container")
 
 
 func _set_tilemaps_tileset(res : Resource):
@@ -332,17 +335,51 @@ func clear_ghost_tiles():
 	ghost_map.clear()
 
 func clear_dungeon_gold():
-	if gold_container_node == null:
-		return
-	for child in gold_container_node.get_children():
-		#print(child.get_signal_connection_list("pickup"))
-		gold_container_node.remove_child(child)
-		child.queue_free()
+	var rem_keys = []
+	for key in placed_entities:
+		var ent = placed_entities[key]
+		if ent.tags != null and ent.tags.find("__proc_gen__") >= 0:
+			var parent = ent.entity.get_parent()
+			parent.remove_child(ent.entity)
+			rem_keys.append(key)
+	for i in range(0, rem_keys.size()):
+		placed_entities.erase(rem_keys[i])
 
-func insert_entity_at_position(pos : Vector2, entity_name : String) -> void:
+func gen_entity_key_from_pos(pos : Vector2, floor_must_exist : bool = false) -> String:
+	var tpos = floors_map.world_to_map(pos)
+	if floor_must_exist:
+		var tindex = floors_map.get_cell(tpos.x, tpos.y)
+		if tindex < 0:
+			return ""
+	return "%sx%s" % [tpos.x, tpos.y]
+
+func is_entity_at_pos(pos : Vector2, floor_must_exist : bool = false) -> bool:
+	var key = gen_entity_key_from_pos(pos, floor_must_exist)
+	if key in placed_entities:
+		return true
+	return false
+
+func insert_entity_at_pos(pos : Vector2, entity_name : String, tags : Array = []) -> void:
 	var eobj = Entity.get_object(entity_name)
-	if eobj != null:
-		pass # TODO: Something... you know
+	var ekey = gen_entity_key_from_pos(pos, true)
+	if eobj != null and ekey != "" and !(ekey in placed_entities):
+		var ent = eobj.instance()
+		entity_container.add_child(ent)
+		ent.position = pos
+		if editor_mode:
+			if ent.get("editor_mode") != null:
+				ent.editor_mode = true
+			placed_entities[ekey] = {"name":entity_name, "entity":ent, "tags":null}
+			if tags.size() > 0:
+				placed_entities[ekey].tags = tags
+
+func remove_entity_at_pos(pos : Vector2) -> void:
+	var ekey = gen_entity_key_from_pos(pos, true)
+	if ekey in placed_entities:
+		entity_container.remove_child(placed_entities[ekey].entity)
+		if editor_mode:
+			placed_entities[ekey].entity.queue_free()
+			placed_entities.erase(ekey)
 
 func generate_dungeon_gold():
 	if gold_container_node == null:
@@ -355,34 +392,66 @@ func generate_dungeon_gold():
 	if ucl.size() <= 0:
 		return
 	
-	var gobj = load("res://objects/gold/Gold.tscn")
-	if gobj:
-		var grng = RandomNumberGenerator.new()
-		grng.seed = parent_node.gold_seed.hash()
-		
-		clear_dungeon_gold()
-		
-		for _i in range(0, parent_node.gold_amount):
-			var pos = null
-			for _j in range(0, 100): # NOTE: May never loop near this much!
-				var tindex = grng.randi_range(0, ucl.size()-1)
-				var tpos = ucl[tindex]
-				ucl.remove(tindex)
-				
-				var tid = floors_map.get_cell(tpos.x, tpos.y)
-				if not is_tile_exit(tid):
-					pos = floors_map.map_to_world(tpos)
-					pos += floors_map.cell_size * 0.5
-					break
-			#var pos = floors_map.map_to_world(
-			if pos != null:
-				var gld = gobj.instance()
-				if gld:
-					gld.position = pos
-					gold_container_node.add_child(gld)
-					gld.editor_mode = true
-			if ucl.size() <= 0:
+	clear_dungeon_gold()
+	var grng = RandomNumberGenerator.new()
+	grng.seed = parent_node.gold_seed.hash()
+
+	for _i in range(0, parent_node.gold_amount):
+		var pos = null
+		for _j in range(0, 100): # NOTE: May never loop near this much!
+			var tindex = grng.randi_range(0, ucl.size()-1)
+			var tpos = ucl[tindex]
+			ucl.remove(tindex)
+
+			var tid = floors_map.get_cell(tpos.x, tpos.y)
+			if not is_tile_exit(tid):
+				pos = floors_map.map_to_world(tpos)
+				pos += floors_map.cell_size * 0.5
 				break
+		#var pos = floors_map.map_to_world(
+		if pos != null:
+			insert_entity_at_pos(pos, "Coin", ["__proc_gen__"])
+	
+
+#func generate_dungeon_gold():
+#	if gold_container_node == null:
+#		return
+#	if parent_node.gold_amount <= 0 or parent_node.gold_seed == "":
+#		clear_dungeon_gold()
+#		return
+#
+#	var ucl = floors_map.get_used_cells()
+#	if ucl.size() <= 0:
+#		return
+#
+#	var gobj = load("res://objects/gold/Gold.tscn")
+#	if gobj:
+#		var grng = RandomNumberGenerator.new()
+#		grng.seed = parent_node.gold_seed.hash()
+#
+#		clear_dungeon_gold()
+#
+#		for _i in range(0, parent_node.gold_amount):
+#			var pos = null
+#			for _j in range(0, 100): # NOTE: May never loop near this much!
+#				var tindex = grng.randi_range(0, ucl.size()-1)
+#				var tpos = ucl[tindex]
+#				ucl.remove(tindex)
+#
+#				var tid = floors_map.get_cell(tpos.x, tpos.y)
+#				if not is_tile_exit(tid):
+#					pos = floors_map.map_to_world(tpos)
+#					pos += floors_map.cell_size * 0.5
+#					break
+#			#var pos = floors_map.map_to_world(
+#			if pos != null:
+#				var gld = gobj.instance()
+#				if gld:
+#					gld.position = pos
+#					gold_container_node.add_child(gld)
+#					gld.editor_mode = true
+#			if ucl.size() <= 0:
+#				break
 
 
 func generateMapData():
@@ -393,7 +462,7 @@ func generateMapData():
 	var data = {
 		"name": parent_node.dungeon_name,
 		"engineer": parent_node.engineer_name,
-		"version": [0,1,2],
+		"version": [0,1,3],
 		"map":{
 			"tileset_name": tileset_def.name,
 			"player_start": player_start.position,
@@ -403,11 +472,22 @@ func generateMapData():
 			"tile_break_variance": parent_node.tile_break_variance,
 			"gold_amount": parent_node.gold_amount,
 			"gold_seed": parent_node.gold_seed,
+			"entities": null,
 			"floors": [],
 			"walls": [],
 			"exits": null
 		}
 	}
+	
+	# Storing entities...
+	if placed_entities.size() > 0:
+		data.map.entities = []
+		for key in placed_entities:
+			var ent = placed_entities[key]
+			data.map.entities.append({
+				"name": ent.name,
+				"position": ent.entity.position
+			})
 	
 	# Storing Floor Tiles
 	var tiles = floors_map.get_used_cells()
@@ -490,7 +570,7 @@ func buildMapFromData(data):
 	
 	
 	dungeon_exits = []
-	var trigger_node = get_parent().get_node("Triggers")
+	var trigger_node = get_parent().get_node("Triggers") # This is NOT an error!!!
 	for i in range(0, data.map.exits.size()):
 		dungeon_exits.append(data.map.exits[i])
 		
@@ -521,6 +601,11 @@ func buildMapFromData(data):
 			else:
 				print("WARNING: Failed to create exit trigger shape.")
 	
+	# ----
+	# Loading in entities!
+	if data.version[2] >= 3 and data.map.entities != null:
+		for ent in data.map.entities:
+			insert_entity_at_pos(ent.position, ent.name)
 	
 	# ----
 	# Generating "proceedural" gold placement

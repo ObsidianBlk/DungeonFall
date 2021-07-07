@@ -21,7 +21,6 @@ func _set_label_text(text : String):
 func _set_confirm_only(e : bool):
 	confirm_only = e
 	if btn_cancel_node and margin_node:
-		print("Adjusting Buttons to: ", not e)
 		btn_cancel_node.visible = not e
 		margin_node.visible = not e
 

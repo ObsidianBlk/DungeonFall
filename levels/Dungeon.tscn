@@ -11,7 +11,7 @@
 script = ExtResource( 1 )
 dungeon_timer_autostart = false
 is_last_level = true
-player_container_node_path = NodePath("Player_Container")
+player_container_node_path = NodePath("Entity_Container")
 camera_container_node_path = NodePath("Camera_Container")
 player_start_path = NodePath("Player_Start")
 
@@ -33,9 +33,7 @@ tile_set = ExtResource( 4 )
 cell_size = Vector2( 16, 16 )
 format = 1
 
-[node name="Gold_Container" type="Node2D" parent="."]
-
-[node name="Player_Container" type="Node2D" parent="."]
+[node name="Entity_Container" type="YSort" parent="."]
 
 [node name="Camera_Container" type="Node2D" parent="."]
 
