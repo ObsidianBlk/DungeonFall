@@ -6,6 +6,7 @@ func _ready():
 		world.connect("request_ui_vis_change", self, "_on_change_visible")
 	else:
 		print("ERROR: Failed to find the World node!!")
+	print("My Name is: ", name)
 
 func _on_change_visible(e : bool, uiname : String = ""):
 	if uiname == "" or uiname == name:

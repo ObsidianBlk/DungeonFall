@@ -142,9 +142,12 @@ func _load_user_level(path : String):
 	return null
 
 
-func _on_start():
+func _on_dungeon_run():
 	if not dungeonload_node.visible:
 		dungeonload_node.popup()
+
+func _on_dungeon_restart():
+	_on_dungeon_start(cur_level_info.src)
 
 func _on_cancel_dungeonload():
 	dungeonload_node.visible = false
@@ -225,7 +228,7 @@ func _on_continue_to_level(is_new_level : bool = true):
 func _on_player_death():
 	load_level(cur_level_info.src, false)
 
-func _on_open_editor():
+func _on_dungeon_editor():
 	var editor = load(EDITOR_WORLD_SCENE)
 	if editor:
 		var editor_node = editor.instance()
@@ -234,5 +237,11 @@ func _on_open_editor():
 		p.add_child(editor_node)
 		queue_free()
 
-func _on_quit():
+func _on_game_quit():
 	get_tree().quit()
+
+
+func _on_escape_dungeon():
+	unload_level()
+	get_tree().paused = true
+	emit_signal("request_ui_vis_change", true, "MainMenu")

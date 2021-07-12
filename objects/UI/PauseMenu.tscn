@@ -1,0 +1,140 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://themes/fonts/satansminions_72_df.tres" type="DynamicFont" id=1]
+[ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=2]
+[ext_resource path="res://themes/fonts/satansminions_36_df.tres" type="DynamicFont" id=3]
+[ext_resource path="res://objects/UI/PauseMenu.gd" type="Script" id=4]
+
+[node name="PauseMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Center" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+margin_left = 743.0
+margin_top = 259.0
+margin_right = 1175.71
+margin_bottom = 819.331
+
+[node name="MC" type="MarginContainer" parent="Center/Panel"]
+margin_left = 15.2862
+margin_top = 15.5567
+margin_right = 417.286
+margin_bottom = 543.557
+custom_constants/margin_right = 12
+custom_constants/margin_top = 12
+custom_constants/margin_left = 12
+custom_constants/margin_bottom = 12
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBC" type="VBoxContainer" parent="Center/Panel/MC"]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 390.0
+margin_bottom = 516.0
+custom_constants/separation = 64
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Heading" type="VBoxContainer" parent="Center/Panel/MC/VBC"]
+margin_right = 378.0
+margin_bottom = 73.0
+
+[node name="Label" type="Label" parent="Center/Panel/MC/VBC/Heading"]
+margin_right = 378.0
+margin_bottom = 73.0
+custom_fonts/font = ExtResource( 1 )
+text = "PAUSED"
+align = 1
+
+[node name="Buttons" type="VBoxContainer" parent="Center/Panel/MC/VBC"]
+margin_top = 137.0
+margin_right = 378.0
+margin_bottom = 504.0
+size_flags_vertical = 3
+custom_constants/separation = 23
+
+[node name="BTN_Resume" type="Button" parent="Center/Panel/MC/VBC/Buttons"]
+margin_right = 378.0
+margin_bottom = 55.2487
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../BTN_Restart")
+focus_next = NodePath("../BTN_Restart")
+focus_previous = NodePath(".")
+custom_fonts/font = ExtResource( 3 )
+text = "Resume"
+
+[node name="BTN_Restart" type="Button" parent="Center/Panel/MC/VBC/Buttons"]
+margin_top = 78.0
+margin_right = 378.0
+margin_bottom = 133.249
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath("../BTN_Resume")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../BTN_Options")
+focus_next = NodePath("../BTN_Options")
+focus_previous = NodePath("../BTN_Resume")
+custom_fonts/font = ExtResource( 3 )
+text = "Restart"
+
+[node name="BTN_Options" type="Button" parent="Center/Panel/MC/VBC/Buttons"]
+margin_top = 156.0
+margin_right = 378.0
+margin_bottom = 211.249
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath("../BTN_Restart")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../BTN_EscDung")
+focus_next = NodePath("../BTN_EscDung")
+focus_previous = NodePath("../BTN_Restart")
+custom_fonts/font = ExtResource( 3 )
+text = "Options"
+
+[node name="BTN_EscDung" type="Button" parent="Center/Panel/MC/VBC/Buttons"]
+margin_top = 234.0
+margin_right = 378.0
+margin_bottom = 289.249
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath("../BTN_Options")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../BTN_EscDesk")
+focus_next = NodePath("../BTN_EscDesk")
+focus_previous = NodePath("../BTN_Options")
+custom_fonts/font = ExtResource( 3 )
+text = "Escape Dungeon"
+
+[node name="BTN_EscDesk" type="Button" parent="Center/Panel/MC/VBC/Buttons"]
+margin_top = 312.0
+margin_right = 378.634
+margin_bottom = 367.249
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath("../BTN_EscDung")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath("../BTN_EscDung")
+custom_fonts/font = ExtResource( 3 )
+text = "Escape to Desktop"
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="Center/Panel/MC/VBC/Buttons/BTN_Resume" to="." method="_on_BTN_Resume_pressed"]
+[connection signal="pressed" from="Center/Panel/MC/VBC/Buttons/BTN_Restart" to="." method="_on_BTN_Restart_pressed"]
+[connection signal="pressed" from="Center/Panel/MC/VBC/Buttons/BTN_Options" to="." method="_on_BTN_Options_pressed"]
+[connection signal="pressed" from="Center/Panel/MC/VBC/Buttons/BTN_EscDung" to="." method="_on_BTN_EscDung_pressed"]
+[connection signal="pressed" from="Center/Panel/MC/VBC/Buttons/BTN_EscDesk" to="." method="_on_BTN_EscDesk_pressed"]

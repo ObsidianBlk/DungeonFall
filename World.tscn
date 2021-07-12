@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scripts/UI/ValTracker.gd" type="Script" id=1]
 [ext_resource path="res://objects/player/Player.tscn" type="PackedScene" id=2]
@@ -6,33 +6,13 @@
 [ext_resource path="res://scripts/World.gd" type="Script" id=4]
 [ext_resource path="res://scripts/UI/TimersCTRL.gd" type="Script" id=5]
 [ext_resource path="res://scripts/UI/SimpleUI.gd" type="Script" id=6]
-[ext_resource path="res://assets/graphics/tilesets/tilesetA/tilesetA_Floors.png" type="Texture" id=7]
 [ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=8]
-[ext_resource path="res://themes/fonts/satansminions_dfd.tres" type="DynamicFontData" id=9]
 [ext_resource path="res://themes/Game.tres" type="Theme" id=10]
 [ext_resource path="res://themes/fonts/badbehavior_48_df.tres" type="DynamicFont" id=11]
 [ext_resource path="res://themes/fonts/satansminions_72_df.tres" type="DynamicFont" id=12]
 [ext_resource path="res://objects/UI/DungeonList.tscn" type="PackedScene" id=13]
-
-[sub_resource type="DynamicFont" id=1]
-size = 84
-font_data = ExtResource( 9 )
-
-[sub_resource type="DynamicFontData" id=2]
-font_path = "res://assets/fonts/SATAM___.TTF"
-
-[sub_resource type="DynamicFont" id=3]
-size = 48
-font_data = SubResource( 2 )
-
-[sub_resource type="DynamicFontData" id=4]
-font_path = "res://assets/fonts/SATAM___.TTF"
-
-[sub_resource type="DynamicFont" id=5]
-size = 96
-use_mipmaps = true
-use_filter = true
-font_data = SubResource( 4 )
+[ext_resource path="res://objects/UI/MainMenu.tscn" type="PackedScene" id=14]
+[ext_resource path="res://objects/UI/PauseMenu.tscn" type="PackedScene" id=15]
 
 [node name="World" type="Node2D"]
 pause_mode = 2
@@ -504,202 +484,11 @@ margin_right = 1318.0
 margin_bottom = 232.249
 text = "Done With Run"
 
-[node name="MainMenu" type="Control" parent="CanvasLayer/UI"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -1.7818
-margin_bottom = -1.78174
-script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="MainMenu" parent="CanvasLayer/UI" instance=ExtResource( 14 )]
+hide_on_operation = true
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/UI/MainMenu"]
-margin_left = 480.0
-margin_top = 270.0
-margin_right = 1440.0
-margin_bottom = 810.0
-color = Color( 0, 0, 0, 0.501961 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/UI/MainMenu"]
-margin_top = 270.0
-margin_right = 161.0
-margin_bottom = 810.0
-color = Color( 0, 0, 0, 0.501961 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="CanvasLayer/UI/MainMenu/ColorRect2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "Instructions...
-W,A,S,D - Move
-Space - Jump
-ESC - Pause Menu
-
-        - Safe Square
-
-        - Exit Square
-"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Sprite" type="Sprite" parent="CanvasLayer/UI/MainMenu/ColorRect2"]
-position = Vector2( 22, 132 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 7 )
-region_enabled = true
-region_rect = Rect2( 64, 0, 16, 16 )
-
-[node name="Sprite2" type="Sprite" parent="CanvasLayer/UI/MainMenu/ColorRect2"]
-position = Vector2( 22, 180 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 7 )
-region_enabled = true
-region_rect = Rect2( 80, 0, 16, 16 )
-
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/UI/MainMenu"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -3.11664
-margin_bottom = -3.1167
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/MainMenu/CenterContainer"]
-margin_left = 704.0
-margin_top = 294.0
-margin_right = 1216.0
-margin_bottom = 785.0
-custom_constants/separation = 52
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer"]
-margin_right = 512.0
-margin_bottom = 198.0
-
-[node name="Title" type="Label" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/VBoxContainer"]
-margin_right = 512.0
-margin_bottom = 173.0
-custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0.72549, 0.47451, 0.290196, 1 )
-text = "Dungeon
-       Falls"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Version" type="Label" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/VBoxContainer"]
-margin_top = 177.0
-margin_right = 512.0
-margin_bottom = 198.0
-text = "Version: Prototype 2"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MMOptions" type="VBoxContainer" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer"]
-margin_top = 250.0
-margin_right = 512.0
-margin_bottom = 491.0
-custom_constants/separation = 20
-
-[node name="BTN_Start" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_right = 512.0
-margin_bottom = 67.2487
-custom_fonts/font = SubResource( 3 )
-text = "Start"
-
-[node name="BTN_Editor" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_top = 87.0
-margin_right = 512.0
-margin_bottom = 154.249
-custom_fonts/font = SubResource( 3 )
-text = "Dungeon Editor"
-
-[node name="BTN_Quit" type="Button" parent="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_top = 174.0
-margin_right = 512.0
-margin_bottom = 241.249
-custom_fonts/font = SubResource( 3 )
-text = "Quit"
-
-[node name="PauseMenu" type="Control" parent="CanvasLayer/UI"]
+[node name="PauseMenu" parent="CanvasLayer/UI" instance=ExtResource( 15 )]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -1.7818
-margin_bottom = -1.78174
-script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/UI/PauseMenu"]
-margin_left = 480.0
-margin_top = 270.0
-margin_right = 1440.0
-margin_bottom = 810.0
-color = Color( 0, 0, 0, 0.501961 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/UI/PauseMenu"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/PauseMenu/CenterContainer"]
-margin_left = 744.0
-margin_top = 321.0
-margin_right = 1176.0
-margin_bottom = 759.0
-custom_constants/separation = 0
-
-[node name="Title" type="Label" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer"]
-margin_right = 432.0
-margin_bottom = 197.0
-custom_fonts/font = SubResource( 5 )
-custom_colors/font_color = Color( 0.72549, 0.47451, 0.290196, 1 )
-text = "PAUSED
-"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MMOptions" type="VBoxContainer" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer"]
-margin_top = 197.0
-margin_right = 432.0
-margin_bottom = 438.0
-custom_constants/separation = 20
-
-[node name="BTN_Resume" type="Button" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_right = 432.0
-margin_bottom = 67.2487
-custom_fonts/font = SubResource( 3 )
-text = "Resume"
-
-[node name="BTN_Restart" type="Button" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_top = 87.0
-margin_right = 432.0
-margin_bottom = 154.249
-custom_fonts/font = SubResource( 3 )
-text = "Restart"
-
-[node name="BTN_Quit" type="Button" parent="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions"]
-margin_top = 174.0
-margin_right = 432.0
-margin_bottom = 241.249
-custom_fonts/font = SubResource( 3 )
-text = "Quit"
 
 [node name="DungeonLoad" type="PopupPanel" parent="CanvasLayer/UI"]
 margin_left = 601.041
@@ -722,20 +511,18 @@ margin_bottom = 567.436
 Allow_Dungeon_Deletion = false
 
 [connection signal="dead" from="Perma_Objects/Player" to="." method="_on_player_death"]
-[connection signal="pressed" from="CanvasLayer/UI/LevelTransition/CenterContainer/Info/BTN_NextLevel" to="." method="_on_continue_to_level"]
 [connection signal="pressed" from="CanvasLayer/UI/LevelTransition/CenterContainer/Info/BTN_NextLevel" to="CanvasLayer/UI/LevelTransition" method="_on_change_visible" binds= [ false ]]
-[connection signal="pressed" from="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/LastLevelResults" method="_on_change_visible" binds= [ false ]]
+[connection signal="pressed" from="CanvasLayer/UI/LevelTransition/CenterContainer/Info/BTN_NextLevel" to="." method="_on_continue_to_level"]
 [connection signal="pressed" from="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/RunCompletion" method="_on_change_visible" binds= [ true ]]
+[connection signal="pressed" from="CanvasLayer/UI/LastLevelResults/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/LastLevelResults" method="_on_change_visible" binds= [ false ]]
 [connection signal="pressed" from="CanvasLayer/UI/RunCompletion/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/RunCompletion" method="_on_change_visible" binds= [ false ]]
 [connection signal="pressed" from="CanvasLayer/UI/RunCompletion/CenterContainer/Info/BTN_EndRun" to="CanvasLayer/UI/MainMenu" method="_on_change_visible" binds= [ true ]]
-[connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Start" to="." method="_on_start"]
-[connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Start" to="CanvasLayer/UI/MainMenu" method="_on_change_visible" binds= [ false ]]
-[connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Editor" to="." method="_on_open_editor"]
-[connection signal="pressed" from="CanvasLayer/UI/MainMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Quit" to="." method="_on_quit"]
-[connection signal="pressed" from="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Resume" to="." method="_on_game_resume"]
-[connection signal="pressed" from="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Resume" to="CanvasLayer/UI/PauseMenu" method="_on_change_visible" binds= [ false ]]
-[connection signal="pressed" from="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Restart" to="." method="_on_start"]
-[connection signal="pressed" from="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Restart" to="CanvasLayer/UI/PauseMenu" method="_on_change_visible" binds= [ false ]]
-[connection signal="pressed" from="CanvasLayer/UI/PauseMenu/CenterContainer/VBoxContainer/MMOptions/BTN_Quit" to="." method="_on_quit"]
+[connection signal="dungeon_editor" from="CanvasLayer/UI/MainMenu" to="." method="_on_dungeon_editor"]
+[connection signal="dungeon_run" from="CanvasLayer/UI/MainMenu" to="." method="_on_dungeon_run"]
+[connection signal="game_escape" from="CanvasLayer/UI/MainMenu" to="." method="_on_game_quit"]
+[connection signal="escape_dungeon" from="CanvasLayer/UI/PauseMenu" to="." method="_on_escape_dungeon"]
+[connection signal="game_escape" from="CanvasLayer/UI/PauseMenu" to="." method="_on_game_quit"]
+[connection signal="game_restart" from="CanvasLayer/UI/PauseMenu" to="." method="_on_dungeon_restart"]
+[connection signal="game_resume" from="CanvasLayer/UI/PauseMenu" to="." method="_on_game_resume"]
 [connection signal="cancel" from="CanvasLayer/UI/DungeonLoad/DungeonList" to="." method="_on_cancel_dungeonload"]
 [connection signal="load_dungeon" from="CanvasLayer/UI/DungeonLoad/DungeonList" to="." method="_on_dungeon_start"]

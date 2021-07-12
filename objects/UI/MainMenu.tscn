@@ -1,0 +1,214 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://themes/fonts/satansminions_72_df.tres" type="DynamicFont" id=1]
+[ext_resource path="res://themes/DungeonFalls_Core.tres" type="Theme" id=2]
+[ext_resource path="res://themes/fonts/satansminions_36_df.tres" type="DynamicFont" id=3]
+[ext_resource path="res://themes/fonts/oldtypeface_18_df.tres" type="DynamicFont" id=4]
+[ext_resource path="res://assets/graphics/tilesets/tilesetA/tilesetA_Floors.png" type="Texture" id=5]
+[ext_resource path="res://objects/UI/MainMenu.gd" type="Script" id=6]
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Instructions" type="MarginContainer" parent="."]
+anchor_bottom = 1.0
+rect_min_size = Vector2( 192, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="Instructions"]
+margin_top = 417.0
+margin_right = 192.0
+margin_bottom = 662.331
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="Instructions/PanelContainer"]
+margin_left = 15.2862
+margin_top = 15.5567
+margin_right = 176.578
+margin_bottom = 228.557
+text = "Instructions...
+W,A,S,D - Move
+Space - Jump
+ESC - Pause Menu
+
+        - Safe Square
+
+        - Exit Square
+"
+
+[node name="Safe_Tile" type="Sprite" parent="Instructions/PanelContainer"]
+position = Vector2( 31.1479, 147.244 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 64, 0, 16, 16 )
+
+[node name="Exit_Tile" type="Sprite" parent="Instructions/PanelContainer"]
+position = Vector2( 31.6198, 196.326 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 5 )
+region_enabled = true
+region_rect = Rect2( 80, 0, 16, 16 )
+
+[node name="Menu" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 548
+custom_constants/margin_top = 128
+custom_constants/margin_left = 548
+custom_constants/margin_bottom = 128
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="PanelContainer" parent="Menu"]
+margin_left = 548.0
+margin_top = 128.0
+margin_right = 1372.0
+margin_bottom = 952.0
+
+[node name="VBC" type="VBoxContainer" parent="Menu/Panel"]
+margin_left = 15.2862
+margin_top = 15.5567
+margin_right = 808.578
+margin_bottom = 807.226
+
+[node name="Heading" type="VBoxContainer" parent="Menu/Panel/VBC"]
+margin_left = 195.0
+margin_right = 598.0
+margin_bottom = 393.0
+size_flags_horizontal = 4
+size_flags_vertical = 3
+
+[node name="Buffer_Top" type="MarginContainer" parent="Menu/Panel/VBC/Heading"]
+margin_right = 403.0
+margin_bottom = 105.0
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="Menu/Panel/VBC/Heading"]
+margin_top = 109.0
+margin_right = 403.0
+margin_bottom = 258.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0.72549, 0.47451, 0.290196, 1 )
+text = "Dungeon
+      Falls"
+
+[node name="Version" type="HBoxContainer" parent="Menu/Panel/VBC/Heading"]
+margin_top = 262.0
+margin_right = 403.0
+margin_bottom = 283.0
+
+[node name="Label" type="Label" parent="Menu/Panel/VBC/Heading/Version"]
+margin_right = 56.0
+margin_bottom = 21.0
+custom_fonts/font = ExtResource( 4 )
+text = "Version:"
+
+[node name="Number" type="Label" parent="Menu/Panel/VBC/Heading/Version"]
+margin_left = 60.0
+margin_right = 92.0
+margin_bottom = 21.0
+custom_fonts/font = ExtResource( 4 )
+text = "0.0.1"
+
+[node name="Buffer_Bottom" type="MarginContainer" parent="Menu/Panel/VBC/Heading"]
+margin_top = 287.0
+margin_right = 403.0
+margin_bottom = 393.0
+size_flags_vertical = 3
+
+[node name="Buttons" type="VBoxContainer" parent="Menu/Panel/VBC"]
+margin_left = 220.0
+margin_top = 397.0
+margin_right = 573.0
+margin_bottom = 791.0
+size_flags_horizontal = 4
+size_flags_vertical = 3
+custom_constants/separation = 13
+
+[node name="BTN_Run" type="Button" parent="Menu/Panel/VBC/Buttons"]
+margin_right = 353.0
+margin_bottom = 55.2487
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../BTN_DungEditor")
+focus_next = NodePath("../BTN_DungEditor")
+focus_previous = NodePath(".")
+custom_fonts/font = ExtResource( 3 )
+text = "Make a Run"
+
+[node name="BTN_DungEditor" type="Button" parent="Menu/Panel/VBC/Buttons"]
+margin_top = 68.0
+margin_right = 353.634
+margin_bottom = 123.249
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath("../BTN_Run")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../OPs/BTN_Options")
+focus_next = NodePath("../OPs/BTN_Options")
+focus_previous = NodePath("../BTN_Run")
+custom_fonts/font = ExtResource( 3 )
+text = "Dungeon Builder"
+
+[node name="OPs" type="HBoxContainer" parent="Menu/Panel/VBC/Buttons"]
+margin_top = 136.0
+margin_right = 353.0
+margin_bottom = 191.0
+
+[node name="BTN_Options" type="Button" parent="Menu/Panel/VBC/Buttons/OPs"]
+margin_right = 174.0
+margin_bottom = 55.2487
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath("../../BTN_DungEditor")
+focus_neighbour_right = NodePath("../BTN_Instruction")
+focus_neighbour_bottom = NodePath("../../BTN_Escape")
+focus_next = NodePath("../BTN_Instruction")
+focus_previous = NodePath("../../BTN_DungEditor")
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "O"
+
+[node name="BTN_Instruction" type="Button" parent="Menu/Panel/VBC/Buttons/OPs"]
+margin_left = 178.0
+margin_right = 353.0
+margin_bottom = 55.2487
+focus_neighbour_left = NodePath("../BTN_Options")
+focus_neighbour_top = NodePath("../../BTN_DungEditor")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../../BTN_Escape")
+focus_next = NodePath("../../BTN_Escape")
+focus_previous = NodePath("../BTN_Options")
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+toggle_mode = true
+text = "I"
+
+[node name="BTN_Escape" type="Button" parent="Menu/Panel/VBC/Buttons"]
+margin_top = 204.0
+margin_right = 353.0
+margin_bottom = 259.249
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath("../OPs/BTN_Options")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath("../OPs/BTN_Options")
+custom_fonts/font = ExtResource( 3 )
+text = "Escape"
+
+[connection signal="pressed" from="Menu/Panel/VBC/Buttons/BTN_Run" to="." method="_on_BTN_Run_pressed"]
+[connection signal="pressed" from="Menu/Panel/VBC/Buttons/BTN_DungEditor" to="." method="_on_BTN_DungEditor_pressed"]
+[connection signal="pressed" from="Menu/Panel/VBC/Buttons/OPs/BTN_Options" to="." method="_on_BTN_Options_pressed"]
+[connection signal="toggled" from="Menu/Panel/VBC/Buttons/OPs/BTN_Instruction" to="." method="_on_BTN_Instruction_toggled"]
+[connection signal="pressed" from="Menu/Panel/VBC/Buttons/BTN_Escape" to="." method="_on_BTN_Escape_pressed"]
