@@ -4,6 +4,8 @@
 export.cfg
 export_presets.cfg
 
+gitinfo.json
+
 # Release folder
 Releases/*
 

@@ -55,6 +55,7 @@ TilesetStore="*res://scripts/Autoloads/TilesetStore.gd"
 Io="*res://scripts/Autoloads/io.gd"
 MemDB="*res://scripts/Autoloads/MemDB.gd"
 Entity="*res://scripts/Autoloads/Entity.gd"
+Version="*res://scripts/Autoloads/Version.gd"
 
 [display]
 
@@ -62,6 +63,10 @@ window/size/width=1920
 window/size/height=1080
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
+
+[global]
+
+game_base_version=[ 0, 0, 4 ]
 
 [input]
 
